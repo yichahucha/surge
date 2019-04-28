@@ -1,5 +1,5 @@
-var path1 = '/interface/sdk/sdkad.php';
-var path2 = '/2/statuses/'
+let path1 = '/interface/sdk/sdkad.php';
+let path2 = '/2/statuses/';
 var result = body;
 if (url.indexOf(path1) != -1) {
     var json_body = JSON.parse(body)
