@@ -1,4 +1,4 @@
-let path1 = '/wbapplua/';//启动页广告
+let path1 = '/wbapplua/';//启动页广告（不一定有效果，待测）
 let path2 = '/2/statuses/';//Feed流广告
 let path3 = '/2/statuses/extend';//广告共享计划、相关推荐
 let path4 = '/2/comments/build_comments';//相关内容
