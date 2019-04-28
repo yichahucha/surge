@@ -1,2 +1,1 @@
-console.log('响应体')
-body
+console.log('响应体' + body)
