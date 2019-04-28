@@ -1,7 +1,15 @@
+let path1 = '/wbapplua/';//启动页广告
 let path2 = '/2/statuses/';//Feed流广告
 let path3 = '/2/statuses/extend';//广告共享计划、相关推荐
 let path4 = '/2/comments/build_comments';//相关内容
 var result = body;
+if (url.indexOf(path1) != -1) {
+    var json_body = JSON.parse(body);
+//     json_body.cached_ad.ads = [];
+    delete json_body.cached_ad;
+    result = JSON.stringify(json_body);
+    console.log('启动页');
+}
 if (url.indexOf(path2) != -1) {
     var json_body = JSON.parse(body);
     if (url.indexOf(path3) != -1) { 
