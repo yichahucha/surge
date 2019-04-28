@@ -4,6 +4,7 @@ if (url.indexOf(path1) != -1) {
     result.needlocation = false;
     result.show_push_splash_ad = false;
     result.ads = [];
+    console.log('去启动页广告')
 } else {
     var ad = result.ad;
     var statuses = result.statuses;
