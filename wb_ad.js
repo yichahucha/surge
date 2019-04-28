@@ -15,7 +15,7 @@ if (url.indexOf(path1) != -1) {
 if (url.indexOf(path2) != -1) {
     var json_body = JSON.parse(body)
     if (url.indexOf(path3) != -1) { 
-        json_body.trend = null;
+        delete json_body.trend;
         console.log('共享计划广告');
     }else {
         var ad = json_body.ad;
