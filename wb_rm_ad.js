@@ -1,6 +1,6 @@
 let path2 = '/2/statuses/';//Feed流广告
 let path3 = '/2/statuses/extend';//广告共享计划、相关推荐
-let path4 = '/2/comments/build_comments';//评论中相关内容
+let path4 = '/2/comments/build_comments';//相关内容
 var result = body;
 if (url.indexOf(path2) != -1) {
     var json_body = JSON.parse(body);
