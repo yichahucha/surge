@@ -35,6 +35,7 @@ if (url.indexOf(path4) != -1) {
             datas.splice(j,1);
         }
     }
+    console.log('相关内容');
     result = JSON.stringify(json_body);
 }
 result;
