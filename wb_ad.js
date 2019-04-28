@@ -1,5 +1,5 @@
 var path1 = '/interface/sdk/sdkad.php';
-var result = JSON.parse(body)
+var result = JSON.parse(body);
 if (url.indexOf(path1) != -1) {
     result.needlocation = false;
     result.show_push_splash_ad = false;
@@ -20,4 +20,4 @@ if (url.indexOf(path1) != -1) {
         }
     }
 }
-JSON.stringify(result)
+JSON.stringify(result);
