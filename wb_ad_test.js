@@ -4,7 +4,7 @@
  */
 let path1 = "/groups/timeline";
 let path2 = "/statuses/unread";
-let path3 = "/statuses/extend";
+let path3 = "/statuses/extendwwwwww";
 let path4 = "/comments/build_comments";
 let path5 = "/photo/recommend_list";
 let path6 = "/stories/video_stream";
