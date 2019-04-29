@@ -32,7 +32,7 @@ if (url.indexOf(path4) != -1) {
     for (let j = 0; j < datas.length; j++) {
         const element = datas[j];
         let type = element.type;
-        if (type!=5 && type!=1) {
+        if (type!=5 && type!=1 && type!=6) {
             new_datas.push(element);
         }
     }
