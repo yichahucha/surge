@@ -36,8 +36,12 @@ if (url.indexOf(path2) != -1) {
                 new_statuses.push(element);
             }else {
                 let type = title.type;
-                if (type != "likerecommend") {
+                if (typeof(type) == "undefined") {
                     new_statuses.push(element);
+                }else {
+                    if (type != "likerecommend") {
+                        new_statuses.push(element);
+                    }
                 }
             }
         }
