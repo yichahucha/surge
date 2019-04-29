@@ -6,7 +6,7 @@ let path5 = '/photo/recommend_list';
 let path6 = '/stories/video_stream';
 let path7 = '/statuses/positives/get';
 var result = body;
-function filter_timeline (){
+function filter_timeline() {
     var json_body = JSON.parse(body);
     if (json_body.trends) {
         json_body.trends = [];
