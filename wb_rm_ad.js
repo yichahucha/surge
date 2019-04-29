@@ -28,13 +28,15 @@ if (url.indexOf(path2) != -1) {
 if (url.indexOf(path4) != -1) { 
     var json_body = JSON.parse(body);
     var datas = json_body.datas;
+    var new_datas = []
     for (let j = 0; j < datas.length; j++) {
         const element = datas[j];
         let type = element.type;
-        if (type == 5 || type ==1) {
-            datas.splice(j,1);
+        if (type != 5 || type !=1) {
+            new_datas.push(element);
         }
     }
+    json_body.datas = new_datas;
     result = JSON.stringify(json_body);
 }
 result;
