@@ -1,5 +1,5 @@
 let path2 = '/2/statuses/';//Feed流广告
-let path3 = '/2/statuses/extend';//微博创作者广告共享计划、相关推荐
+let path3 = '/2/statuses/extend';//广告共享计划、相关推荐
 let path4 = '/2/comments/build_comments';//评论中相关内容、评论中推荐
 var result = body;
 if (url.indexOf(path2) != -1) {
