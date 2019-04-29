@@ -7,47 +7,48 @@ let path7 = '/statuses/positives/get';
 var result = body;
 if (url.indexOf(path2) != -1) {
     var json_body = JSON.parse(body);
-    if (url.indexOf(path3) != -1) { 
-        delete json_body.trend
-    }else {
-        if (json_body.trends) {
-            json_body.trends = [];
-        }
-        var ad = json_body.ad;
-        if (typeof(ad) != "undefined") {
-            var statuses = json_body.statuses;
-            for (let i = 0; i < ad.length; i++) {
-                const element = ad[i];
-                let ad_id = element.id;
-                for (let j = 0; j < statuses.length; j++) {
-                    const element = statuses[j];
-                    let statuses_id = element.id;
-                    if (statuses_id == parseInt(ad_id)) {
-                        statuses.splice(j,1);
-                    }
+    if (json_body.trends) {
+        json_body.trends = [];
+    }
+    var ad = json_body.ad;
+    if (typeof(ad) != "undefined") {
+        var statuses = json_body.statuses;
+        for (let i = 0; i < ad.length; i++) {
+            const element = ad[i];
+            let ad_id = element.id;
+            for (let j = 0; j < statuses.length; j++) {
+                const element = statuses[j];
+                let statuses_id = element.id;
+                if (statuses_id == parseInt(ad_id)) {
+                    statuses.splice(j,1);
                 }
             }
         }
-        var statuses = json_body.statuses;
-        var new_statuses = [];
-        for (let i = 0; i < statuses.length; i++) {
-            const element = statuses[i];
-            let title = element.title;
-            if (typeof(title) == "undefined") {
+    }
+    var statuses = json_body.statuses;
+    var new_statuses = [];
+    for (let i = 0; i < statuses.length; i++) {
+        const element = statuses[i];
+        let title = element.title;
+        if (typeof(title) == "undefined") {
+            new_statuses.push(element);
+        }else {
+            let type = title.type;
+            if (typeof(type) == "undefined") {
                 new_statuses.push(element);
             }else {
-                let type = title.type;
-                if (typeof(type) == "undefined") {
+                if (type != "likerecommend") {
                     new_statuses.push(element);
-                }else {
-                    if (type != "likerecommend") {
-                        new_statuses.push(element);
-                    }
                 }
             }
         }
-        json_body.statuses = new_statuses;
     }
+    json_body.statuses = new_statuses;
+    result = JSON.stringify(json_body);
+}
+if (url.indexOf(path3) != -1) { 
+    var json_body = JSON.parse(body);
+    delete json_body.trend
     result = JSON.stringify(json_body);
 }
 if (url.indexOf(path4) != -1) { 
