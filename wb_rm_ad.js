@@ -1,8 +1,8 @@
-let path2 = '/statuses/';//feed流广告、好友关注
-let path3 = '/statuses/extend';//详情中的广告共享计划、相关推荐
-let path4 = '/comments/build_comments';//评论中的相关内容、推荐
-let path5 = '/photo/recommend_list';//相关图集屏蔽
-let path6 = '/stories/video_stream';//视频流
+let path2 = '/statuses/';
+let path3 = '/statuses/extend';
+let path4 = '/comments/build_comments';
+let path5 = '/photo/recommend_list';
+let path6 = '/stories/video_stream';
 var result = body;
 if (url.indexOf(path2) != -1) {
     var json_body = JSON.parse(body);
