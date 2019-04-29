@@ -1,6 +1,6 @@
 /*
   * @repo: https://github.com/yichahucha/surge
-  * @file: https://raw.githubusercontent.com/yichahucha/surge/master/wb_ad.js
+  * @script: https://raw.githubusercontent.com/yichahucha/surge/master/wb_ad.js
   */
 let path1 = '/groups/timeline';
 let path2 = '/statuses/unread';
