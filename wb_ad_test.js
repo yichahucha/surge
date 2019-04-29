@@ -4,7 +4,7 @@
  */
 let path1 = "/groups/timeline";
 let path2 = "/statuses/unread";
-let path3 = "/statuses/extendwwwwww";
+let path3 = "/statuses/extend";
 let path4 = "/comments/build_comments";
 let path5 = "/photo/recommend_list";
 let path6 = "/stories/video_stream";
@@ -75,6 +75,8 @@ if (url.indexOf(path4) != -1) {
       }
     }
     json_body.datas = new_datas;
+  }else {
+    console.log('error' + url)
   }
   result = JSON.stringify(json_body);
 }
