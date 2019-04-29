@@ -1,6 +1,7 @@
-let path2 = '/2/statuses/';//Feed流广告
-let path3 = '/2/statuses/extend';//广告共享计划、相关推荐
-let path4 = '/2/comments/build_comments';//评论中相关内容、评论中推荐
+let path2 = '/statuses/';//Feed流广告
+let path3 = '/statuses/extend';//广告共享计划、相关推荐
+let path4 = '/comments/build_comments';//评论中相关内容、评论中推荐
+let path5 = '/photo/recommend_list';//相关图集
 var result = body;
 if (url.indexOf(path2) != -1) {
     var json_body = JSON.parse(body);
@@ -38,5 +39,8 @@ if (url.indexOf(path4) != -1) {
     }
     json_body.datas = new_datas;
     result = JSON.stringify(json_body);
+}
+if (url.indexOf(path5) != -1) { 
+    result = null;
 }
 result;
