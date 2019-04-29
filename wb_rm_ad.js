@@ -41,6 +41,8 @@ if (url.indexOf(path4) != -1) {
     result = JSON.stringify(json_body);
 }
 if (url.indexOf(path5) != -1) { 
-    result = null;
+    var json_body = JSON.parse(body);
+    json_body.data = {};
+    result = JSON.stringify(json_body);
 }
 result;
