@@ -1,4 +1,4 @@
-let path2 = '/statuses/';//feed流广告
+let path2 = '/statuses/';//feed流广告、好友关注
 let path3 = '/statuses/extend';//详情中的广告共享计划、相关推荐
 let path4 = '/comments/build_comments';//评论中的相关内容、推荐
 let path5 = '/photo/recommend_list';//相关图集屏蔽
@@ -8,6 +8,9 @@ if (url.indexOf(path2) != -1) {
     if (url.indexOf(path3) != -1) { 
         delete json_body.trend
     }else {
+        if (json_body.trends) {
+            json_body.trends = [];
+        }
         var ad = json_body.ad;
         if (typeof(ad) != "undefined") {
             var statuses = json_body.statuses;
