@@ -82,4 +82,9 @@ if (url.indexOf(path6) != -1) {
     json_body.segments = new_segments;
     result = JSON.stringify(json_body);
 }
+if (url.indexOf(path7) != -1) {
+    var json_body = JSON.parse(body);
+    json_body.datas = [];
+    result = JSON.stringify(json_body);
+}
 result;
