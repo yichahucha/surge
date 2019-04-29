@@ -27,6 +27,21 @@ if (url.indexOf(path2) != -1) {
                 }
             }
         }
+        var statuses = json_body.statuses;
+        var new_statuses = [];
+        for (let i = 0; i < statuses.length; i++) {
+            const element = statuses[i];
+            let title = element.title;
+            let type = title.type;
+            if (typeof(type) == "undefined") {
+                new_statuses.push(element);
+            }else {
+                if (type != "likerecommend") {
+                    new_statuses.push(element);
+                }
+            }
+        }
+        json_body.statuses = new_statuses;
     }
     result = JSON.stringify(json_body);
 }
