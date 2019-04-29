@@ -1,4 +1,4 @@
-let path2 = '/statuses/unread_friends_timeline';
+let path2 = '/statuses/unread';
 let path3 = '/statuses/extend';
 let path4 = '/comments/build_comments';
 let path5 = '/photo/recommend_list';
