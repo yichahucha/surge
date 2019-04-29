@@ -1,3 +1,8 @@
+/*
+  * @Description: surge script
+  * @Author: yichahucha
+  * @repo: https://github.com/yichahucha/surge
+  */
 let path1 = '/groups/timeline';
 let path2 = '/statuses/unread';
 let path3 = '/statuses/extend';
