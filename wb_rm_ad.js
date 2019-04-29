@@ -1,6 +1,6 @@
 let path2 = '/2/statuses/';//Feed流广告
 let path3 = '/2/statuses/extend';//微博创作者广告共享计划、相关推荐
-let path4 = '/2/comments/build_comments';//评论中相关内容
+let path4 = '/2/comments/build_comments';//评论中相关内容、评论中推荐
 var result = body;
 if (url.indexOf(path2) != -1) {
     var json_body = JSON.parse(body);
@@ -31,7 +31,7 @@ if (url.indexOf(path4) != -1) {
     for (let j = 0; j < datas.length; j++) {
         const element = datas[j];
         let type = element.type;
-        if (type == 5) {
+        if (type == 5 || type ==1) {
             datas.splice(j,1);
         }
     }
