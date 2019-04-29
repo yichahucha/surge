@@ -1,4 +1,4 @@
-let path2 = '/statuses/';
+let path2 = '/statuses/unread_friends_timeline';
 let path3 = '/statuses/extend';
 let path4 = '/comments/build_comments';
 let path5 = '/photo/recommend_list';
@@ -33,7 +33,7 @@ if (url.indexOf(path2) != -1) {
             const element = statuses[i];
             let title = element.title;
             let type = title.type;
-            if (typeof(type) == "undefined") {
+            if (typeof(title) == "undefined") {
                 new_statuses.push(element);
             }else {
                 if (type != "likerecommend") {
