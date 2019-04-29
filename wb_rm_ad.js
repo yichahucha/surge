@@ -36,6 +36,7 @@ if (url.indexOf(path4) != -1) {
             new_datas.push(element);
         }
     }
+    console.log('相关内容');
     json_body.datas = new_datas;
     result = JSON.stringify(json_body);
 }
