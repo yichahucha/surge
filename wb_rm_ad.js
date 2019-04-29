@@ -3,6 +3,7 @@ let path3 = '/statuses/extend';
 let path4 = '/comments/build_comments';
 let path5 = '/photo/recommend_list';
 let path6 = '/stories/video_stream';
+let path7 = '/statuses/positives/get';
 var result = body;
 if (url.indexOf(path2) != -1) {
     var json_body = JSON.parse(body);
