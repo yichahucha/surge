@@ -32,10 +32,10 @@ if (url.indexOf(path2) != -1) {
         for (let i = 0; i < statuses.length; i++) {
             const element = statuses[i];
             let title = element.title;
-            let type = title.type;
             if (typeof(title) == "undefined") {
                 new_statuses.push(element);
             }else {
+                let type = title.type;
                 if (type != "likerecommend") {
                     new_statuses.push(element);
                 }
