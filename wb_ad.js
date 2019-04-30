@@ -44,9 +44,13 @@ function filter_timeline() {
 
         let i = statuses.length;
         while (i--) {
-            const element = statuses[i];
+            let element = statuses[i];
             if (is_likerecommend(element.title)) {
                 statuses.splice(i, 1);
+            }
+            if (element.pic_bg_new) {
+                delete element.pic_bg_new;
+                delete element.pic_bg_type;
             }
         }
 
