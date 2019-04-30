@@ -12,6 +12,7 @@ const path5 = "/photo/recommend_list";
 const path6 = "/stories/video_stream";
 const path7 = "/statuses/positives/get";
 const path8 = "/stories/home_list";
+const path9 = "/profile/statuses";
 var result = body;
 
 function is_likerecommend(title) {
@@ -128,6 +129,29 @@ if (url.indexOf(path7) != -1) {
 if (url.indexOf(path8) != -1) {
     let obj = JSON.parse(body);
     obj.story_list = [];
+    result = JSON.stringify(obj);
+}
+
+if (url.indexOf(path9) != -1) {
+    let obj = JSON.parse(body);
+    let cards = obj.cards;
+    if (cards && cards.length > 0) {
+        let i = cards.length;
+        while (i--) {
+            let element = statuses[i];
+            let card_group = element.card_group;
+            if (card_group && card_group.length > 0) {
+                cards.splice(i, 1);
+            } else {
+                let mblog = element.mblog;
+                if (mblog.pic_bg_new) {
+                    delete mblog.pic_bg_new;
+                    delete mblog.pic_bg_type;
+                }
+            }
+        }
+    }
+
     result = JSON.stringify(obj);
 }
 
