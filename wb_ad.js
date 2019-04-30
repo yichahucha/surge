@@ -10,6 +10,7 @@ const path4 = "/comments/build_comments";
 const path5 = "/photo/recommend_list";
 const path6 = "/stories/video_stream";
 const path7 = "/statuses/positives/get";
+const path8 = "/stories/home_list";
 var result = body;
 
 function is_likerecommend(title) {
@@ -119,4 +120,9 @@ if (url.indexOf(path7) != -1) {
     result = JSON.stringify(json_body);
 }
 
+if (url.indexOf(path8) != -1) {
+    let json_body = JSON.parse(body);
+    json_body.story_list = [];
+    result = JSON.stringify(json_body);
+}
 result;
