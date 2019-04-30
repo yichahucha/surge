@@ -1,7 +1,7 @@
 /*
  * @repo: https://github.com/yichahucha/surge
  * @script: https://raw.githubusercontent.com/yichahucha/surge/master/wb_ad.js
- * @regular: ^https?:\/\/api\.weibo\.cn\/2\/(groups\/timeline|statuses\/unread|statuses\/extend|comments\/build_comments|photo\/recommend_list|stories\/video_stream|statuses\/positives\/get|stories/home_list)
+ * @regular: ^https?:\/\/api\.weibo\.cn\/2\/(groups\/timeline|statuses\/unread|statuses\/extend|comments\/build_comments|photo\/recommend_list|stories\/video_stream|statuses\/positives\/get|stories\/home_list|profile\/statuses)
  */
 
 const path1 = "/groups/timeline";
@@ -138,7 +138,7 @@ if (url.indexOf(path9) != -1) {
     if (cards && cards.length > 0) {
         let i = cards.length;
         while (i--) {
-            let element = statuses[i];
+            let element = cards[i];
             let card_group = element.card_group;
             if (card_group && card_group.length > 0) {
                 cards.splice(i, 1);
