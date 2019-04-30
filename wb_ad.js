@@ -142,12 +142,6 @@ if (url.indexOf(path9) != -1) {
             let card_group = element.card_group;
             if (card_group && card_group.length > 0) {
                 cards.splice(i, 1);
-            } else {
-                let mblog = element.mblog;
-                if (mblog && mblog.pic_bg_new) {
-                    delete mblog.pic_bg_new;
-                    delete mblog.pic_bg_type;
-                }
             }
         }
     }
