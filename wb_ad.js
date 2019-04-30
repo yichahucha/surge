@@ -144,7 +144,7 @@ if (url.indexOf(path9) != -1) {
                 cards.splice(i, 1);
             } else {
                 let mblog = element.mblog;
-                if (mblog.pic_bg_new) {
+                if (mblog && mblog.pic_bg_new) {
                     delete mblog.pic_bg_new;
                     delete mblog.pic_bg_type;
                 }
