@@ -23,10 +23,10 @@ function is_likerecommend(title) {
 }
 
 function filter_timeline() {
-    let json_body = JSON.parse(body);
-    let statuses = json_body.statuses;
+    let obj = JSON.parse(body);
+    let statuses = obj.statuses;
     if (statuses && statuses.length > 0) {
-        let ad = json_body.ad;
+        let ad = obj.ad;
         if (ad && ad.length > 0) {
             for (let i = 0; i < ad.length; i++) {
                 const element = ad[i];
@@ -50,17 +50,17 @@ function filter_timeline() {
             }
         }
 
-        if (json_body.num) {
-            json_body.num = json_body.statuses.length + ad.length;
-            json_body.original_num = json_body.statuses.length;
+        if (obj.num) {
+            obj.num = obj.statuses.length + ad.length;
+            obj.original_num = obj.statuses.length;
         }
     }
 
-    if (json_body.trends) {
-        json_body.trends = [];
+    if (obj.trends) {
+        obj.trends = [];
     }
 
-    result = JSON.stringify(json_body);
+    result = JSON.stringify(obj);
 }
 
 if (url.indexOf(path1) != -1) {
@@ -72,14 +72,14 @@ if (url.indexOf(path2) != -1) {
 }
 
 if (url.indexOf(path3) != -1) {
-    let json_body = JSON.parse(body);
-    delete json_body.trend;
-    result = JSON.stringify(json_body);
+    let obj = JSON.parse(body);
+    delete obj.trend;
+    result = JSON.stringify(obj);
 }
 
 if (url.indexOf(path4) != -1) {
-    let json_body = JSON.parse(body);
-    let datas = json_body.datas;
+    let obj = JSON.parse(body);
+    let datas = obj.datas;
     if (datas && datas.length > 0) {
         let i = datas.length;
         while (i--) {
@@ -90,18 +90,18 @@ if (url.indexOf(path4) != -1) {
             }
         }
     }
-    result = JSON.stringify(json_body);
+    result = JSON.stringify(obj);
 }
 
 if (url.indexOf(path5) != -1) {
-    let json_body = JSON.parse(body);
-    json_body.data = {};
-    result = JSON.stringify(json_body);
+    let obj = JSON.parse(body);
+    obj.data = {};
+    result = JSON.stringify(obj);
 }
 
 if (url.indexOf(path6) != -1) {
-    let json_body = JSON.parse(body);
-    let segments = json_body.segments;
+    let obj = JSON.parse(body);
+    let segments = obj.segments;
     if (segments && segments.length > 0) {
         let i = segments.length;
         while (i--) {
@@ -112,18 +112,18 @@ if (url.indexOf(path6) != -1) {
             }
         }
     }
-    result = JSON.stringify(json_body);
+    result = JSON.stringify(obj);
 }
 
 if (url.indexOf(path7) != -1) {
-    let json_body = JSON.parse(body);
-    json_body.datas = [];
-    result = JSON.stringify(json_body);
+    let obj = JSON.parse(body);
+    obj.datas = [];
+    result = JSON.stringify(obj);
 }
 
 if (url.indexOf(path8) != -1) {
-    let json_body = JSON.parse(body);
-    json_body.story_list = [];
-    result = JSON.stringify(json_body);
+    let obj = JSON.parse(body);
+    obj.story_list = [];
+    result = JSON.stringify(obj);
 }
 result;
