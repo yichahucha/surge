@@ -145,7 +145,6 @@ if (url.indexOf(path9) != -1) {
             }
         }
     }
-
     result = JSON.stringify(obj);
 }
 
