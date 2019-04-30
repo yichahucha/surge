@@ -126,4 +126,5 @@ if (url.indexOf(path8) != -1) {
     obj.story_list = [];
     result = JSON.stringify(obj);
 }
+
 result;
