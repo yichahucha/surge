@@ -13,8 +13,8 @@ const path6 = "/stories/video_stream";
 const path7 = "/statuses/positives/get";
 const path8 = "/stories/home_list";
 const path9 = "/profile/statuses";
-var result = body;
 
+var result = body;
 function is_likerecommend(title) {
     if (title && title.type && title.type == "likerecommend") {
         return true;
@@ -64,7 +64,6 @@ function filter_timeline() {
     if (obj.trends) {
         obj.trends = [];
     }
-
     result = JSON.stringify(obj);
 }
 
@@ -147,5 +146,4 @@ if (url.indexOf(path9) != -1) {
     }
     result = JSON.stringify(obj);
 }
-
 result;
