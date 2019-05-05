@@ -11,11 +11,10 @@ const path3 = "/wbapplua/wbpullad.lua";
 var result = body;
 if (url.indexOf(path1) != -1) {
     result = '';
-    console.log('启动页功能广告');
 }
 
 if (url.indexOf(path2) != -1) {
-    result = body.replace('OK','');
+    result = result.replace('OK','');
     var obj = JSON.parse(result);
     if (obj.background_delay_display_time) {
         obj.background_delay_display_time = 60*24*365;
@@ -25,17 +24,17 @@ if (url.indexOf(path2) != -1) {
     }
     if (obj.ads) {
         obj.ads = [];
-        console.log('启动页广告');
     }
     result = JSON.stringify(obj) + 'OK';
+    console.log(result);
 }
 
 if (url.indexOf(path3) != -1) {
-    var obj = JSON.parse(body);
+    var obj = JSON.parse(result);
     if (obj.cached_ad && obj.cached_ad.ads) {
         obj.cached_ad.ads = [];
-        console.log('启动页缓存广告');
     }
     result = JSON.stringify(obj);
+    console.log(result);
 }
 result;
