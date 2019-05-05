@@ -1,5 +1,5 @@
 
-### Surge
+## Surge
 ```
 [Script]
 http-response ^https?:\/\/api\.weibo\.cn\/2(\/groups\/timeline|\/statuses\/unread|\/statuses\/extend|\/comments\/build_comments|\/photo\/recommend_list|\/stories\/video_stream|\/statuses\/positives\/get|\/stories\/home_list|\/profile\/statuses|\/statuses\/friends\/timeline) script-path=https://raw.githubusercontent.com/yichahucha/surge/master/wb_ad.js
@@ -7,7 +7,7 @@ http-response ^https?:\/\/api\.weibo\.cn\/2(\/groups\/timeline|\/statuses\/unrea
 [MITM]
 hostname = api.weibo.cn
 ```
-### Custom
+## Custom
 **If don't want use script filtering, deletes the specified regular.**
 
 | regular path| wb | filter |
