@@ -25,17 +25,17 @@ if (url.indexOf(path2) != -1) {
     }
     if (obj.ads) {
         obj.ads = [];
+        console.log('启动页广告');
     }
     result = JSON.stringify(obj) + 'OK';
-    console.log('启动页广告');
 }
 
 if (url.indexOf(path3) != -1) {
     var obj = JSON.parse(body);
     if (obj.cached_ad && obj.cached_ad.ads) {
         obj.cached_ad.ads = [];
+        console.log('启动页缓存广告');
     }
     result = JSON.stringify(obj);
-    console.log('启动页缓存广告');
 }
 result;
