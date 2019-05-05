@@ -7,7 +7,7 @@ http-response ^https?:\/\/api\.weibo\.cn\/2(\/groups\/timeline|\/statuses\/unrea
 [MITM]
 hostname = api.weibo.cn
 ```
-# Custom
+# Custom Regular
 **If don't want use script filtering, deletes the specified regular.**
 
 | regular path| wb | filter |
