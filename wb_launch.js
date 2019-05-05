@@ -4,16 +4,11 @@
  * @regular: ^https?:\/\/(sdk|wb)app\.uve\.weibo\.com(\/interface\/sdk\/actionad.php|\/interface\/sdk\/sdkad.php|\/wbapplua\/wbpullad.lua)
  */
 
-const path1 = "/interface/sdk/actionad.php";
-const path2 = "/interface/sdk/sdkad.php";
-const path3 = "/wbapplua/wbpullad.lua";
+const path1 = "/interface/sdk/sdkad.php";
+const path2 = "/wbapplua/wbpullad.lua";
 
 var result = body;
 if (url.indexOf(path1) != -1) {
-    result = '';
-}
-
-if (url.indexOf(path2) != -1) {
     result = result.replace('OK','');
     var obj = JSON.parse(result);
     if (obj.background_delay_display_time) {
@@ -29,7 +24,7 @@ if (url.indexOf(path2) != -1) {
     console.log(result);
 }
 
-if (url.indexOf(path3) != -1) {
+if (url.indexOf(path2) != -1) {
     var obj = JSON.parse(result);
     if (obj.cached_ad && obj.cached_ad.ads) {
         obj.cached_ad.ads = [];
