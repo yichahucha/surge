@@ -13,6 +13,7 @@ const path6 = "/stories/video_stream";
 const path7 = "/statuses/positives/get";
 const path8 = "/stories/home_list";
 const path9 = "/profile/statuses";
+const path10 = "/statuses/friends/timeline";
 
 var result = body;
 function is_likerecommend(title) {
@@ -72,6 +73,10 @@ if (url.indexOf(path1) != -1) {
 }
 
 if (url.indexOf(path2) != -1) {
+    filter_timeline();
+}
+
+if (url.indexOf(path10) != -1) {
     filter_timeline();
 }
 
