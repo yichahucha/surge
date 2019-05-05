@@ -20,6 +20,9 @@ if (url.indexOf(path2) != -1) {
     if (obj.background_delay_display_time) {
         obj.background_delay_display_time = 60*24*365;
     }
+    if (obj.show_push_splash_ad) {
+        obj.show_push_splash_ad = false;
+    }
     if (obj.ads) {
         obj.ads = [];
     }
@@ -29,7 +32,7 @@ if (url.indexOf(path2) != -1) {
 
 if (url.indexOf(path3) != -1) {
     var obj = JSON.parse(body);
-    if (obj.cached_ad) {
+    if (obj.cached_ad && obj.cached_ad.ads) {
         obj.cached_ad.ads = [];
     }
     result = JSON.stringify(obj);
