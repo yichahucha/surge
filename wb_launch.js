@@ -11,20 +11,26 @@ const path3 = "/wbapplua/wbpullad.lua";
 var result = body;
 if (url.indexOf(path1) != -1) {
     result = '';
-    console.log('actionad');
+    console.log('启动页功能广告');
 }
+
 if (url.indexOf(path2) != -1) {
     result = body.replace('OK','');
     var obj = JSON.parse(result);
-    obj.background_delay_display_time = 60*24*365;
-    obj.ads = [];
+    if (obj.background_delay_display_time) {
+        obj.background_delay_display_time = 60*24*365;
+    }
+    if (obj.ads) {
+        obj.ads = [];
+    }
     result = JSON.stringify(obj) + 'OK';
     console.log('启动页广告');
 }
+
 if (url.indexOf(path3) != -1) {
     var obj = JSON.parse(body);
     if (obj.cached_ad) {
-        json_body.cached_ad.ads = [];
+        obj.cached_ad.ads = [];
     }
     result = JSON.stringify(obj);
     console.log('启动页缓存广告');
