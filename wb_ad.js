@@ -88,8 +88,8 @@ if (url.indexOf(path3) != -1) {
 
 if (url.indexOf(path4) != -1) {
     let obj = JSON.parse(body);
-    let datas = obj.datas;
-    if (datas && datas.length > 0) {
+    if (obj.hasOwnProperty('datas') && obj.datas && obj.datas.length > 0) {
+        let datas = obj.datas;
         let i = datas.length;
         while (i--) {
             const element = datas[i];
