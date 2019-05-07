@@ -88,20 +88,22 @@ if (url.indexOf(path3) != -1) {
 
 if (url.indexOf(path4) != -1) {
     let obj = JSON.parse(body);
-    if (obj.hasOwnProperty('datas') && obj.datas && obj.datas.length > 0) {
+    if (obj.datas && obj.datas.length > 0) {
         let datas = obj.datas;
-        let i = datas.length;
-        while (i--) {
+        for (let i = 0; i < datas.length; i++) {
             const element = datas[i];
-            let type = element.type;
             if (type == 5 || type == 1 || type == 6) {
-                datas.splice(i, 1);
-                console.log('================进的是datas'+String(type));
+                datas.splice(i--, 1);
             }
         }
-        console.log('进的是datasssssssssssssssssssssssssss');
-    } else {
-        console.log('进的是root_comments');
+        // let i = datas.length;
+        // while (i--) {
+        //     const element = datas[i];
+        //     let type = element.type;
+        //     if (type == 5 || type == 1 || type == 6) {
+        //         datas.splice(i, 1);
+        //     }
+        // }
     }
     result = JSON.stringify(obj);
 }
