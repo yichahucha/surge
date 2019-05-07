@@ -97,7 +97,7 @@ if (url.indexOf(path4) != -1) {
             // if (type == 5 || type == 1 || type == 6) {
             //     datas.splice(i, 1);
             // }
-            if (type == 5 || type == 1 || type == 6) {
+            if (type == 1) {
                 datas.splice(i, 1);
             }
         }
