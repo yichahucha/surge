@@ -96,6 +96,7 @@ if (url.indexOf(path4) != -1) {
             let type = element.type;
             if (type == 5 || type == 1 || type == 6) {
                 datas.splice(i, 1);
+                console.log('================进的是datas'+String(type));
             }
         }
         console.log('进的是datas');
