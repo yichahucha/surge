@@ -7,13 +7,14 @@
 const path1 = "/groups/timeline";
 const path2 = "/statuses/unread";
 const path3 = "/statuses/extend";
-const path4 = "/comments/build_comments";
+const path4 = "/comments/build_comments?gsid";
 const path5 = "/photo/recommend_list";
 const path6 = "/stories/video_stream";
 const path7 = "/statuses/positives/get";
 const path8 = "/stories/home_list";
 const path9 = "/profile/statuses";
 const path10 = "/statuses/friends/timeline";
+const path11 = "/comments/build_comments?flow";
 
 var result = body;
 function is_likerecommend(title) {
