@@ -96,7 +96,7 @@ if (url.indexOf(path4) != -1) {
             while (i--) {
                 const element = datas[i];
                 let type = element.type;
-                if (type == 1 || type == 6) {
+                if (type == 5 || type == 1 || type == 6) {
                     datas.splice(i, 1);
                 }
             }
