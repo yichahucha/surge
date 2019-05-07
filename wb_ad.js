@@ -98,6 +98,9 @@ if (url.indexOf(path4) != -1) {
                 datas.splice(i, 1);
             }
         }
+        console.log('进的是datas');
+    } else {
+        console.log('进的是root_comments');
     }
     result = JSON.stringify(obj);
 }
