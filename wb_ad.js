@@ -99,7 +99,7 @@ if (url.indexOf(path4) != -1) {
                 console.log('================进的是datas'+String(type));
             }
         }
-        console.log('进的是datas');
+        console.log('进的是datasssssssssssssssssssssssssss');
     } else {
         console.log('进的是root_comments');
     }
