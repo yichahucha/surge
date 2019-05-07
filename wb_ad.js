@@ -88,22 +88,19 @@ if (url.indexOf(path3) != -1) {
 
 if (url.indexOf(path4) != -1) {
     let obj = JSON.parse(body);
-    if (obj.datas && obj.datas.length > 0) {
-        let datas = obj.datas;
-        for (let i = 0; i < datas.length; i++) {
+    let datas = obj.datas;
+    if (datas && datas.length > 0) {
+        let i = datas.length;
+        while (i--) {
             const element = datas[i];
+            let type = element.type;
+            // if (type == 5 || type == 1 || type == 6) {
+            //     datas.splice(i, 1);
+            // }
             if (type == 5 || type == 1 || type == 6) {
-                datas.splice(i--, 1);
+                datas.splice(i, 1);
             }
         }
-        // let i = datas.length;
-        // while (i--) {
-        //     const element = datas[i];
-        //     let type = element.type;
-        //     if (type == 5 || type == 1 || type == 6) {
-        //         datas.splice(i, 1);
-        //     }
-        // }
     }
     result = JSON.stringify(obj);
 }
