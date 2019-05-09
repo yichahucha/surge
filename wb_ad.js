@@ -77,8 +77,9 @@ if (url.indexOf(path10) != -1) {
 
 if (url.indexOf(path3) != -1) {
     let obj = JSON.parse(body);
-//     delete obj.trend;
-    obj.trend = [];
+    if (obj.trend) {
+        obj.trend = [];
+    }
     result = JSON.stringify(obj);
 }
 
