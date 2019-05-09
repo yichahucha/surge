@@ -68,7 +68,7 @@ if (url.indexOf(path1) != -1) {
 }
 
 if (url.indexOf(path2) != -1) {
-//     filter_timeline();
+    filter_timeline();
 }
 
 if (url.indexOf(path10) != -1) {
