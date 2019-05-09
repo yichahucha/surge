@@ -1,5 +1,4 @@
 /*
- * @repo: https://github.com/yichahucha/surge
  * @script: https://raw.githubusercontent.com/yichahucha/surge/master/wb_launch.js
  * @regular: ^https?:\/\/(sdk|wb)app\.uve\.weibo\.com(\/interface\/sdk\/sdkad.php|\/wbapplua\/wbpullad.lua)
  */
