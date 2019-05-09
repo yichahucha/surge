@@ -50,10 +50,6 @@ function filter_timeline() {
             if (is_likerecommend(element.title)) {
                 statuses.splice(i, 1);
             }
-            if (element.pic_bg_new) {
-                delete element.pic_bg_new;
-                delete element.pic_bg_type;
-            }
         }
 
         if (obj.num) {
