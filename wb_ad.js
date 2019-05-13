@@ -101,7 +101,7 @@ iif (url.indexOf(path4) != -1) {
     let obj = JSON.parse(body);
     let status = obj.status;
     if (status) {
-        obj.recommend_max_id = 0;
+//         obj.recommend_max_id = 0;
         if (obj.datas) {
             obj.datas = filter_comments(obj.datas);
         }
