@@ -100,6 +100,9 @@ if (url.indexOf(path3) != -1) {
 if (url.indexOf(path4) != -1) {
     let obj = JSON.parse(body);
     if (obj.status) {
+        if (obj.top_hot_structs) {
+            delete obj.top_hot_structs;
+        }
         obj.recommend_max_id = 0;
         if (obj.datas) {
             obj.datas = filter_comments(obj.datas);
