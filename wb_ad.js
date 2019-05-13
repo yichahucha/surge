@@ -15,14 +15,6 @@ const path9 = "/profile/statuses";
 const path10 = "/statuses/friends/timeline";
 
 var result = body;
-function is_likerecommend(title) {
-    if (title && title.type && title.type == "likerecommend") {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 function filter_timeline() {
     let obj = JSON.parse(body);
     let statuses = obj.statuses;
@@ -42,7 +34,6 @@ function filter_timeline() {
                 }
             }
         }
-
         let i = statuses.length;
         while (i--) {
             let element = statuses[i];
@@ -50,13 +41,11 @@ function filter_timeline() {
                 statuses.splice(i, 1);
             }
         }
-
         if (obj.num) {
             obj.num = obj.statuses.length + ad.length;
             obj.original_num = obj.statuses.length;
         }
     }
-
     if (obj.trends) {
         delete obj.trends;
     }
@@ -75,6 +64,14 @@ function filter_comments(datas) {
         }
     }
     return datas;
+}
+
+function is_likerecommend(title) {
+    if (title && title.type && title.type == "likerecommend") {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 if (url.indexOf(path1) != -1) {
@@ -163,6 +160,6 @@ if (url.indexOf(path9) != -1) {
     }
     result = JSON.stringify(obj);
 }
-console.log('wb:201905131111');
+console.log('wb:201905131121');
 result;
 
