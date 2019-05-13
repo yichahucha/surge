@@ -88,9 +88,9 @@ if (url.indexOf(path4) != -1) {
     let status = obj.status;
     if (status) {
         obj.hide_hot_flow = 1;
-        if (obj.top_hot_structs) {
-            delete obj.top_hot_structs;
-        }
+//         if (obj.top_hot_structs) {
+//             delete obj.top_hot_structs;
+//         }
         let datas = obj.datas;
         if (datas && datas.length > 0) {
             let i = datas.length;
