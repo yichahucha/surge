@@ -97,18 +97,17 @@ if (url.indexOf(path3) != -1) {
     result = JSON.stringify(obj);
 }
 
-iif (url.indexOf(path4) != -1) {
+if (url.indexOf(path4) != -1) {
     let obj = JSON.parse(body);
-    let status = obj.status;
-    if (status) {
-//         obj.recommend_max_id = 0;
+    if (obj.status) {
+        obj.recommend_max_id = 0;
         if (obj.datas) {
             obj.datas = filter_comments(obj.datas);
         }
         if (obj.root_comments) {
             obj.root_comments = filter_comments(obj.root_comments);
         }
-    }else {
+    } else {
         obj.recommend_max_id = 0;
         obj.datas = [];
     }
