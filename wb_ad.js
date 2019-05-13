@@ -163,5 +163,6 @@ if (url.indexOf(path9) != -1) {
     }
     result = JSON.stringify(obj);
 }
-result;
 console.log('wb:0001');
+result;
+
