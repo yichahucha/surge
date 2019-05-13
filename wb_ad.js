@@ -88,6 +88,7 @@ if (url.indexOf(path4) != -1) {
     let status = obj.status;
     if (status) {
         obj.hide_hot_flow = 1;
+        obj.recommend_max_id = 0;
 //         if (obj.top_hot_structs) {
 //             delete obj.top_hot_structs;
 //         }
