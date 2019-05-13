@@ -87,6 +87,7 @@ if (url.indexOf(path4) != -1) {
     let obj = JSON.parse(body);
     let status = obj.status;
     if (status) {
+        obj.hide_hot_flow = 1;
         if (obj.top_hot_structs) {
             delete obj.top_hot_structs;
         }
