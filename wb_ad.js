@@ -104,9 +104,6 @@ if (url.indexOf(path4) != -1) {
         if (obj.datas) {
             obj.datas = filter_comments(obj.datas);
         }
-        if (obj.root_comments) {
-            obj.root_comments = filter_comments(obj.root_comments);
-        }
     } else {
         obj.recommend_max_id = 0;
         obj.datas = [];
