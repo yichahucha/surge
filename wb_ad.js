@@ -99,16 +99,16 @@ if (url.indexOf(path3) != -1) {
 
 if (url.indexOf(path4) != -1) {
     let obj = JSON.parse(body);
+    obj.recommend_max_id = 0;
     if (obj.status) {
         if (obj.top_hot_structs) {
+            obj.max_id = obj.top_hot_structs.call_back_struct.max_id;
             delete obj.top_hot_structs;
         }
-        obj.recommend_max_id = 0;
         if (obj.datas) {
             obj.datas = filter_comments(obj.datas);
         }
     } else {
-        obj.recommend_max_id = 0;
         obj.datas = [];
     }
     result = JSON.stringify(obj);
@@ -164,3 +164,4 @@ if (url.indexOf(path9) != -1) {
     result = JSON.stringify(obj);
 }
 result;
+console.log('wb:0001');
