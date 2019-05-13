@@ -63,6 +63,20 @@ function filter_timeline() {
     result = JSON.stringify(obj);
 }
 
+function filter_comments(datas) {
+    if (datas && datas.length > 0) {
+        let i = datas.length;
+        while (i--) {
+            const element = datas[i];
+            let type = element.type;
+            if (type == 5 || type == 1 || type == 6) {
+                datas.splice(i, 1);
+            }
+        }
+    }
+    return datas;
+}
+
 if (url.indexOf(path1) != -1) {
     filter_timeline();
 }
@@ -83,25 +97,16 @@ if (url.indexOf(path3) != -1) {
     result = JSON.stringify(obj);
 }
 
-if (url.indexOf(path4) != -1) {
+iif (url.indexOf(path4) != -1) {
     let obj = JSON.parse(body);
     let status = obj.status;
     if (status) {
-        obj.hide_hot_flow = 1;
         obj.recommend_max_id = 0;
-        if (obj.top_hot_structs) {
-            delete obj.top_hot_structs;
+        if (obj.datas) {
+            obj.datas = filter_comments(obj.datas);
         }
-        let datas = obj.datas;
-        if (datas && datas.length > 0) {
-            let i = datas.length;
-            while (i--) {
-                const element = datas[i];
-                let type = element.type;
-                if (type == 5 || type == 1 || type == 6) {
-                    datas.splice(i, 1);
-                }
-            }
+        if (obj.root_comments) {
+            obj.root_comments = filter_comments(obj.root_comments);
         }
     }else {
         obj.recommend_max_id = 0;
