@@ -1,6 +1,6 @@
 /*
  * @script: https://raw.githubusercontent.com/yichahucha/surge/master/wb_ad.js
- * @regular: ^https?:\/\/api\.weibo\.cn\/2(\/groups\/timeline|\/statuses\/unread|\/statuses\/extend|\/comments\/build_comments|\/photo\/recommend_list|\/stories\/video_stream|\/statuses\/positives\/get|\/stories\/home_list|\/profile\/statuses|\/statuses\/friends\/timeline)
+ * @regular: ^https?:\/\/(api|mapi)\.weibo\.(cn|com)\/2(\/groups\/timeline|\/statuses\/unread|\/statuses\/extend|\/comments\/build_comments|\/photo\/recommend_list|\/stories\/video_stream|\/statuses\/positives\/get|\/stories\/home_list|\/profile\/statuses|\/statuses\/friends\/timeline)
  */
 
 const path1 = "/groups/timeline";
@@ -160,6 +160,6 @@ if (url.indexOf(path9) != -1) {
     }
     result = JSON.stringify(obj);
 }
-console.log('wb:20190515154900');
+console.log('wb:201905151658');
 result;
 
