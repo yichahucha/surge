@@ -1,6 +1,6 @@
 /*
  * @script: https://raw.githubusercontent.com/yichahucha/surge/master/wb_ad.js
- * @regular: ^https?:\/\/(api|mapi)\.weibo\.(cn|com)\/2(\/groups\/timeline|\/statuses\/unread|\/statuses\/extend|\/comments\/build_comments|\/photo\/recommend_list|\/stories\/video_stream|\/statuses\/positives\/get|\/stories\/home_list|\/profile\/statuses|\/statuses\/friends\/timeline)
+ * @regular: ^https?:\/\/(api|mapi)\.weibo\.(cn|com)\/2(\/groups\/timeline|\/statuses\/unread|\/statuses\/extend|\/comments\/build_comments|\/photo\/recommend_list|\/stories\/video_stream|\/statuses\/positives\/get|\/stories\/home_list|\/profile\/statuses|\/statuses\/friends\/timeline|\/service\/picfeed)
  */
 
 const path1 = "/groups/timeline";
@@ -13,6 +13,7 @@ const path7 = "/statuses/positives/get";
 const path8 = "/stories/home_list";
 const path9 = "/profile/statuses";
 const path10 = "/statuses/friends/timeline";
+const path11 = "/service/picfeed";
 
 var result = body;
 function filter_timeline() {
@@ -79,10 +80,6 @@ if (url.indexOf(path1) != -1) {
 }
 
 if (url.indexOf(path2) != -1) {
-    filter_timeline();
-}
-
-if (url.indexOf(path10) != -1) {
     filter_timeline();
 }
 
@@ -160,6 +157,15 @@ if (url.indexOf(path9) != -1) {
     }
     result = JSON.stringify(obj);
 }
-console.log('wb:201905151658');
+
+if (url.indexOf(path10) != -1) {
+    filter_timeline();
+}
+
+if (url.indexOf(path11) != -1) {
+    let obj = JSON.parse(body);
+    obj.data = [];
+    result = JSON.stringify(obj);
+}
 result;
 
