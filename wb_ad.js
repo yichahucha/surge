@@ -163,9 +163,10 @@ if (url.indexOf(path10) != -1) {
 }
 
 if (url.indexOf(path11) != -1) {
-    let obj = JSON.parse(body);
-    obj.data = [];
-    result = JSON.stringify(obj);
+//     let obj = JSON.parse(body);
+//     obj.data = [];
+//     result = JSON.stringify(obj);
+    result = Null;
 }
 result;
 
