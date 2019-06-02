@@ -8,7 +8,7 @@ const path2 = "/wbapplua/wbpullad.lua";
 
 var result = body;
 if (url.indexOf(path1) != -1) {
-    result = result.replace('OK','');
+    result = result.substring(0, result.length - 2);
     var obj = JSON.parse(result);
     if (obj.background_delay_display_time) {
         obj.background_delay_display_time = 60*24*365;
