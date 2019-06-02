@@ -12,7 +12,7 @@ if (url.indexOf(path1) != -1) {
     result = result.match(re);
     var obj = JSON.parse(result);
     if (obj.background_delay_display_time) {
-        obj.background_delay_display_time = 60*24*365;
+        obj.background_delay_display_time = 60*60*24*365;
     }
     if (obj.show_push_splash_ad) {
         obj.show_push_splash_ad = false;
