@@ -21,7 +21,6 @@ if (url.indexOf(path1) != -1) {
         obj.ads = [];
     }
     result = JSON.stringify(obj) + 'OK';
-    console.log(result);
 }
 
 if (url.indexOf(path2) != -1) {
@@ -30,6 +29,5 @@ if (url.indexOf(path2) != -1) {
         obj.cached_ad.ads = [];
     }
     result = JSON.stringify(obj);
-    console.log(result);
 }
 result;
