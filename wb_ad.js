@@ -35,6 +35,15 @@ function filter_timeline() {
                 }
             }
         }
+        if (obj.advertises) {
+            obj.advertises = [];
+        }
+        if (obj.ad) {
+            obj.ad = [];
+        }
+        if (obj.num) {
+            obj.num = obj.original_num;
+        }
         let i = statuses.length;
         while (i--) {
             let element = statuses[i];
@@ -42,13 +51,9 @@ function filter_timeline() {
                 statuses.splice(i, 1);
             }
         }
-        if (obj.num) {
-            obj.num = obj.statuses.length + ad.length;
-            obj.original_num = obj.statuses.length;
-        }
     }
     if (obj.trends) {
-        delete obj.trends;
+        obj.trends = [];
     }
     result = JSON.stringify(obj);
 }
