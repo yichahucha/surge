@@ -6,7 +6,9 @@
 const path1 = "/interface/sdk/sdkad.php";
 const path2 = "/wbapplua/wbpullad.lua";
 
-var result = body;
+var result = $response.body;
+var url = $request.url;
+
 if (url.indexOf(path1) != -1) {
     let re = /\{.*\}/;
     result = result.match(re);
@@ -30,4 +32,4 @@ if (url.indexOf(path2) != -1) {
     }
     result = JSON.stringify(obj);
 }
-result;
+$done({'body':result});
