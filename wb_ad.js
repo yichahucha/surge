@@ -15,7 +15,7 @@ const path9 = "/profile/statuses";
 const path10 = "/statuses/friends/timeline";
 const path11 = "/service/picfeed";
 
-var result = $response.body;
+var body = $response.body;
 var url = $request.url;
 
 function filter_timeline() {
@@ -57,7 +57,7 @@ function filter_timeline() {
     if (obj.trends) {
         obj.trends = [];
     }
-    result = JSON.stringify(obj);
+    body = JSON.stringify(obj);
 }
 
 function filter_comments(datas) {
@@ -95,7 +95,7 @@ if (url.indexOf(path3) != -1) {
     if (obj.trend) {
         delete obj.trend;
     }
-    result = JSON.stringify(obj);
+    body = JSON.stringify(obj);
 }
 
 if (url.indexOf(path4) != -1) {
@@ -112,13 +112,13 @@ if (url.indexOf(path4) != -1) {
     } else {
         obj.datas = [];
     }
-    result = JSON.stringify(obj);
+    body = JSON.stringify(obj);
 }
 
 if (url.indexOf(path5) != -1) {
     let obj = JSON.parse(body);
     obj.data = {};
-    result = JSON.stringify(obj);
+    body = JSON.stringify(obj);
 }
 
 if (url.indexOf(path6) != -1) {
@@ -134,19 +134,19 @@ if (url.indexOf(path6) != -1) {
             }
         }
     }
-    result = JSON.stringify(obj);
+    body = JSON.stringify(obj);
 }
 
 if (url.indexOf(path7) != -1) {
     let obj = JSON.parse(body);
     obj.datas = [];
-    result = JSON.stringify(obj);
+    body = JSON.stringify(obj);
 }
 
 if (url.indexOf(path8) != -1) {
     let obj = JSON.parse(body);
     obj.story_list = [];
-    result = JSON.stringify(obj);
+    body = JSON.stringify(obj);
 }
 
 if (url.indexOf(path9) != -1) {
@@ -162,7 +162,7 @@ if (url.indexOf(path9) != -1) {
             }
         }
     }
-    result = JSON.stringify(obj);
+    body = JSON.stringify(obj);
 }
 
 if (url.indexOf(path10) != -1) {
@@ -170,6 +170,6 @@ if (url.indexOf(path10) != -1) {
 }
 
 if (url.indexOf(path11) != -1) {
-    result = null;
+    body = null;
 }
-$done({'body':result});
+$done({body});
