@@ -6,13 +6,13 @@
 const path1 = "/interface/sdk/sdkad.php";
 const path2 = "/wbapplua/wbpullad.lua";
 
-var result = $response.body;
+var body = $response.body;
 var url = $request.url;
 
 if (url.indexOf(path1) != -1) {
     let re = /\{.*\}/;
-    result = result.match(re);
-    var obj = JSON.parse(result);
+    body = body.match(re);
+    var obj = JSON.parse(body);
     if (obj.background_delay_display_time) {
         obj.background_delay_display_time = 60*60*24*365;
     }
@@ -22,14 +22,14 @@ if (url.indexOf(path1) != -1) {
     if (obj.ads) {
         obj.ads = [];
     }
-    result = JSON.stringify(obj) + 'OK';
+    body = JSON.stringify(obj) + 'OK';
 }
 
 if (url.indexOf(path2) != -1) {
-    var obj = JSON.parse(result);
+    var obj = JSON.parse(body);
     if (obj.cached_ad && obj.cached_ad.ads) {
         obj.cached_ad.ads = [];
     }
-    result = JSON.stringify(obj);
+    body = JSON.stringify(obj);
 }
-$done({'body':result});
+$done({body});
