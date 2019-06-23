@@ -1,8 +1,3 @@
-/*
- * @script: https://raw.githubusercontent.com/yichahucha/surge/master/wb_launch.js
- * @regular: ^https?:\/\/(sdk|wb)app\.uve\.weibo\.com(\/interface\/sdk\/sdkad.php|\/wbapplua\/wbpullad.lua)
- */
-
 const path1 = "/interface/sdk/sdkad.php";
 const path2 = "/wbapplua/wbpullad.lua";
 const url = $request.url;
