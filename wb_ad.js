@@ -14,9 +14,9 @@ const path8 = "/stories/home_list";
 const path9 = "/profile/statuses";
 const path10 = "/statuses/friends/timeline";
 const path11 = "/service/picfeed";
+const url = $request.url;
 
 var body = $response.body;
-let url = $request.url;
 function filter_timeline() {
     let obj = JSON.parse(body);
     let statuses = obj.statuses;
