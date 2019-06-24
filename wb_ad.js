@@ -164,6 +164,8 @@ if (url.indexOf(path10) != -1) {
 }
 
 if (url.indexOf(path11) != -1) {
-    body = null;
+    let obj = JSON.parse(body);
+    obj.data = [];
+    body = JSON.stringify(obj);
 }
 $done({body});
