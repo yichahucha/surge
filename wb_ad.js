@@ -26,19 +26,19 @@ function filter_timeline() {
                 statuses.splice(i, 1);
             }
         }
-        if (obj.advertises) {
-            obj.advertises = [];
-        }
-        if (obj.ad) {
-            obj.ad = [];
-        }
-        if (obj.num) {
-            obj.num = obj.original_num;
-        }
+//         if (obj.advertises) {
+//             obj.advertises = [];
+//         }
+//         if (obj.ad) {
+//             obj.ad = [];
+//         }
+//         if (obj.num) {
+//             obj.num = obj.original_num;
+//         }
     }
-    if (obj.trends) {
-        obj.trends = [];
-    }
+//     if (obj.trends) {
+//         obj.trends = [];
+//     }
     body = JSON.stringify(obj);
 }
 
