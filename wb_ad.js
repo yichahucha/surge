@@ -22,9 +22,9 @@ function filter_timeline() {
             if(is_timeline_ad(element.promotion)) {
                 statuses.splice(i, 1);
             }
-            if (is_timeline_likerecommend(element.title)) {
-                statuses.splice(i, 1);
-            }
+//             if (is_timeline_likerecommend(element.title)) {
+//                 statuses.splice(i, 1);
+//             }
         }
 //         if (obj.advertises) {
 //             obj.advertises = [];
