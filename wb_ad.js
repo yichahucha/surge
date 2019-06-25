@@ -72,9 +72,7 @@ if (url.indexOf(path4) != -1) {
             obj.max_id = obj.top_hot_structs.call_back_struct.max_id;
             delete obj.top_hot_structs;
         }
-        if (obj.datas) {
-            obj.datas = filter_comments(obj.datas);
-        }
+        if (obj.datas) obj.datas = filter_comments(obj.datas);
     } else {
         obj.datas = [];
     }
@@ -95,9 +93,7 @@ if (url.indexOf(path6) != -1) {
         while (i--) {
             const element = segments[i];
             let is_ad = element.is_ad;
-            if (typeof is_ad != "undefined" && is_ad == true) {
-                segments.splice(i, 1);
-            }
+            if (typeof is_ad != "undefined" && is_ad == true) segments.splice(i, 1);
         }
     }
     body = JSON.stringify(obj);
@@ -123,9 +119,7 @@ if (url.indexOf(path9) != -1) {
         while (i--) {
             let element = cards[i];
             let card_group = element.card_group;
-            if (card_group && card_group.length > 0) {
-                cards.splice(i, 1);
-            }
+            if (card_group && card_group.length > 0) cards.splice(i, 1);
         }
     }
     body = JSON.stringify(obj);
