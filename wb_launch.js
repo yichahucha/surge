@@ -1,7 +1,7 @@
 const path1 = "/interface/sdk/sdkad.php";
 const path2 = "/wbapplua/wbpullad.lua";
-const url = $request.url;
 
+const url = $request.url;
 var body = $response.body;
 if (url.indexOf(path1) != -1) {
     let re = /\{.*\}/;
