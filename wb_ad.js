@@ -16,19 +16,14 @@ function filter_timeline() {
     let obj = JSON.parse(body);
     let statuses = obj.statuses;
     if (statuses && statuses.length > 0) {
-        let ad = obj.ad;
-        if (ad && ad.length > 0) {
-            for (let i = 0; i < ad.length; i++) {
-                const element = ad[i];
-                let ad_id = element.id;
-                for (let j = 0; j < statuses.length; j++) {
-                    const element = statuses[j];
-                    let statuses_id = element.id;
-                    if (statuses_id == parseInt(ad_id)) {
-                        statuses.splice(j, 1);
-                        break;
-                    }
-                }
+        let i = statuses.length;
+        while (i--) {
+            let element = statuses[i];
+            if(is_timeline_ad(element.promotion)) {
+                statuses.splice(i, 1);
+            }
+            if (is_timeline_likerecommend(element.title)) {
+                statuses.splice(i, 1);
             }
         }
         if (obj.advertises) {
@@ -39,13 +34,6 @@ function filter_timeline() {
         }
         if (obj.num) {
             obj.num = obj.original_num;
-        }
-        let i = statuses.length;
-        while (i--) {
-            let element = statuses[i];
-            if (is_likerecommend(element.title)) {
-                statuses.splice(i, 1);
-            }
         }
     }
     if (obj.trends) {
@@ -68,7 +56,15 @@ function filter_comments(datas) {
     return datas;
 }
 
-function is_likerecommend(title) {
+function is_timeline_ad(promotion) {
+    if (promotion && promotion.type && promotion.type == "ad") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function is_timeline_likerecommend(title) {
     if (title && title.type && title.type == "likerecommend") {
         return true;
     } else {
