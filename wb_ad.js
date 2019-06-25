@@ -19,27 +19,23 @@ function filter_timeline() {
         let i = statuses.length;
         while (i--) {
             let element = statuses[i];
-            if(is_timeline_ad(element.promotion)) {
-                statuses.splice(i, 1);
-            }
-//             if (is_timeline_likerecommend(element.title)) {
-//                 statuses.splice(i, 1);
-//             }
+            if (is_timeline_likerecommend(element.title)) statuses.splice(i, 1);
+            if(is_timeline_ad(element.promotion)) statuses.splice(i, 1);
         }
-//         if (obj.advertises) {
-//             obj.advertises = [];
-//         }
-//         if (obj.ad) {
-//             obj.ad = [];
-//         }
-//         if (obj.num) {
-//             obj.num = obj.original_num;
-//         }
+        if (obj.advertises) obj.advertises = [];
+        if (obj.ad) obj.ad = [];
+        if (obj.num) obj.num = obj.original_num;
     }
-//     if (obj.trends) {
-//         obj.trends = [];
-//     }
+    if (obj.trends) obj.trends = [];
     body = JSON.stringify(obj);
+}
+
+function is_timeline_ad(promotion) {
+    return (promotion && promotion.type && promotion.type == "ad") ? true : false;
+}
+
+function is_timeline_likerecommend(title) {
+    return (title && title.type && title.type == "likerecommend") ? true : false;
 }
 
 function filter_comments(datas) {
@@ -48,28 +44,10 @@ function filter_comments(datas) {
         while (i--) {
             const element = datas[i];
             let type = element.type;
-            if (type == 5 || type == 1 || type == 6) {
-                datas.splice(i, 1);
-            }
+            if (type == 5 || type == 1 || type == 6) datas.splice(i, 1);
         }
     }
     return datas;
-}
-
-function is_timeline_ad(promotion) {
-    if (promotion && promotion.type && promotion.type == "ad") {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function is_timeline_likerecommend(title) {
-    if (title && title.type && title.type == "likerecommend") {
-        return true;
-    } else {
-        return false;
-    }
 }
 
 if (url.indexOf(path1) != -1) {
@@ -82,9 +60,7 @@ if (url.indexOf(path2) != -1) {
 
 if (url.indexOf(path3) != -1) {
     let obj = JSON.parse(body);
-    if (obj.trend) {
-        delete obj.trend;
-    }
+    if (obj.trend) delete obj.trend;
     body = JSON.stringify(obj);
 }
 
