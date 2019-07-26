@@ -9,6 +9,7 @@ const path8 = "/stories/home_list";
 const path9 = "/profile/statuses";
 const path10 = "/statuses/friends/timeline";
 const path11 = "/service/picfeed";
+const path12 = "/fangle/timeline";
 
 const url = $request.url;
 var body = $response.body;
@@ -133,5 +134,9 @@ if (url.indexOf(path11) != -1) {
     let obj = JSON.parse(body);
     obj.data = [];
     body = JSON.stringify(obj);
+}
+
+if (url.indexOf(path12) != -1) {
+    filter_timeline();
 }
 $done({body});
