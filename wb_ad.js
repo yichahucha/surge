@@ -161,7 +161,7 @@ function filter_timeline_cards(cards) {
                     if (is_timeline_ad(item.mblog.promotion)) {
                         cards.splice(j, 1);
                     } else {
-                        if (item.mblog.label && item.mblog.label == "广告") {
+                        if (item.mblog.label && item.mblog.label == "'\u5e7f\u544a'") {
                             cards.splice(j, 1);
                         }
                     }
