@@ -144,7 +144,9 @@ if (url.indexOf(path12) != -1 || url.indexOf(path13) != -1) {
         let i = cards.length;
         while (i--) {
             let element = cards[i];
-            if (is_timeline_ad(element.mblog.promotion)) cards.splice(i, 1);
+            if (element.mblog) {
+                if (is_timeline_ad(element.mblog.promotion)) cards.splice(i, 1);
+            }
         }
     }
     body = JSON.stringify(obj);
