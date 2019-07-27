@@ -14,7 +14,7 @@ const path13 = "/searchall";
 
 const url = $request.url;
 var body = $response.body;
-function filter_unred_timeline() {
+function filter_timeline() {
     let obj = JSON.parse(body);
     let statuses = obj.statuses;
     if (statuses && statuses.length > 0) {
