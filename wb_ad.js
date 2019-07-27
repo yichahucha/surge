@@ -153,7 +153,12 @@ if (url.indexOf(path12) != -1 || url.indexOf(path13) != -1) {
                         if (is_timeline_ad(element.mblog.promotion)) {
                             card_group.splice(i, 1);
                         }
-                    }   
+                    }else {
+                        let card_type = element.card_type
+                        if (card_type && (card_type == 22 || card_type == 19)) {
+                            card_group.splice(i, 1);
+                        }
+                    }
                 }
             }else {
                 if (item.mblog) {
