@@ -19,5 +19,5 @@ hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com
 or
 ```
 [rewrite_remote]
-https://gist.githubusercontent.com/yichahucha/f029340c06414b35222e28d8a9f94fe1/raw/f1791d01b596713d3b47d11b77aee4c450ad0da8/rewrite.txt, tag=wb, enabled=true
+https://gist.githubusercontent.com/yichahucha/f029340c06414b35222e28d8a9f94fe1/raw/12af6eb17880d32b94db705dc66989a1eb252103/rewrite.txt, tag=wb, enabled=true
 ```
