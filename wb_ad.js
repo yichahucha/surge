@@ -160,6 +160,10 @@ function filter_timeline_cards(cards) {
                 if (item.mblog) {
                     if (is_timeline_ad(item.mblog.promotion)) {
                         cards.splice(j, 1);
+                    } else {
+                        if (item.mblog.label && item.mblog.label == "广告") {
+                            cards.splice(j, 1);
+                        }
                     }
                 }
             }
