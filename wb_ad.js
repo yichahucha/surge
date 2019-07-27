@@ -9,10 +9,12 @@ const path8 = "/stories/home_list";
 const path9 = "/profile/statuses";
 const path10 = "/statuses/friends/timeline";
 const path11 = "/service/picfeed";
+const path12 = "/fangle/timeline";
+const path13 = "/searchall";
 
 const url = $request.url;
 var body = $response.body;
-function filter_timeline() {
+function filter_unred_timeline() {
     let obj = JSON.parse(body);
     let statuses = obj.statuses;
     if (statuses && statuses.length > 0) {
@@ -20,7 +22,7 @@ function filter_timeline() {
         while (i--) {
             let element = statuses[i];
             if (is_timeline_likerecommend(element.title)) statuses.splice(i, 1);
-            if(is_timeline_ad(element.promotion)) statuses.splice(i, 1);
+            if (is_timeline_ad(element.promotion)) statuses.splice(i, 1);
         }
         if (obj.advertises) obj.advertises = [];
         if (obj.ad) obj.ad = [];
@@ -132,6 +134,19 @@ if (url.indexOf(path10) != -1) {
 if (url.indexOf(path11) != -1) {
     let obj = JSON.parse(body);
     obj.data = [];
+    body = JSON.stringify(obj);
+}
+
+if (url.indexOf(path12) != -1 || url.indexOf(path13) != -1) {
+    let obj = JSON.parse(body);
+    let cards = obj.cards;
+    if (cards && cards.length > 0) {
+        let i = cards.length;
+        while (i--) {
+            let element = cards[i];
+            if (is_timeline_ad(element.promotion)) cards.splice(i, 1);
+        }
+    }
     body = JSON.stringify(obj);
 }
 $done({body});
