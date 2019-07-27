@@ -15,8 +15,18 @@ const path13 = "/searchall";
 const url = $request.url;
 var body = $response.body;
 
-if (url.indexOf(path1) != -1 || url.indexOf(path2) != -1 || url.indexOf(path10) != -1) {
-    filter_timeline();
+if (
+    url.indexOf(path1) != -1 ||
+    url.indexOf(path2) != -1 ||
+    url.indexOf(path10) != -1
+) {
+    let obj = JSON.parse(body);
+    if (obj.statuses) obj.statuses = filter_timeline_statuses(obj.statuses)
+    if (obj.advertises) obj.advertises = [];
+    if (obj.ad) obj.ad = [];
+    if (obj.num) obj.num = obj.original_num;
+    if (obj.trends) obj.trends = [];
+    body = JSON.stringify(obj);
 }
 
 if (url.indexOf(path3) != -1) {
@@ -94,7 +104,37 @@ if (url.indexOf(path11) != -1) {
 
 if (url.indexOf(path12) != -1 || url.indexOf(path13) != -1) {
     let obj = JSON.parse(body);
-    let cards = obj.cards;
+    if (obj.cards) obj.cards = filter_timeline_cards(obj.cards);
+    body = JSON.stringify(obj);
+}
+
+$done({ body });
+
+function filter_timeline_statuses(statuses) {
+    if (statuses && statuses.length > 0) {
+        let i = statuses.length;
+        while (i--) {
+            let element = statuses[i];
+            if (is_timeline_likerecommend(element.title)) statuses.splice(i, 1);
+            if (is_timeline_ad(element.promotion)) statuses.splice(i, 1);
+        }
+    }
+    return statuses;
+}
+
+function filter_comments(datas) {
+    if (datas && datas.length > 0) {
+        let i = datas.length;
+        while (i--) {
+            const element = datas[i];
+            let type = element.type;
+            if (type == 5 || type == 1 || type == 6) datas.splice(i, 1);
+        }
+    }
+    return datas;
+}
+
+function filter_timeline_cards(cards) {
     if (cards && cards.length > 0) {
         let j = cards.length;
         while (j--) {
@@ -108,14 +148,14 @@ if (url.indexOf(path12) != -1 || url.indexOf(path13) != -1) {
                         if (is_timeline_ad(element.mblog.promotion)) {
                             card_group.splice(i, 1);
                         }
-                    }else {
+                    } else {
                         let card_type = element.card_type;
                         if (card_type && (card_type == 22 || card_type == 19)) {
                             card_group.splice(i, 1);
                         }
                     }
                 }
-            }else {
+            } else {
                 if (item.mblog) {
                     if (is_timeline_ad(item.mblog.promotion)) {
                         cards.splice(j, 1);
@@ -124,45 +164,13 @@ if (url.indexOf(path12) != -1 || url.indexOf(path13) != -1) {
             }
         }
     }
-    body = JSON.stringify(obj);
-}
-
-$done({body});
-
-function filter_timeline() {
-    let obj = JSON.parse(body);
-    let statuses = obj.statuses;
-    if (statuses && statuses.length > 0) {
-        let i = statuses.length;
-        while (i--) {
-            let element = statuses[i];
-            if (is_timeline_likerecommend(element.title)) statuses.splice(i, 1);
-            if (is_timeline_ad(element.promotion)) statuses.splice(i, 1);
-        }
-        if (obj.advertises) obj.advertises = [];
-        if (obj.ad) obj.ad = [];
-        if (obj.num) obj.num = obj.original_num;
-    }
-    if (obj.trends) obj.trends = [];
-    body = JSON.stringify(obj);
+    return cards;
 }
 
 function is_timeline_ad(promotion) {
-    return (promotion && promotion.type && promotion.type == "ad") ? true : false;
+    return promotion && promotion.type && promotion.type == "ad" ? true : false;
 }
 
 function is_timeline_likerecommend(title) {
-    return (title && title.type && title.type == "likerecommend") ? true : false;
-}
-
-function filter_comments(datas) {
-    if (datas && datas.length > 0) {
-        let i = datas.length;
-        while (i--) {
-            const element = datas[i];
-            let type = element.type;
-            if (type == 5 || type == 1 || type == 6) datas.splice(i, 1);
-        }
-    }
-    return datas;
+    return title && title.type && title.type == "likerecommend" ? true : false;
 }
