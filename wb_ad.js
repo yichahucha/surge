@@ -151,7 +151,8 @@ function filter_timeline_cards(cards) {
                     } else {
                         let card_type = element.card_type;
                         if (card_type && (card_type == 22 || card_type == 19)) {
-//                             card_group.splice(i, 1);
+                            cards.splice(i, 1);
+                            break;
                         }
                     }
                 }
