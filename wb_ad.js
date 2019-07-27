@@ -144,15 +144,15 @@ function filter_timeline_cards(cards) {
                 let i = card_group.length;
                 while (i--) {
                     let element = card_group[i];
-                    if (element.mblog) {
-                        if (is_timeline_ad(element.mblog.promotion)) {
-                            card_group.splice(i, 1);
-                        }
+                    let card_type = element.card_type;
+                    if (card_type && (card_type == 22 || card_type == 19)) {
+                        cards.splice(j, 1);
+                        break;
                     } else {
-                        let card_type = element.card_type;
-                        if (card_type && (card_type == 22 || card_type == 19)) {
-//                             cards.splice(j, 1);
-//                             break;
+                        if (element.mblog) {
+                            if (is_timeline_ad(element.mblog.promotion)) {
+                                card_group.splice(i, 1);
+                            }
                         }
                     }
                 }
