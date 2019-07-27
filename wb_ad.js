@@ -141,11 +141,26 @@ if (url.indexOf(path12) != -1 || url.indexOf(path13) != -1) {
     let obj = JSON.parse(body);
     let cards = obj.cards;
     if (cards && cards.length > 0) {
-        let i = cards.length;
-        while (i--) {
-            let element = cards[i];
-            if (element.mblog) {
-                if (is_timeline_ad(element.mblog.promotion)) cards.splice(i, 1);
+        let j = cards.length
+        while (j--) {
+            let item = cards[j];
+            let card_group = item.card_group
+            if (card_group && card_group.length > 0) {
+                let i = card_group.length
+                while (i--) {
+                    let element = card_group[i];
+                    if (element.mblog) {
+                        if (is_timeline_ad(element.mblog.promotion)) {
+                            card_group.splice(i, 1);
+                        }
+                    }   
+                }
+            }else {
+                if (item.mblog) {
+                    if (is_timeline_ad(item.mblog.promotion)) {
+                        cards.splice(j, 1);
+                    }
+                }
             }
         }
     }
