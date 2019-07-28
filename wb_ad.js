@@ -11,6 +11,7 @@ const path10 = "/statuses/friends/timeline";
 const path11 = "/service/picfeed";
 const path12 = "/fangle/timeline";
 const path13 = "/searchall";
+const path14 = "/cardlist";
 
 const url = $request.url;
 var body = $response.body;
@@ -21,7 +22,7 @@ if (
     url.indexOf(path10) != -1
 ) {
     let obj = JSON.parse(body);
-    if (obj.statuses) obj.statuses = filter_timeline_statuses(obj.statuses)
+    if (obj.statuses) obj.statuses = filter_timeline_statuses(obj.statuses);
     if (obj.advertises) obj.advertises = [];
     if (obj.ad) obj.ad = [];
     if (obj.num) obj.num = obj.original_num;
@@ -64,7 +65,7 @@ if (url.indexOf(path6) != -1) {
         while (i--) {
             const element = segments[i];
             let is_ad = element.is_ad;
-            if (typeof is_ad != "undefined" && is_ad == true) segments.splice(i, 1);
+            if (is_ad && is_ad == true) segments.splice(i, 1);
         }
     }
     body = JSON.stringify(obj);
@@ -102,7 +103,11 @@ if (url.indexOf(path11) != -1) {
     body = JSON.stringify(obj);
 }
 
-if (url.indexOf(path12) != -1 || url.indexOf(path13) != -1) {
+if (
+    url.indexOf(path12) != -1 ||
+    url.indexOf(path13) != -1 ||
+    url.indexOf(path14) != -1
+) {
     let obj = JSON.parse(body);
     if (obj.cards) obj.cards = filter_timeline_cards(obj.cards);
     body = JSON.stringify(obj);
@@ -148,6 +153,8 @@ function filter_timeline_cards(cards) {
                     if (card_type && (card_type == 22 || card_type == 19)) {
                         cards.splice(j, 1);
                         break;
+                    } else if (card_type && card_type == 118) {
+                        card_group.splice(i, 1);
                     } else {
                         if (element.mblog) {
                             if (is_timeline_ad(element.mblog.promotion)) {
