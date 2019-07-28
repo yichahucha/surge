@@ -147,10 +147,11 @@ function filter_timeline_cards(cards) {
             let card_group = item.card_group;
             if (card_group && card_group.length > 0) {
                 let i = card_group.length;
+                let tem_card_type = 0;
                 while (i--) {
                     let element = card_group[i];
                     let card_type = element.card_type;
-                    if (card_type && (card_type == 22 || card_type == 19)) {
+                    if (card_type && (tem_card_type == 22 || card_type == 19)) {
                         cards.splice(j, 1);
                         break;
                     } else if (card_type && card_type == 118) {
@@ -162,6 +163,7 @@ function filter_timeline_cards(cards) {
                             }
                         }
                     }
+                    tem_card_type = card_type;
                 }
             } else {
                 if (item.mblog) {
