@@ -3,6 +3,7 @@ const path2 = "/wbapplua/wbpullad.lua";
 
 const url = $request.url;
 var body = $response.body;
+
 if (url.indexOf(path1) != -1) {
     let re = /\{.*\}/;
     body = body.match(re);
@@ -18,4 +19,5 @@ if (url.indexOf(path2) != -1) {
     if (obj.cached_ad && obj.cached_ad.ads) obj.cached_ad.ads = [];
     body = JSON.stringify(obj);
 }
+
 $done({body});
