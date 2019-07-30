@@ -11,7 +11,7 @@ $httpClient.get('https://dict.youdao.com/infoline/style/cardList?mode=publish&cl
     if (!error) {
         if (obj && obj.length > 1) {
             let yi = obj[1];
-            des = yi.title + '\n' + yi.summary + '\n' + '# ' + yi.source;
+            des = '\n' + yi.title + '\n' + yi.summary + '\n\n' + '# ' + yi.source;
         }
     }
     $notification.post(title, subtitle, des);
