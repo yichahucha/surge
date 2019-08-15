@@ -12,8 +12,8 @@ $httpClient.get('https://dict.youdao.com/infoline/style/cardList?mode=publish&cl
         if (obj && obj.length > 1) {
             let yi = obj[1];
             //subtitle = yi.title + '\n' + yi.summary
-            subtitle = yi.title
-            des = yi.summary + '\ndingtalk://dingtalkclient/page/link?url=https://attend.dingtalk.com/attend/index.html'
+            subtitle = '\n' + yi.title
+            des = yi.summary + '\n\ndingtalk://dingtalkclient/page/link?url=https://attend.dingtalk.com/attend/index.html'
         }
     }
     $notification.post(title, subtitle, des);
