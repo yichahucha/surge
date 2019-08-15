@@ -14,6 +14,6 @@ $httpClient.get('https://dict.youdao.com/infoline/style/cardList?mode=publish&cl
             des = yi.title + '\n' + yi.summary + '\n\n\n' + 'dingtalk://dingtalkclient/page/link?url=https://attend.dingtalk.com/attend/index.html'
         }
     }
-    $notification.post(title, subtitle, des);
+    $notification.post('', '', des);
     $done();
 });
