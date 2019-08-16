@@ -15,7 +15,6 @@ const path14 = "/cardlist";
 
 const url = $request.url;
 var body = $response.body;
-
 if (
     url.indexOf(path1) != -1 ||
     url.indexOf(path2) != -1 ||
@@ -112,7 +111,6 @@ if (
     if (obj.cards) obj.cards = filter_timeline_cards(obj.cards);
     body = JSON.stringify(obj);
 }
-
 $done({ body });
 
 function filter_timeline_statuses(statuses) {
