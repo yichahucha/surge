@@ -183,7 +183,7 @@ function filter_timeline_cards(cards) {
 }
 
 function is_timeline_ad(mblogtype) {
-    return mblogtype && mblogtype && mblogtype == 1 ? true : false;
+    return mblogtype && mblogtype == 1 ? true : false;
 }
 
 function is_timeline_likerecommend(title) {
