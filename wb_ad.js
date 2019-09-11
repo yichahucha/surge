@@ -12,16 +12,13 @@ const path11 = "/service/picfeed";
 const path12 = "/fangle/timeline";
 const path13 = "/searchall";
 const path14 = "/cardlist";
-const path15 = "/statuses/video_timeline";
 
 const url = $request.url;
 var body = $response.body;
-
 if (
     url.indexOf(path1) != -1 ||
     url.indexOf(path2) != -1 ||
-    url.indexOf(path10) != -1 ||
-    url.indexOf(path15) != -1 
+    url.indexOf(path10) != -1
 ) {
     let obj = JSON.parse(body);
     if (obj.statuses) obj.statuses = filter_timeline_statuses(obj.statuses);
@@ -122,7 +119,7 @@ function filter_timeline_statuses(statuses) {
         while (i--) {
             let element = statuses[i];
             if (is_timeline_likerecommend(element.title)) statuses.splice(i, 1);
-            if (is_timeline_ad(element.mblogtype)) statuses.splice(i, 1);
+            if (is_timeline_ad(element.promotion)) statuses.splice(i, 1);
         }
     }
     return statuses;
@@ -182,8 +179,8 @@ function filter_timeline_cards(cards) {
     return cards;
 }
 
-function is_timeline_ad(mblogtype) {
-    return mblogtype && mblogtype && mblogtype == 1 ? true : false;
+function is_timeline_ad(promotion) {
+    return promotion && promotion.type && promotion.type == "ad" ? true : false;
 }
 
 function is_timeline_likerecommend(title) {
