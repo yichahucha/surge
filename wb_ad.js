@@ -114,6 +114,7 @@ if (
     if (obj.cards) obj.cards = filter_timeline_cards(obj.cards);
     body = JSON.stringify(obj);
 }
+
 $done({ body });
 
 function filter_timeline_statuses(statuses) {
