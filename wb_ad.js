@@ -160,9 +160,8 @@ function filter_timeline_cards(cards) {
                         card_group.splice(i, 1);
                     } else {
                         if (element.mblog) {
-                            if (is_timeline_ad(element.mblog.promotion)) {
-                                card_group.splice(i, 1);
-                            }
+                            if (is_timeline_ad(element.mblog.promotion) || is_timeline_ad2(element.mblog.promotion)) {
+                                card_group.splice(i, 1);} 
                         }
                     }
                     tem_card_type = card_type;
@@ -187,6 +186,10 @@ function is_timeline_ad(mblogtype) {
     return mblogtype && mblogtype == 1 ? true : false;
 }
 
+function is_timeline_ad2(type) {
+    return type && type == "ad"? true : false;
+}
+
 function is_timeline_likerecommend(title) {
-    return title && title.type && title.type == "likerecommend" ? true : false;
+    return title && title.type == "likerecommend" ? true : false;
 }
