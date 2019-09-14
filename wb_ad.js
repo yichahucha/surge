@@ -114,6 +114,7 @@ if (
     if (obj.cards) obj.cards = filter_timeline_cards(obj.cards);
     body = JSON.stringify(obj);
 }
+
 $done({ body });
 
 function filter_timeline_statuses(statuses) {
@@ -183,7 +184,7 @@ function filter_timeline_cards(cards) {
 }
 
 function is_timeline_ad(mblogtype) {
-    return mblogtype && mblogtype && mblogtype == 1 ? true : false;
+    return mblogtype && mblogtype == 1 ? true : false;
 }
 
 function is_timeline_likerecommend(title) {
