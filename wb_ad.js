@@ -160,7 +160,7 @@ function filter_timeline_cards(cards) {
                         card_group.splice(i, 1);
                     } else {
                         if (element.mblog) {
-                            if (is_timeline_ad(element.mblog.promotion)) {
+                            if (is_timeline_ad(element.mblog.mblogtype)) {
                                 card_group.splice(i, 1);
                             }
                         }
@@ -169,7 +169,7 @@ function filter_timeline_cards(cards) {
                 }
             } else {
                 if (item.mblog) {
-                    if (is_timeline_ad(item.mblog.promotion)) {
+                    if (is_timeline_ad(item.mblog.mblogtype)) {
                         cards.splice(j, 1);
                     } else {
                         if (item.mblog.label && item.mblog.label == "\u5e7f\u544a") {
