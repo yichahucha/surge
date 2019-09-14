@@ -1,10 +1,3 @@
-/*
- * @Description: In User Settings Edit
- * @Author: your name
- * @Date: 2019-09-14 14:39:32
- * @LastEditTime: 2019-09-14 14:54:33
- * @LastEditors: Please set LastEditors
- */
 const path1 = "/groups/timeline";
 const path2 = "/statuses/unread";
 const path3 = "/statuses/extend";
@@ -180,14 +173,10 @@ function filter_timeline_cards(cards) {
 
 function is_timeline_ad(mblog) {
     if (!mblog) return false;
-    let promotiontype = mblog.promotion.type;
-    let mblogtype = mblog.mblogtype;
-    let label = mblog.label;
-    if (promotiontype == "ad" || mblogtype == 1 || label == "\u5e7f\u544a") {
-        return true;
-    } else {
-        return false;
-    }
+    let promotiontype = mblog.promotion && mblog.promotion.type && mblog.promotion.type == "ad";
+    let mblogtype = mblog.mblogtype && mblog.mblogtype == 1;
+    let label = mblog.label && mblog.label == "\u5e7f\u544a";
+    return (promotiontype || mblogtype || label) ? true : false;
 }
 
 function is_timeline_likerecommend(title) {
