@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-14 14:39:32
+ * @LastEditTime: 2019-09-14 14:54:33
+ * @LastEditors: Please set LastEditors
+ */
 const path1 = "/groups/timeline";
 const path2 = "/statuses/unread";
 const path3 = "/statuses/extend";
@@ -21,7 +28,7 @@ if (
     url.indexOf(path1) != -1 ||
     url.indexOf(path2) != -1 ||
     url.indexOf(path10) != -1 ||
-    url.indexOf(path15) != -1 
+    url.indexOf(path15) != -1
 ) {
     let obj = JSON.parse(body);
     if (obj.statuses) obj.statuses = filter_timeline_statuses(obj.statuses);
@@ -123,7 +130,7 @@ function filter_timeline_statuses(statuses) {
         while (i--) {
             let element = statuses[i];
             if (is_timeline_likerecommend(element.title)) statuses.splice(i, 1);
-            if (is_timeline_ad(element.mblogtype)) statuses.splice(i, 1);
+            if (is_timeline_ad(element)) statuses.splice(i, 1);
         }
     }
     return statuses;
@@ -159,32 +166,28 @@ function filter_timeline_cards(cards) {
                     } else if (card_type && card_type == 118) {
                         card_group.splice(i, 1);
                     } else {
-                        if (element.mblog) {
-                            if (is_timeline_ad(element.mblog.mblogtype)) {
-                                card_group.splice(i, 1);
-                            }
-                        }
+                        if (is_timeline_ad(element.mblog)) card_group.splice(i, 1);
                     }
                     tem_card_type = card_type;
                 }
             } else {
-                if (item.mblog) {
-                    if (is_timeline_ad(item.mblog.mblogtype)) {
-                        cards.splice(j, 1);
-                    } else {
-                        if (item.mblog.label && item.mblog.label == "\u5e7f\u544a") {
-                            cards.splice(j, 1);
-                        }
-                    }
-                }
+                if (is_timeline_ad(item.mblog)) cards.splice(j, 1);
             }
         }
     }
     return cards;
 }
 
-function is_timeline_ad(mblogtype) {
-    return mblogtype && mblogtype == 1 ? true : false;
+function is_timeline_ad(mblog) {
+    if (!mblog) return false;
+    let promotiontype = mblog.promotion.type;
+    let mblogtype = mblog.mblogtype;
+    let label = mblog.label;
+    if (promotiontype == "ad" || mblogtype == 1 || label == "\u5e7f\u544a") {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function is_timeline_likerecommend(title) {
