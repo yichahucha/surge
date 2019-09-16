@@ -152,15 +152,29 @@ function filter_timeline_cards(cards) {
             if (card_group && card_group.length > 0) {
                 let i = card_group.length;
                 while (i--) {
-                    let element = card_group[i];
-                    let card_type = element.card_type;
-                    if (is_timeline_ad(element.mblog) || (card_type && card_type == 118)) {
+                    let card_group_item = card_group[i];
+                    let card_type = card_group_item.card_type;
+                    if (card_type && card_type == 9) {
+                        let mblog = card_group_item.mblog;
+                        if (is_timeline_ad(mblog)) card_group.splice(i, 1);
+                    }else if(card_type && card_type == 118) {
                         card_group.splice(i, 1);
+                    }else if (card_type && card_type == 4) {
+                        if (card_group_item.promotion) card_group.splice(i, 1);
+                    }else if (card_type && card_type == 17) {
+                        let group = card_group_item.group;
+                        if (group && group.length > 0) {
+                            let k = group.length;
+                            while (k--) {
+                                let group_item = group[k];
+                                if (group_item.promotion) group.splice(k, 1);
+                            }
+                        }
                     }
                 }
             } else {
                 if (is_timeline_ad(item.mblog) || (item.mblog && item.mblog.label && item.mblog.label == "\u5e7f\u544a")) {
-                    cards.splice(j, 1)
+                    cards.splice(j, 1);
                 };
             }
         }
