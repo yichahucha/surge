@@ -13,6 +13,7 @@ const path12 = "/fangle/timeline";
 const path13 = "/searchall";
 const path14 = "/cardlist";
 const path15 = "/statuses/video_timeline";
+const path16 = "/page";
 
 const url = $request.url;
 var body = $response.body;
@@ -108,7 +109,8 @@ if (url.indexOf(path11) != -1) {
 if (
     url.indexOf(path12) != -1 ||
     url.indexOf(path13) != -1 ||
-    url.indexOf(path14) != -1
+    url.indexOf(path14) != -1 ||
+    url.indexOf(path16) != -1
 ) {
     let obj = JSON.parse(body);
     if (obj.cards) obj.cards = filter_timeline_cards(obj.cards);
@@ -149,22 +151,17 @@ function filter_timeline_cards(cards) {
             let card_group = item.card_group;
             if (card_group && card_group.length > 0) {
                 let i = card_group.length;
-                let tem_card_type = 0;
                 while (i--) {
                     let element = card_group[i];
                     let card_type = element.card_type;
-                    if (card_type && (tem_card_type == 19 && card_type == 22)) {
-                        cards.splice(j, 1);
-                        break;
-                    } else if (card_type && card_type == 118) {
+                    if (is_timeline_ad(element.mblog) || (card_type && card_type == 118)) {
                         card_group.splice(i, 1);
-                    } else {
-                        if (is_timeline_ad(element.mblog)) card_group.splice(i, 1);
                     }
-                    tem_card_type = card_type;
                 }
             } else {
-                if (is_timeline_ad(item.mblog)) cards.splice(j, 1);
+                if (is_timeline_ad(item.mblog) || (item.mblog.label && item.mblog.label == "\u5e7f\u544a")) {
+                    cards.splice(j, 1)
+                };
             }
         }
     }
@@ -173,10 +170,9 @@ function filter_timeline_cards(cards) {
 
 function is_timeline_ad(mblog) {
     if (!mblog) return false;
-    let promotiontype = mblog.promotion && mblog.promotion.type && mblog.promotion.type == "ad";
+    let promotiontype = mblog.promotion && mblog.promotion.type;
     let mblogtype = mblog.mblogtype && mblog.mblogtype == 1;
-    let label = mblog.label && mblog.label == "\u5e7f\u544a";
-    return (promotiontype || mblogtype || label) ? true : false;
+    return (promotiontype || mblogtype) ? true : false;
 }
 
 function is_timeline_likerecommend(title) {
