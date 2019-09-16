@@ -159,7 +159,7 @@ function filter_timeline_cards(cards) {
                     }
                 }
             } else {
-                if (is_timeline_ad(item.mblog) || (item.mblog.label && item.mblog.label == "\u5e7f\u544a")) {
+                if (is_timeline_ad(item.mblog) || (item.mblog && item.mblog.label && item.mblog.label == "\u5e7f\u544a")) {
                     cards.splice(j, 1)
                 };
             }
