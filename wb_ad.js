@@ -14,6 +14,7 @@ const path13 = "/searchall";
 const path14 = "/cardlist";
 const path15 = "/statuses/video_timeline";
 const path16 = "/page";
+const path17 = "/statuses/friends_timeline";
 
 const url = $request.url;
 var body = $response.body;
@@ -22,7 +23,8 @@ if (
     url.indexOf(path1) != -1 ||
     url.indexOf(path2) != -1 ||
     url.indexOf(path10) != -1 ||
-    url.indexOf(path15) != -1
+    url.indexOf(path15) != -1 ||
+    url.indexOf(path17) != -1
 ) {
     let obj = JSON.parse(body);
     if (obj.statuses) obj.statuses = filter_timeline_statuses(obj.statuses);
