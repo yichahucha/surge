@@ -184,7 +184,7 @@ function filter_timeline_cards(cards) {
 
 function is_timeline_ad(mblog) {
     if (!mblog) return false;
-    let promotiontype = mblog.promotion && mblog.promotion.type;
+    let promotiontype = mblog.promotion && mblog.promotion.type && mblog.promotion.type == "ad";
     let mblogtype = mblog.mblogtype && mblog.mblogtype == 1;
     return (promotiontype || mblogtype) ? true : false;
 }
