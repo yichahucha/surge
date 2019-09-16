@@ -155,8 +155,7 @@ function filter_timeline_cards(cards) {
                     let card_group_item = card_group[i];
                     let card_type = card_group_item.card_type;
                     if (card_type && card_type == 9) {
-                        let mblog = card_group_item.mblog;
-                        if (is_timeline_ad(mblog)) card_group.splice(i, 1);
+                        if (is_timeline_ad(card_group_item.mblog)) card_group.splice(i, 1);
                     }else if(card_type && card_type == 118) {
                         card_group.splice(i, 1);
                     }else if (card_type && card_type == 4) {
@@ -173,9 +172,10 @@ function filter_timeline_cards(cards) {
                     }
                 }
             } else {
-                if (is_timeline_ad(item.mblog) || (item.mblog && item.mblog.label && item.mblog.label == "\u5e7f\u544a")) {
-                    cards.splice(j, 1);
-                };
+                let card_type = item.card_type;
+                if (card_type && card_type == 9) {
+                    if (is_timeline_ad(item.mblog)) cards.splice(j, 1);;
+                }
             }
         }
     }
