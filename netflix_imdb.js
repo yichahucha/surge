@@ -52,7 +52,6 @@ if ($request.headers) {
 
 function get_title_map() {
     let map = $persistentStore.read(netflix_title_cache_key);
-    console.log("Netflix Title Map:\n" + map);
     if (!map) {
         map = {};
     } else {
