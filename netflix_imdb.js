@@ -34,20 +34,7 @@ if ($request.headers) {
     }
     request_IMDb_rating(title, null, function (data) {
         if (data) {
-            let ratings = data.Ratings;
-            let rating_message = "IMDb:  ⭐️ N/A";
-            if (ratings.length > 0) {
-                let type = data.Type;
-                let imdb_votes = data.imdbVotes;
-                let imdb_rating = ratings[0]['Value'];
-                rating_message = "IMDb:  ⭐️ " + imdb_rating + "    " + imdb_votes;
-                if (type == "movie") {
-                    if (ratings.length > 1) {
-                        let tomatoes = ratings[1]['Value'];
-                        rating_message += ",    Tomatoes:  🍅 " + tomatoes;
-                    }
-                }
-            }
+            let rating_message = get_rating_message(data);
             let summary = obj.value.videos[video_id].summary;
             if (summary && summary.supplementalMessage) {
                 summary.supplementalMessage =
@@ -97,4 +84,22 @@ function request_IMDb_rating(title, season, callback) {
             callback(null);
         }
     });
+}
+
+function get_rating_message(data) {
+    let ratings = data.Ratings;
+    let rating_message = "IMDb:  ⭐️ N/A";
+    if (ratings.length > 0) {
+        let type = data.Type;
+        let imdb_votes = data.imdbVotes;
+        let imdb_rating = ratings[0]['Value'];
+        rating_message = "IMDb:  ⭐️ " + imdb_rating + "    " + imdb_votes;
+        if (type == "movie") {
+            if (ratings.length > 1) {
+                let tomatoes = ratings[1]['Value'];
+                rating_message += "\nTomatoes:  🍅 " + tomatoes;
+            }
+        }
+    }
+    return rating_message;
 }
