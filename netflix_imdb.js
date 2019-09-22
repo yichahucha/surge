@@ -13,7 +13,7 @@ const netflix_title_cache_key = "netflix_title_map";
 if ($request.headers) {
     let map = get_title_map();
     let url = $request.url;
-    var video_id = decodeURIComponent(url).match(/"videos","(\d+)"/)[1];
+    let video_id = decodeURIComponent(url).match(/"videos","(\d+)"/)[1];
     let title = map[video_id];
     let is_english = url.match(/languages=en/) ? true : false;
     if (!title && !is_english) {
@@ -23,9 +23,9 @@ if ($request.headers) {
         $done({});
     }
 } else {
-    var map = get_title_map();
-    var body = $response.body;
-    var obj = JSON.parse(body);
+    let map = get_title_map();
+    let body = $response.body;
+    let obj = JSON.parse(body);
     let video_id = obj.paths[0][1];
     let title = map[video_id];
     if (!title) {
@@ -53,7 +53,7 @@ if ($request.headers) {
 }
 
 function get_title_map() {
-    var map = $persistentStore.read(netflix_title_cache_key);
+    let map = $persistentStore.read(netflix_title_cache_key);
     console.log("Netflix Title Map:\n" + map);
     if (!map) {
         map = {};
