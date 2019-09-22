@@ -10,8 +10,8 @@ hostname = ios.prod.ftl.netflix.com
 const imdb_api_key = "f75e0253";
 const netflix_title_cache_key = "netflix_title_map";
 
-var map = get_title_map();
 if ($request.headers) {
+    let map = get_title_map();
     let url = $request.url;
     var video_id = decodeURIComponent(url).match(/"videos","(\d+)"/)[1];
     let title = map[video_id];
@@ -23,6 +23,7 @@ if ($request.headers) {
         $done({});
     }
 } else {
+    var map = get_title_map();
     var body = $response.body;
     var obj = JSON.parse(body);
     let video_id = obj.paths[0][1];
