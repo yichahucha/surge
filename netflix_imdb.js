@@ -1,4 +1,4 @@
-const imdb_api_key = "Set Your IMDb Apikey";
+const imdb_api_key = "f75e0253";
 const netflix_title_cache_key = "netflix_title_map";
 
 var map = get_title_map();
