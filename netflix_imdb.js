@@ -97,7 +97,7 @@ function get_rating_message(data) {
         if (type == "movie") {
             if (ratings.length > 1) {
                 let tomatoes = ratings[1]['Value'];
-                rating_message += ",  Tomatoes:  🍅 " + tomatoes;
+                rating_message += ",   Tomatoes:  🍅 " + tomatoes;
             }
         }
     }
