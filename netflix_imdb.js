@@ -85,19 +85,24 @@ function request_IMDb_rating(title, season, callback) {
         }
     });
 }
-
 function get_rating_message(data) {
     let ratings = data.Ratings;
-    let rating_message = "IMDb:  ⭐️N/A";
+    let rating_message = "IMDb:  ⭐️ N/A";
     if (ratings.length > 0) {
         let type = data.Type;
         let imdb_votes = data.imdbVotes;
-        let imdb_rating = ratings[0]['Value'];
-        rating_message = "IMDb:  ⭐️ " + imdb_rating + "   " + imdb_votes;
-        if (type == "movie") {
-            if (ratings.length > 1) {
-                let tomatoes = ratings[1]['Value'];
-                rating_message += ".   Tomatoes:  🍅 " + tomatoes;
+        let imdb_rating = ratings[0]["Value"];
+        let imdb_source = ratings[0]["Source"];
+        if (imdb_source == "Internet Movie Database") {
+            rating_message = "IMDb:  ⭐️ " + imdb_rating + "   " + imdb_votes;
+            if (type == "movie") {
+                if (ratings.length > 1) {
+                    let source = ratings[1]["Source"];
+                    let tomatoes = ratings[1]["Value"];
+                    if (source == "Rotten Tomatoes") {
+                        rating_message += ".   Tomatoes:  🍅 " + tomatoes;
+                    }
+                }
             }
         }
     }
