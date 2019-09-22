@@ -11,6 +11,14 @@ hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com
 [Script]
 cron "0 9,18 * * 1-5" script-path=https://raw.githubusercontent.com/yichahucha/surge/master/cron_daily.js
 ```
+```
+[Script]
+http-response ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D script-path=https://raw.githubusercontent.com/yichahucha/surge/master/netflix_imdb.js,requires-body=1
+http-request ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D script-path=https://raw.githubusercontent.com/yichahucha/surge/master/netflix_imdb.js
+
+[MITM]
+hostname = ios.prod.ftl.netflix.com
+```
 
 ## Quan-X
 ```
