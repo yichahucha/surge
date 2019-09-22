@@ -6,6 +6,7 @@ http-request ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22vide
 [MITM]
 hostname = ios.prod.ftl.netflix.com
 */
+
 const imdb_api_key = "f75e0253";
 const netflix_title_cache_key = "netflix_title_map";
 
