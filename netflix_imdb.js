@@ -11,9 +11,9 @@ const imdb_api_key = "PlzBanMe";
 const netflix_title_cache_key = "netflix_title_map";
 
 if ($request.headers) {
-    let map = get_title_map();
     let url = $request.url;
     let video_id = decodeURIComponent(url).match(/"videos","(\d+)"/)[1];
+    let map = get_title_map();
     let title = map[video_id];
     let is_english = url.match(/languages=en/) ? true : false;
     if (!title && !is_english) {
@@ -23,10 +23,10 @@ if ($request.headers) {
         $done({});
     }
 } else {
-    let map = get_title_map();
     let body = $response.body;
     let obj = JSON.parse(body);
     let video_id = obj.paths[0][1];
+    let map = get_title_map();
     let title = map[video_id];
     if (!title) {
         title = obj.value.videos[video_id].summary.title;
@@ -85,21 +85,21 @@ function request_IMDb_rating(title, season, callback) {
         }
     });
 }
+
 function get_rating_message(data) {
     let ratings = data.Ratings;
     let rating_message = "IMDb:  ⭐️ N/A";
     if (ratings.length > 0) {
-        let type = data.Type;
-        let imdb_votes = data.imdbVotes;
-        let imdb_rating = ratings[0]["Value"];
         let imdb_source = ratings[0]["Source"];
         if (imdb_source == "Internet Movie Database") {
+            let imdb_votes = data.imdbVotes;
+            let imdb_rating = ratings[0]["Value"];
             rating_message = "IMDb:  ⭐️ " + imdb_rating + "   " + imdb_votes;
-            if (type == "movie") {
+            if (data.Type == "movie") {
                 if (ratings.length > 1) {
                     let source = ratings[1]["Source"];
-                    let tomatoes = ratings[1]["Value"];
                     if (source == "Rotten Tomatoes") {
+                        let tomatoes = ratings[1]["Value"];
                         rating_message += ".   Tomatoes:  🍅 " + tomatoes;
                     }
                 }
