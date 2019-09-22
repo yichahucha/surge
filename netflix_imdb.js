@@ -34,9 +34,18 @@ if ($request.headers) {
     }
     request_IMDb_rating(title, null, function (rating) {
         if (rating) {
-            let imdbRating = rating.imdbRating;
-            let imdbVotes = rating.imdbVotes;
-            let rating_message = "IMDb:  ⭐️ " + imdbRating + "/10    " + imdbVotes;
+            let type = data.Type;
+            let ratings = data.Ratings;
+            let imdbVotes = data.imdbVotes;
+            let rating_message = "IMDb:  ⭐️ N/A";
+            if (ratings.length > 0) {
+                let imdb_rating = ratings[0]['Value'];
+                rating_message = "IMDb:  ⭐️ " + imdb_rating + "    " + imdbVotes;
+                if (type == "movie") {
+                    let tomatoes = ratings[1]['Value'];
+                    rating_message += ",    Tomatoes:  🍅 " + tomatoes;
+                }
+            }
             let summary = obj.value.videos[video_id].summary;
             if (summary && summary.supplementalMessage) {
                 summary.supplementalMessage =
