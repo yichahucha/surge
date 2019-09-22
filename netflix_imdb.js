@@ -1,5 +1,5 @@
-const imdb_apikey = "Set Your IMDb Apikey";
-const title_map_cache_key = "netflix_title_map";
+const imdb_api_key = "Set Your IMDb Apikey";
+const netflix_title_cache_key = "netflix_title_map";
 
 var map = get_title_map();
 if ($request.headers) {
@@ -45,7 +45,7 @@ if ($request.headers) {
 }
 
 function get_title_map() {
-    var map = $persistentStore.read(title_map_cache_key);
+    var map = $persistentStore.read(netflix_title_cache_key);
     console.log("Netflix Title Map:\n" + map);
     if (!map) {
         map = {};
@@ -57,12 +57,12 @@ function get_title_map() {
 
 function set_title_map(id, title, map) {
     map[id] = title;
-    $persistentStore.write(JSON.stringify(map), title_map_cache_key);
+    $persistentStore.write(JSON.stringify(map), netflix_title_cache_key);
 }
 
 function request_IMDb_rating(title, season, callback) {
     let url =
-        "https://www.omdbapi.com/?apikey=" + imdb_apikey + "&t=" + encodeURI(title);
+        "https://www.omdbapi.com/?apikey=" + imdb_api_key + "&t=" + encodeURI(title);
     if (season) url += "&Season=" + season;
     $httpClient.get(url, function (error, response, data) {
         if (!error && response.status == 200) {
