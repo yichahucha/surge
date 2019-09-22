@@ -15,11 +15,9 @@ if ($request.headers) {
     let url = $request.url;
     var video_id = decodeURIComponent(url).match(/"videos","(\d+)"/)[1];
     let title = map[video_id];
-    if (!title) {
-        let is_en = url.match(/languages=en/) ? true : false;
-        if (!is_en) {
-            url = url.replace(/&languages=(.*?)&/, "&languages=en-US&");
-        }
+    let is_english = url.match(/languages=en/) ? true : false;
+    if (!title && !is_english) {
+        url = url.replace(/&languages=(.*?)&/, "&languages=en-US&");
         $done({ url });
     } else {
         $done({});
