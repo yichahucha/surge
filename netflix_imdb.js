@@ -28,7 +28,7 @@ if ($request.headers) {
         if (rating) {
             let imdbRating = rating.imdbRating;
             let imdbVotes = rating.imdbVotes;
-            let rating_message = "IMDb: ⭐️ " + imdbRating + "/10  " + imdbVotes;
+            let rating_message = "IMDb: ⭐️ " + imdbRating + "/10.0  " + imdbVotes;
             let summary = obj.value.videos[video_id].summary;
             if (summary && summary.supplementalMessage) {
                 summary.supplementalMessage =
