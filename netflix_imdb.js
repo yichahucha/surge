@@ -32,18 +32,20 @@ if ($request.headers) {
         title = obj.value.videos[video_id].summary.title;
         set_title_map(video_id, title, map);
     }
-    request_IMDb_rating(title, null, function (rating) {
-        if (rating) {
-            let type = data.Type;
+    request_IMDb_rating(title, null, function (data) {
+        if (data) {
             let ratings = data.Ratings;
-            let imdbVotes = data.imdbVotes;
             let rating_message = "IMDb:  ⭐️ N/A";
             if (ratings.length > 0) {
+                let type = data.Type;
+                let imdb_votes = data.imdbVotes;
                 let imdb_rating = ratings[0]['Value'];
-                rating_message = "IMDb:  ⭐️ " + imdb_rating + "    " + imdbVotes;
+                rating_message = "IMDb:  ⭐️ " + imdb_rating + "    " + imdb_votes;
                 if (type == "movie") {
-                    let tomatoes = ratings[1]['Value'];
-                    rating_message += ",    Tomatoes:  🍅 " + tomatoes;
+                    if (ratings.length > 1) {
+                        let tomatoes = ratings[1]['Value'];
+                        rating_message += ",    Tomatoes:  🍅 " + tomatoes;
+                    }
                 }
             }
             let summary = obj.value.videos[video_id].summary;
