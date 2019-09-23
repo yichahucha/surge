@@ -71,13 +71,13 @@ function request_IMDb_rating(title, season, callback) {
     console.log("Netflix IMDb Rating URL:\n" + url);
     if (season) url += "&Season=" + season;
     $httpClient.get(url, function (error, response, data) {
-        if (!error && response.status == 200) {
+        if (!error) {
             console.log("Netflix IMDb Rating Data:\n" + data);
             let obj = JSON.parse(data);
-            if (obj.Response == "False") {
-                callback(null);
-            } else {
+            if (response.status == 200 && obj.Response != "False") {
                 callback(obj);
+            } else {
+                callback(null);
             }
         } else {
             console.log("Netflix IMDb Rating Error:\n" + error);
