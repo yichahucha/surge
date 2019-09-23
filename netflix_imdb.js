@@ -80,6 +80,7 @@ function request_IMDb_rating(title, season, callback) {
                 callback(obj);
             }
         } else {
+            console.log("Netflix IMDb Rating Error:\n" + error);
             callback(null);
         }
     });
