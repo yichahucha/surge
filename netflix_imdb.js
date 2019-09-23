@@ -66,8 +66,7 @@ function set_title_map(id, title, map) {
 }
 
 function request_IMDb_rating(title, season, callback) {
-    let url =
-        "https://www.omdbapi.com/?t=" + encodeURI(title) + "&apikey=" + imdb_api_key;
+    let url = "https://www.omdbapi.com/?t=" + encodeURI(title) + "&apikey=" + imdb_api_key;
     console.log("Netflix IMDb Rating URL:\n" + url);
     if (season) url += "&Season=" + season;
     $httpClient.get(url, function (error, response, data) {
