@@ -8,7 +8,7 @@ $httpClient.get('https://dict.youdao.com/infoline/style/cardList?mode=publish&cl
     let obj = JSON.parse(data);
     let date = new Date();
     let isAM = date.getHours() < 12 ? true : false
-    let title = 'Clock' + (isAM ? 'in' : 'out') + (isAM ? ' ☀️' : ' 🌙');
+    let title = 'Clock' + (isAM ? ' in' : ' out') + (isAM ? ' ☀️' : ' 🌙');
     let subtitle = '';
     let content = 'dingtalk://dingtalkclient/page/link?url=https://attend.dingtalk.com/attend/index.html';
     if (!error) {
