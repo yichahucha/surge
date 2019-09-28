@@ -88,20 +88,6 @@ if (url.indexOf(path8) != -1) {
     body = JSON.stringify(obj);
 }
 
-if (url.indexOf(path9) != -1) {
-    let obj = JSON.parse(body);
-    let cards = obj.cards;
-    if (cards && cards.length > 0) {
-        let i = cards.length;
-        while (i--) {
-            let element = cards[i];
-            let card_group = element.card_group;
-            if (card_group && card_group.length > 0) cards.splice(i, 1);
-        }
-    }
-    body = JSON.stringify(obj);
-}
-
 if (url.indexOf(path11) != -1) {
     let obj = JSON.parse(body);
     obj.data = [];
@@ -109,6 +95,7 @@ if (url.indexOf(path11) != -1) {
 }
 
 if (
+    url.indexOf(path9) != -1 ||
     url.indexOf(path12) != -1 ||
     url.indexOf(path13) != -1 ||
     url.indexOf(path14) != -1 ||
