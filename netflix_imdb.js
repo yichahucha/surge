@@ -37,6 +37,7 @@ if ($request.headers) {
         title = obj.value.videos[video_id].summary.title;
         set_title_map(video_id, title, map);
     }
+    
     request_IMDb_rating(title, null, function (data) {
         if (data) {
             let rating_message = get_rating_message(data);
