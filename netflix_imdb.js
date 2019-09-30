@@ -7,7 +7,6 @@ http-request ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22vide
 hostname = ios.prod.ftl.netflix.com
 */
 
-const imdb_api_key = "PlzBanMe";//f75e0253
 const netflix_title_cache_key = "netflix_title_map";
 
 if ($request.headers) {
@@ -23,6 +22,12 @@ if ($request.headers) {
         $done({});
     }
 } else {
+    const imdb_api_keys = ["PlzBanMe", "f75e0253", "ae64ce8d", "b2650e38", "9bd135c2", "1a66ef12", "457fc4ff"];
+    const imdb_api_key_cache_key = "imdb_api_key";
+    var tmp_imdb_api_keys = Array.from(imdb_api_keys);
+    var imdb_api_key = $persistentStore.read(imdb_api_key_cache_key);
+    if (!imdb_api_key) update_imdb_api_key();
+    
     let body = $response.body;
     let obj = JSON.parse(body);
     let video_id = obj.paths[0][1];
@@ -73,8 +78,17 @@ function request_IMDb_rating(title, season, callback) {
         if (!error) {
             console.log("Netflix IMDb Rating Data:\n" + data);
             let obj = JSON.parse(data);
-            if (response.status == 200 && obj.Response != "False") {
-                callback(obj);
+            if (response.status == 200) {
+                if (obj.Response != "False") {
+                    callback(obj);
+                } else {
+                    if (obj.Error == "Request limit reached!" && tmp_imdb_api_keys.length > 0) {
+                        update_imdb_api_key();
+                        request_IMDb_rating(title, season, callback);
+                    } else {
+                        callback(null);
+                    }
+                }
             } else {
                 callback(null);
             }
@@ -106,4 +120,12 @@ function get_rating_message(data) {
         }
     }
     return rating_message;
+}
+
+function update_imdb_api_key() {
+    let index = Math.floor(Math.random() * tmp_imdb_api_keys.length);
+    let api_key = tmp_imdb_api_keys[index];
+    tmp_imdb_api_keys.splice(index, 1);
+    $persistentStore.write(api_key, imdb_api_key_cache_key);
+    imdb_api_key = api_key;
 }
