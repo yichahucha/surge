@@ -83,7 +83,7 @@ function request_IMDb_rating(title, season, callback) {
                 if (obj.Response != "False") {
                     callback(obj);
                 } else {
-                    if (obj.Error == "Request limit reached!" && tmp_imdb_api_keys.length > 0) {
+                    if (obj.Error == "Request limit reached!" && tmp_imdb_api_keys.length > 1) {
                         update_IMDb_api_key();
                         request_IMDb_rating(title, season, callback);
                     } else {
@@ -101,9 +101,9 @@ function request_IMDb_rating(title, season, callback) {
 }
 
 function update_IMDb_api_key() {
+    if (imdb_api_key) tmp_imdb_api_keys.splice(tmp_imdb_api_keys.indexOf(imdb_api_key), 1);
     let index = Math.floor(Math.random() * tmp_imdb_api_keys.length);
     let api_key = tmp_imdb_api_keys[index];
-    tmp_imdb_api_keys.splice(index, 1);
     $persistentStore.write(api_key, imdb_api_key_cache_key);
     imdb_api_key = api_key;
 }
