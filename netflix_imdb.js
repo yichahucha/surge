@@ -22,8 +22,8 @@ if ($request.headers) {
         $done({});
     }
 } else {
-    const imdb_api_keys = ["PlzBanMe", "f75e0253", "ae64ce8d", "b2650e38", "9bd135c2", "1a66ef12", "457fc4ff"];
-    const imdb_api_key_cache_key = "imdb_api_key";
+    var imdb_api_keys = ["PlzBanMe", "f75e0253", "ae64ce8d", "b2650e38", "9bd135c2", "1a66ef12", "457fc4ff"];
+    var imdb_api_key_cache_key = "imdb_api_key";
     var tmp_imdb_api_keys = Array.from(imdb_api_keys);
     var imdb_api_key = $persistentStore.read(imdb_api_key_cache_key);
     if (!imdb_api_key) update_imdb_api_key();
