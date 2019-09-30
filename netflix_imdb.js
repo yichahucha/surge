@@ -22,11 +22,11 @@ if ($request.headers) {
         $done({});
     }
 } else {
-    var imdb_api_keys = ["PlzBanMe", "f75e0253", "ae64ce8d", "b2650e38", "9bd135c2", "1a66ef12", "457fc4ff"];
-    var imdb_api_key_cache_key = "imdb_api_key";
+    var imdb_api_keys = ["PlzBanMe", "f75e0253", "ae64ce8d", "b2650e38", "9bd135c2", "1a66ef12", "457fc4ff", "9cc1a9b7", "f6dfce0e", "e6bde2b9", "d7904fa3"];
     var tmp_imdb_api_keys = Array.from(imdb_api_keys);
+    var imdb_api_key_cache_key = "imdb_api_key";
     var imdb_api_key = $persistentStore.read(imdb_api_key_cache_key);
-    if (!imdb_api_key) update_imdb_api_key();
+    if (!imdb_api_key) update_IMDb_api_key();
     
     let body = $response.body;
     let obj = JSON.parse(body);
@@ -84,7 +84,7 @@ function request_IMDb_rating(title, season, callback) {
                     callback(obj);
                 } else {
                     if (obj.Error == "Request limit reached!" && tmp_imdb_api_keys.length > 0) {
-                        update_imdb_api_key();
+                        update_IMDb_api_key();
                         request_IMDb_rating(title, season, callback);
                     } else {
                         callback(null);
@@ -98,6 +98,14 @@ function request_IMDb_rating(title, season, callback) {
             callback(null);
         }
     });
+}
+
+function update_IMDb_api_key() {
+    let index = Math.floor(Math.random() * tmp_imdb_api_keys.length);
+    let api_key = tmp_imdb_api_keys[index];
+    tmp_imdb_api_keys.splice(index, 1);
+    $persistentStore.write(api_key, imdb_api_key_cache_key);
+    imdb_api_key = api_key;
 }
 
 function get_rating_message(data) {
@@ -121,12 +129,4 @@ function get_rating_message(data) {
         }
     }
     return rating_message;
-}
-
-function update_imdb_api_key() {
-    let index = Math.floor(Math.random() * tmp_imdb_api_keys.length);
-    let api_key = tmp_imdb_api_keys[index];
-    tmp_imdb_api_keys.splice(index, 1);
-    $persistentStore.write(api_key, imdb_api_key_cache_key);
-    imdb_api_key = api_key;
 }
