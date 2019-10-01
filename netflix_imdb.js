@@ -53,13 +53,15 @@ if ($request.headers) {
             set_title_map(video_id, title, map);
         }
 
-        let type = video.summary.type;
         let year = null;
+        let type = video.summary.type;
         if (type == "movie") {
             year = video.details.releaseYear;
+        }else if(type == "show") {
+            type = "series";
         }
         
-        request_IMDb_rating(title, year, null, function (data) {
+        request_IMDb_rating(title, year, type, null, function (data) {
             if (data) {
                 let rating_message = get_rating_message(data);
                 let country_message = get_country_message(data);
@@ -96,9 +98,10 @@ function set_title_map(id, title, map) {
     $persistentStore.write(JSON.stringify(map), netflix_title_cache_key);
 }
 
-function request_IMDb_rating(title, year, season, callback) {
+function request_IMDb_rating(title, year, type, season, callback) {
     let url = "https://www.omdbapi.com/?t=" + encodeURI(title) + "&apikey=" + imdb_api_key;
     if (year) url += "&y=" + year;
+    if (type) url += "&type=" + type;
     if (season) url += "&Season=" + season;
     console.log("Netflix IMDb Rating URL:\n" + url);
     $httpClient.get(url, function (error, response, data) {
@@ -111,7 +114,7 @@ function request_IMDb_rating(title, year, season, callback) {
                 } else {
                     if (obj.Error == "Request limit reached!" && tmp_imdb_api_keys.length > 1) {
                         update_IMDb_api_key();
-                        request_IMDb_rating(title, year, season, callback);
+                        request_IMDb_rating(title, year, type, season, callback);
                     } else {
                         callback(null);
                     }
