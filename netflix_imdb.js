@@ -132,9 +132,8 @@ function request_IMDb_rating(title, year, type, season, callback) {
 function update_IMDb_apikey() {
     if (IMDb_apikey) IMDb_apikeys.splice(IMDb_apikeys.indexOf(IMDb_apikey), 1);
     let index = Math.floor(Math.random() * IMDb_apikeys.length);
-    let apikey = IMDb_apikeys[index];
-    $persistentStore.write(apikey, imdb_apikey_cache_key);
-    IMDb_apikey = apikey;
+    IMDb_apikey = IMDb_apikeys[index];
+    $persistentStore.write(IMDb_apikey, imdb_apikey_cache_key);
 }
 
 function get_rating_message(data) {
