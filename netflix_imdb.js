@@ -60,6 +60,7 @@ if ($request.headers) {
         }else if(type == "show") {
             type = "series";
         }
+        delete video.details;
         
         request_IMDb_rating(title, year, type, null, function (data) {
             if (data) {
@@ -71,14 +72,13 @@ if ($request.headers) {
                 } else {
                     summary["supplementalMessage"] = country_message + "\n" + rating_message;
                 }
-                body = JSON.stringify(obj);
-                $done({ body });
-            } else {
-                $done({});
             }
+            body = JSON.stringify(obj);
+            $done({ body });
         });
     } catch (error) {
-        $done({});
+        body = JSON.stringify(obj);
+        $done({ body });
         console.log("Netflix Data Parsing Error:\n" + error);
     }
 }
