@@ -83,7 +83,7 @@ if ($request.headers) {
     } catch (error) {
         body = JSON.stringify(obj);
         $done({ body });
-        console.log("Netflix Data Parsing Error:\n" + error);
+        if (console_log) console.log("Netflix Data Parsing Error:\n" + error);
     }
 }
 
