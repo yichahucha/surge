@@ -7,41 +7,33 @@ http-request ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22vide
 hostname = ios.prod.ftl.netflix.com
 */
 
-const netflix_title_cache_key = "netflix_title_map";
 const console_log = false;
+const imdb_apikey_cache_key = "IMDb_apikey";
+const netflix_title_cache_key = "netflix_title_map";
 
 if ($request.headers) {
     let url = $request.url;
     let url_decode = decodeURIComponent(url);
+
     let videos = url_decode.match(/"videos","(\d+)"/);
     let id_video = videos[1];
+
     let map = get_title_map();
     let title = map[id_video];
     let is_english = url.match(/languages=en/) ? true : false;
     if (!title && !is_english) {
-        let path_current_summary = url_decode.match(/\["videos","(\d+)","current","summary"\]/);
-        url = url.replace("&path=" + encodeURIComponent(path_current_summary[0]), "");
+        let current_summary = url_decode.match(/\["videos","(\d+)","current","summary"\]/);
+        url = url.replace("&path=" + encodeURIComponent(current_summary[0]), "");
         url = url.replace(/&languages=(.*?)&/, "&languages=en-US&");
     }
+
     url += "&path=" + encodeURIComponent("[" + videos[0] + ",\"details\"]");
+
     $done({ url });
 } else {
-    var imdb_api_keys = [
-        "PlzBanMe",
-        "f75e0253",
-        "ae64ce8d",
-        "b2650e38",
-        "9bd135c2",
-        "1a66ef12",
-        "457fc4ff",
-        "9cc1a9b7",
-        "f6dfce0e",
-        "e6bde2b9",
-        "d7904fa3"];
-    var tmp_imdb_api_keys = Array.from(imdb_api_keys);
-    var imdb_api_key_cache_key = "imdb_api_key";
-    var imdb_api_key = $persistentStore.read(imdb_api_key_cache_key);
-    if (!imdb_api_key) update_IMDb_api_key();
+    var IMDb_apikeys = get_IMDb_apikeys();
+    var IMDb_apikey = $persistentStore.read(imdb_apikey_cache_key);
+    if (!IMDb_apikey) update_IMDb_apikey();
 
     let body = $response.body;
     let obj = JSON.parse(body);
@@ -64,6 +56,7 @@ if ($request.headers) {
         } else if (type == "show") {
             type = "series";
         }
+
         delete video.details;
 
         request_IMDb_rating(title, year, type, null, function (data) {
@@ -103,7 +96,7 @@ function set_title_map(id, title, map) {
 }
 
 function request_IMDb_rating(title, year, type, season, callback) {
-    let url = "https://www.omdbapi.com/?t=" + encodeURI(title) + "&apikey=" + imdb_api_key;
+    let url = "https://www.omdbapi.com/?t=" + encodeURI(title) + "&apikey=" + IMDb_apikey;
     if (year) url += "&y=" + year;
     if (type) url += "&type=" + type;
     if (season) url += "&Season=" + season;
@@ -120,8 +113,8 @@ function request_IMDb_rating(title, year, type, season, callback) {
                     callback(null);
                 }
             } else if (response.status == 401) {
-                if (obj.Error == "Request limit reached!" && tmp_imdb_api_keys.length > 1) {
-                    update_IMDb_api_key();
+                if (IMDb_apikeys.length > 1) {
+                    update_IMDb_apikey();
                     request_IMDb_rating(title, year, type, season, callback);
                 } else {
                     callback(null);
@@ -136,12 +129,12 @@ function request_IMDb_rating(title, year, type, season, callback) {
     });
 }
 
-function update_IMDb_api_key() {
-    if (imdb_api_key) tmp_imdb_api_keys.splice(tmp_imdb_api_keys.indexOf(imdb_api_key), 1);
-    let index = Math.floor(Math.random() * tmp_imdb_api_keys.length);
-    let api_key = tmp_imdb_api_keys[index];
-    $persistentStore.write(api_key, imdb_api_key_cache_key);
-    imdb_api_key = api_key;
+function update_IMDb_apikey() {
+    if (IMDb_apikey) IMDb_apikeys.splice(IMDb_apikeys.indexOf(IMDb_apikey), 1);
+    let index = Math.floor(Math.random() * IMDb_apikeys.length);
+    let apikey = IMDb_apikeys[index];
+    $persistentStore.write(apikey, imdb_apikey_cache_key);
+    IMDb_apikey = apikey;
 }
 
 function get_rating_message(data) {
@@ -177,8 +170,24 @@ function get_country_message(data) {
     return emoji_country.slice(0, -2);
 }
 
+function get_IMDb_apikeys() {
+    const apikeys = [
+        "PlzBanMe", "4e89234e",
+        "f75e0253", "d8bb2d6b",
+        "ae64ce8d", "7218d678",
+        "b2650e38", "8c4a29ab",
+        "9bd135c2", "953dbabe",
+        "1a66ef12", "3e7ea721",
+        "457fc4ff", "d2131426",
+        "9cc1a9b7", "e53c2c11",
+        "f6dfce0e", "b9db622f",
+        "e6bde2b9", "d324dbab",
+        "d7904fa3", "aeaf88b9"];
+    return apikeys;
+}
+
 function get_country_emoji(name) {
-    const emoji_country_map = {
+    const emoji_map = {
         "Chequered": "🏁",
         "Triangular": "🚩",
         "Crossed": "🎌",
@@ -453,5 +462,5 @@ function get_country_emoji(name) {
         "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
         "Wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
     }
-    return emoji_country_map[name] ? emoji_country_map[name] : emoji_country_map["Chequered"];
+    return emoji_map[name] ? emoji_map[name] : emoji_map["Chequered"];
 }
