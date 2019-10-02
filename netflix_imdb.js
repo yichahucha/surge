@@ -8,15 +8,19 @@ hostname = ios.prod.ftl.netflix.com
 */
 
 const netflix_title_cache_key = "netflix_title_map";
+const console_log = false;
+
 if ($request.headers) {
     let url = $request.url;
-    let decode_url = decodeURIComponent(url);
-    let videos = decode_url.match(/"videos","(\d+)"/);
-    let video_id = videos[1];
+    let url_decode = decodeURIComponent(url);
+    let videos = url_decode.match(/"videos","(\d+)"/);
+    let id_video = videos[1];
     let map = get_title_map();
-    let title = map[video_id];
+    let title = map[id_video];
     let is_english = url.match(/languages=en/) ? true : false;
     if (!title && !is_english) {
+        let path_current_summary = url_decode.match(/\["videos","(\d+)","current","summary"\]/);
+        url = url.replace("&path=" + encodeURIComponent(path_current_summary[0]), "");
         url = url.replace(/&languages=(.*?)&/, "&languages=en-US&");
     }
     url += "&path=" + encodeURIComponent("[" + videos[0] + ",\"details\"]");
@@ -35,7 +39,7 @@ if ($request.headers) {
         "e6bde2b9",
         "d7904fa3"];
     var tmp_imdb_api_keys = Array.from(imdb_api_keys);
-    var imdb_api_key_cache_key = "imdb_api_key_1";
+    var imdb_api_key_cache_key = "imdb_api_key";
     var imdb_api_key = $persistentStore.read(imdb_api_key_cache_key);
     if (!imdb_api_key) update_IMDb_api_key();
 
@@ -57,11 +61,11 @@ if ($request.headers) {
         let type = video.summary.type;
         if (type == "movie") {
             year = video.details.releaseYear;
-        }else if(type == "show") {
+        } else if (type == "show") {
             type = "series";
         }
         delete video.details;
-        
+
         request_IMDb_rating(title, year, type, null, function (data) {
             if (data) {
                 let rating_message = get_rating_message(data);
@@ -103,27 +107,30 @@ function request_IMDb_rating(title, year, type, season, callback) {
     if (year) url += "&y=" + year;
     if (type) url += "&type=" + type;
     if (season) url += "&Season=" + season;
-    console.log("Netflix IMDb Rating URL:\n" + url);
+    if (console_log) console.log("Netflix IMDb Rating URL:\n" + url);
     $httpClient.get(url, function (error, response, data) {
         if (!error) {
-            console.log("Netflix IMDb Rating Data:\n" + data);
+            if (console_log) console.log("Netflix IMDb Rating response:\n" + JSON.stringify(response));
+            if (console_log) console.log("Netflix IMDb Rating Data:\n" + data);
             let obj = JSON.parse(data);
             if (response.status == 200) {
                 if (obj.Response != "False") {
                     callback(obj);
                 } else {
-                    if (obj.Error == "Request limit reached!" && tmp_imdb_api_keys.length > 1) {
-                        update_IMDb_api_key();
-                        request_IMDb_rating(title, year, type, season, callback);
-                    } else {
-                        callback(null);
-                    }
+                    callback(null);
+                }
+            } else if (response.status == 401) {
+                if (obj.Error == "Request limit reached!" && tmp_imdb_api_keys.length > 1) {
+                    update_IMDb_api_key();
+                    request_IMDb_rating(title, year, type, season, callback);
+                } else {
+                    callback(null);
                 }
             } else {
                 callback(null);
             }
         } else {
-            console.log("Netflix IMDb Rating Error:\n" + error);
+            if (console_log) console.log("Netflix IMDb Rating Error:\n" + error);
             callback(null);
         }
     });
