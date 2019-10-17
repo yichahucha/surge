@@ -8,7 +8,7 @@ hostname = api.m.jd.com
 
 const path1 = "serverConfig";
 const path2 = "wareBusiness";
-const console_log = true;
+const console_log = false;
 const url = $request.url;
 var body = $response.body;
 
@@ -57,8 +57,8 @@ function history_price_msg(data) {
     let list_str = data.jiagequshiyh + ","
     let list = list_str.split("],");
     let lower = data.lowerPriceyh;
-    let lower_msg = "⚠️ 历史最低到手价:   ¥" + String(lower) + "   " + changeDateFormat(data.lowerDateyh)
-    let curret_msg = data.currentPriceStatus ? "   当前价格" + data.currentPriceStatus : "" + "   仅供参考";
+    let lower_msg = "⚠️ 历史最低到手价:   ¥" + String(lower) + "   " + changeDateFormat(data.lowerDateyh);
+    let curret_msg = (data.currentPriceStatus ? "   当前价格" + data.currentPriceStatus : "") + "   (仅供参考)";
     let riqi = "日期：";
     let jiage = "价格：";
     let youhui = "活动：";
