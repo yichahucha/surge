@@ -16,7 +16,7 @@ Daily work check-in reminder
 cron "0 9,18 * * 1-5" script-path=https://raw.githubusercontent.com/yichahucha/surge/master/cron_daily.js
 ```
 
-Show Netflix TV series and movie's IMDb ratings, rotten tomato and country/region
+Display Netflix TV series and movie's IMDb ratings, rotten tomato and country/region
 ```
 [Script]
 http-request ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D script-path=https://raw.githubusercontent.com/yichahucha/surge/master/netflix_imdb.js
@@ -24,6 +24,14 @@ http-response ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22vid
 
 [MITM]
 hostname = ios.prod.ftl.netflix.com
+```
+
+Display JD commodity historical price
+```
+[Script]
+http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js,requires-body=1
+[MITM]
+hostname = api.m.jd.com
 ```
 
 ## Quan-X
