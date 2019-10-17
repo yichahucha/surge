@@ -30,6 +30,7 @@ Display JD commodity historical price
 ```
 [Script]
 http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js,requires-body=1
+
 [MITM]
 hostname = api.m.jd.com
 ```
