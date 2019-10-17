@@ -5,7 +5,7 @@ http-response ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22vid
 
 [MITM]
 hostname = ios.prod.ftl.netflix.com
-*/
+ */
 
 const console_log = false;
 const imdb_apikey_cache_key = "IMDb_apikey";
