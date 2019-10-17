@@ -62,7 +62,7 @@ function history_price_msg(data) {
     let riqi = "日期：";
     let jiage = "价格：";
     let youhui = "活动：";
-    let title_msg = "📈 价格走势\n\n" + riqi + get_blank_space(25 - riqi.length) + jiage + get_blank_space(25 - jiage.length) + youhui;
+    let title_msg = "📈 历史价格走势\n\n" + riqi + get_blank_space(25 - riqi.length) + jiage + get_blank_space(25 - jiage.length) + youhui;
     let lower_price_msg = lower_msg + curret_msg;
     let history_price_msg = title_msg + "\n";
     list.reverse().slice(0, 180).forEach(item => {
