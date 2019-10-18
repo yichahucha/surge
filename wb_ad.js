@@ -147,8 +147,6 @@ function filter_timeline_cards(cards) {
                         if (is_timeline_ad(card_group_item.mblog)) card_group.splice(i, 1);
                     } else if (card_type && card_type == 118) {
                         card_group.splice(i, 1);
-                    } else if (card_type && card_type == 4) {
-                        if (card_group_item.promotion) card_group.splice(i, 1);
                     } else if (card_type && card_type == 42) {
                         if (card_group_item.desc == '\u53ef\u80fd\u611f\u5174\u8da3\u7684\u4eba') {
                             cards.splice(j, 1);
