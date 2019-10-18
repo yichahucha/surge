@@ -154,15 +154,6 @@ function filter_timeline_cards(cards) {
                             cards.splice(j, 1);
                             break;
                         }
-                    } else if (card_type && card_type == 17) {
-                        let group = card_group_item.group;
-                        if (group && group.length > 0) {
-                            let k = group.length;
-                            while (k--) {
-                                let group_item = group[k];
-                                if (group_item.promotion) group.splice(k, 1);
-                            }
-                        }
                     }
                 }
             } else {
