@@ -45,7 +45,7 @@ if (url.indexOf(path2) != -1) {
                 let historyword = adword_obj();
                 lowerword.data.ad.adword = price_msgs[0];
                 historyword.data.ad.adword = price_msgs[1];
-                historyword.data.ad.textColor = "#A0522D";
+                historyword.data.ad.textColor = "#B1874B";
                 floors.insert(bestIndex, lowerword);
                 floors.insert(bestIndex + 1, historyword);
             }
