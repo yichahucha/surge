@@ -1,20 +1,22 @@
 /*
 [Script]
-http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js,requires-body=1
-
+http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) script-path=jd_history_price.js,requires-body=1
 [MITM]
 hostname = api.m.jd.com
  */
 
 const path1 = "serverConfig";
 const path2 = "wareBusiness";
+
 const console_log = false;
 const url = $request.url;
 var body = $response.body;
 
 if (url.indexOf(path1) != -1) {
     let obj = JSON.parse(body);
-    obj.serverConfig.httpdns = 0;
+    obj.serverConfig.httpdns = "0";
+    obj.serverConfig.imageDNS = "0";
+    obj.serverConfig.dnsvip = "";
     body = JSON.stringify(obj);
     if (console_log) console.log("httpdns closed");
     $done({ body });
@@ -29,12 +31,7 @@ if (url.indexOf(path2) != -1) {
     request_hsitory_price(shareUrl, function (data) {
         if (data) {
             let lowerword = adword_obj();
-            let historyword = adword_obj();
-            let price_msgs = history_price_msg(data.single)
-            lowerword.data.ad.adword = price_msgs[0];
             lowerword.data.ad.textColor = "#f23030";
-            historyword.data.ad.adword = price_msgs[1];
-            historyword.data.ad.textColor = "#D2B48C";
             let bestIndex = 0;
             for (let index = 0; index < floors.length; index++) {
                 const element = floors[index];
@@ -43,8 +40,19 @@ if (url.indexOf(path2) != -1) {
                     break;
                 }
             }
-            floors.insert(bestIndex, lowerword);
-            floors.insert(bestIndex + 1, historyword);
+            if (data.ok == 1 && data.single) {
+                let price_msgs = history_price_msg(data.single)
+                let historyword = adword_obj();
+                lowerword.data.ad.adword = price_msgs[0];
+                historyword.data.ad.adword = price_msgs[1];
+                historyword.data.ad.textColor = "#A0522D";
+                floors.insert(bestIndex, lowerword);
+                floors.insert(bestIndex + 1, historyword);
+            }
+            if (data.ok == 0 && data.msg.length > 0) {
+                lowerword.data.ad.adword = "⚠️ " + data.msg;
+                floors.insert(bestIndex, lowerword);
+            }
             body = JSON.stringify(obj);
             $done({ body });
         } else {
@@ -57,12 +65,13 @@ function history_price_msg(data) {
     let list_str = data.jiagequshiyh + ","
     let list = list_str.split("],");
     let lower = data.lowerPriceyh;
-    let lower_msg = "⚠️ 历史最低到手价:   ¥" + String(lower) + "   " + changeDateFormat(data.lowerDateyh);
+    let lower_date = changeDateFormat(data.lowerDateyh);
+    let lower_msg = "❗️ 历史最低到手价:   ¥" + String(lower) + "   " + lower_date
     let curret_msg = (data.currentPriceStatus ? "   当前价格" + data.currentPriceStatus : "") + "   (仅供参考)";
     let riqi = "日期：";
     let jiage = "价格：";
     let youhui = "活动：";
-    let title_msg = "📈 历史价格走势\n\n" + riqi + get_blank_space(25 - riqi.length) + jiage + get_blank_space(25 - jiage.length) + youhui;
+    let title_msg = `📈 历史价格走势\n\n${riqi.padEnd(25, " ")}${jiage.padEnd(25, " ")}${youhui}`
     let lower_price_msg = lower_msg + curret_msg;
     let history_price_msg = title_msg + "\n";
     list.reverse().slice(0, 180).forEach(item => {
@@ -80,8 +89,11 @@ function history_price_msg(data) {
                 price += "";
             }
             price = "¥" + String(parseFloat(price));
+            if (date == lower_date) {
+                price += "❗️"
+            }
             let sale = result[3];
-            let msg = date + get_blank_space(24 - date.length) + price + get_blank_space(15 - price.length) + sale + "\n";
+            let msg = `${date.padEnd(24, " ")}${price.padEnd(15, " ")}${sale}\n`
             history_price_msg += msg;
         }
     });
@@ -101,13 +113,9 @@ function request_hsitory_price(share_url, callback) {
         if (!error) {
             if (console_log) console.log("Data:\n" + data);
             let obj = JSON.parse(data);
-            if (obj.ok == 1 && obj.single) {
-                callback(obj);
-            } else {
-                callback(null);
-            }
+            callback(obj);
         } else {
-            callback(null);
+            callback(null, null);
             if (console_log) console.log("Error:\n" + error);
         }
     })
@@ -151,14 +159,6 @@ function changeDateFormat(cellval) {
     var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
     var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
     return date.getFullYear() + "-" + month + "-" + currentDate;
-}
-
-function get_blank_space(length) {
-    let blank = "";
-    for (let index = 0; index < length; index++) {
-        blank += " ";
-    }
-    return blank;
 }
 
 function adword_obj() {
