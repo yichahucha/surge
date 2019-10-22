@@ -6,6 +6,7 @@ http-response ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22vid
 [MITM]
 hostname = ios.prod.ftl.netflix.com
  */
+
 const consoleLog = false;
 const imdbApikeyCacheKey = "IMDbApikey";
 const netflixTitleCacheKey = "netflixTitle";
@@ -54,11 +55,11 @@ if ($request.headers) {
             IMDbMsg = IMDb.msg;
             return requestDoubanRating(IMDb.id);
         })
-        .then(DouBan => {
+        .then(Douban => {
             let IMDbrating = IMDbMsg.rating;
             let tomatoes = IMDbMsg.tomatoes;
             let country = IMDbMsg.country;
-            let doubanRating = DouBan.rating;
+            let doubanRating = Douban.rating;
             msg = `${country}\n${IMDbrating}\n${doubanRating}${tomatoes.length > 0 ? "\n" + tomatoes : "\n"}`;
         })
         .catch(error => {
@@ -84,21 +85,21 @@ function setTitleMap(id, title, map) {
 function requestDoubanRating(imdbId) {
     return new Promise(function (resolve, reject) {
         let url = "https://api.douban.com/v2/movie/imdb/" + imdbId + "?apikey=0df993c66c0c636e29ecbb5344252a4a";
-        if (consoleLog) console.log("Netflix DouBan Rating URL:\n" + url);
+        if (consoleLog) console.log("Netflix Douban Rating URL:\n" + url);
         $httpClient.get(url, function (error, response, data) {
             if (!error) {
-                if (consoleLog) console.log("Netflix DouBan Rating response:\n" + JSON.stringify(response));
-                if (consoleLog) console.log("Netflix DouBan Rating Data:\n" + data);
+                if (consoleLog) console.log("Netflix Douban Rating response:\n" + JSON.stringify(response));
+                if (consoleLog) console.log("Netflix Douban Rating Data:\n" + data);
                 if (response.status == 200) {
                     let obj = JSON.parse(data);
                     let rating = get_douban_rating_message(obj);
                     resolve({ rating });
                 } else {
-                    resolve({ rating: "DouBan:  ⭐️ N/A" });
+                    resolve({ rating: "Douban:  ⭐️ N/A" });
                 }
             } else {
-                if (consoleLog) console.log("Netflix DouBan Rating Error:\n" + error);
-                resolve({ rating: "DouBan:  ❌ N/A" });
+                if (consoleLog) console.log("Netflix Douban Rating Error:\n" + error);
+                resolve({ rating: "Douban:  ❌ N/A" });
             }
         });
     });
@@ -177,7 +178,7 @@ function get_IMDb_message(data) {
 function get_douban_rating_message(data) {
     let average = data.rating.average;
     let numRaters = data.rating.numRaters;
-    let rating_message = `DouBan:  ⭐️ ${average.length > 0 ? average + "/10" : "N/A"}   ${numRaters == 0 ? "" : parseFloat(numRaters).toLocaleString()}`;
+    let rating_message = `Douban:  ⭐️ ${average.length > 0 ? average + "/10" : "N/A"}   ${numRaters == 0 ? "" : parseFloat(numRaters).toLocaleString()}`;
     return rating_message;
 }
 
