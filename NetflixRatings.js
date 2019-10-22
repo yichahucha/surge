@@ -9,7 +9,7 @@ hostname = ios.prod.ftl.netflix.com
 
 const consoleLog = false;
 const imdbApikeyCacheKey = "IMDbApikey";
-const netflixTitleCacheKey = "netflixTitle";
+const netflixTitleCacheKey = "NetflixTitle";
 
 if ($request.headers) {
     let url = $request.url;
