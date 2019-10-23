@@ -10,8 +10,6 @@ hostname = ios.prod.ftl.netflix.com
 const consoleLog = false;
 const imdbApikeyCacheKey = "IMDbApikey";
 const netflixTitleCacheKey = "NetflixTitle";
-const noRatings = "⭐️ N/A";
-const errorRatings = "❌ N/A";
 
 if ($request.headers) {
     let url = $request.url;
@@ -33,6 +31,7 @@ if ($request.headers) {
     var IMDbApikey = $persistentStore.read(imdbApikeyCacheKey);
     if (!IMDbApikey) updateIMDbApikey();
     let obj = JSON.parse($response.body);
+    if (consoleLog) console.log("Netflix Original Body:\n" + $response.body);
     const videoID = obj.paths[0][1];
     const video = obj.value.videos[videoID];
     const map = getTitleMap();
@@ -66,6 +65,7 @@ if ($request.headers) {
         .finally(() => {
             let summary = obj.value.videos[videoID].summary;
             summary["supplementalMessage"] = `${msg}${summary && summary.supplementalMessage ? "\n" + summary.supplementalMessage : ""}`;
+            if (consoleLog) console.log("Netflix Modified Body:\n" + JSON.stringify(obj));
             $done({ body: JSON.stringify(obj) });
         });
 }
@@ -93,11 +93,11 @@ function requestDoubanRating(imdbId) {
                     const rating = get_douban_rating_message(obj);
                     resolve({ rating });
                 } else {
-                    resolve({ rating: "Douban:  " + noRatings });
+                    resolve({ rating: "Douban:  " + errorTip().noData });
                 }
             } else {
                 if (consoleLog) console.log("Netflix Douban Rating Error:\n" + error);
-                resolve({ rating: "Douban:  " + errorRatings });
+                resolve({ rating: "Douban:  " + errorTip().error });
             }
         });
     });
@@ -120,21 +120,21 @@ function requestIMDbRating(title, year, type) {
                         const msg = get_IMDb_message(obj);
                         resolve({ id, msg });
                     } else {
-                        reject(noRatings);
+                        reject(errorTip().noData);
                     }
                 } else if (response.status == 401) {
                     if (IMDbApikeys.length > 1) {
                         updateIMDbApikey();
                         requestIMDbRating(title, year, type);
                     } else {
-                        reject(noRatings);
+                        reject(errorTip().noData);
                     }
                 } else {
-                    reject(noRatings);
+                    reject(errorTip().noData);
                 }
             } else {
                 if (consoleLog) console.log("Netflix IMDb Rating Error:\n" + error);
-                reject(errorRatings);
+                reject(errorTip().error);
             }
         });
     });
@@ -188,6 +188,10 @@ function get_country_message(data) {
         emoji_country += countryEmoji(item) + " " + item + ", ";
     });
     return emoji_country.slice(0, -2);
+}
+
+function errorTip() {
+    return { noData: "⭐️ N/A", error: "❌ N/A" }
 }
 
 function IMDbApikeys() {
