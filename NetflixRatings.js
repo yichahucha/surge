@@ -10,17 +10,19 @@ hostname = ios.prod.ftl.netflix.com
 const consoleLog = false;
 const imdbApikeyCacheKey = "IMDbApikey";
 const netflixTitleCacheKey = "NetflixTitle";
+const noRatings = "⭐️ N/A";
+const errorRatings = "❌ N/A";
 
 if ($request.headers) {
     let url = $request.url;
-    let urlDecode = decodeURIComponent(url);
-    let videos = urlDecode.match(/"videos","(\d+)"/);
-    let videoID = videos[1];
-    let map = getTitleMap();
-    let title = map[videoID];
-    let isEnglish = url.match(/languages=en/) ? true : false;
+    const urlDecode = decodeURIComponent(url);
+    const videos = urlDecode.match(/"videos","(\d+)"/);
+    const videoID = videos[1];
+    const map = getTitleMap();
+    const title = map[videoID];
+    const isEnglish = url.match(/languages=en/) ? true : false;
     if (!title && !isEnglish) {
-        let currentSummary = urlDecode.match(/\["videos","(\d+)","current","summary"\]/);
+        const currentSummary = urlDecode.match(/\["videos","(\d+)","current","summary"\]/);
         url = url.replace("&path=" + encodeURIComponent(currentSummary[0]), "");
         url = url.replace(/&languages=(.*?)&/, "&languages=en-US&");
     }
@@ -30,11 +32,10 @@ if ($request.headers) {
     var IMDbApikeys = IMDbApikeys();
     var IMDbApikey = $persistentStore.read(imdbApikeyCacheKey);
     if (!IMDbApikey) updateIMDbApikey();
-    let body = $response.body;
-    let obj = JSON.parse(body);
-    let videoID = obj.paths[0][1];
-    let video = obj.value.videos[videoID];
-    let map = getTitleMap();
+    let obj = JSON.parse($response.body);
+    const videoID = obj.paths[0][1];
+    const video = obj.value.videos[videoID];
+    const map = getTitleMap();
     let title = map[videoID];
     if (!title) {
         title = video.summary.title;
@@ -48,23 +49,20 @@ if ($request.headers) {
         type = "series";
     }
     delete video.details;
-    let IMDbMsg = {};
+    const requestRatings = async () => {
+        const IMDb = await requestIMDbRating(title, year, type);
+        const Douban = await requestDoubanRating(IMDb.id);
+        const IMDbrating = IMDb.msg.rating;
+        const tomatoes = IMDb.msg.tomatoes;
+        const country = IMDb.msg.country;
+        const doubanRating = Douban.rating;
+        const message = `${country}\n${IMDbrating}\n${doubanRating}${tomatoes.length > 0 ? "\n" + tomatoes : "\n"}`;
+        return message;
+    }
     let msg = "";
-    requestIMDbRating(title, year, type)
-        .then((IMDb) => {
-            IMDbMsg = IMDb.msg;
-            return requestDoubanRating(IMDb.id);
-        })
-        .then(Douban => {
-            let IMDbrating = IMDbMsg.rating;
-            let tomatoes = IMDbMsg.tomatoes;
-            let country = IMDbMsg.country;
-            let doubanRating = Douban.rating;
-            msg = `${country}\n${IMDbrating}\n${doubanRating}${tomatoes.length > 0 ? "\n" + tomatoes : "\n"}`;
-        })
-        .catch(error => {
-            msg = error + "\n";
-        })
+    requestRatings()
+        .then(message => msg = message)
+        .catch(error => msg = error + "\n")
         .finally(() => {
             let summary = obj.value.videos[videoID].summary;
             summary["supplementalMessage"] = `${msg}${summary && summary.supplementalMessage ? "\n" + summary.supplementalMessage : ""}`;
@@ -73,7 +71,7 @@ if ($request.headers) {
 }
 
 function getTitleMap() {
-    let map = $persistentStore.read(netflixTitleCacheKey);
+    const map = $persistentStore.read(netflixTitleCacheKey);
     return map ? JSON.parse(map) : {};
 }
 
@@ -84,22 +82,22 @@ function setTitleMap(id, title, map) {
 
 function requestDoubanRating(imdbId) {
     return new Promise(function (resolve, reject) {
-        let url = "https://api.douban.com/v2/movie/imdb/" + imdbId + "?apikey=0df993c66c0c636e29ecbb5344252a4a";
+        const url = "https://api.douban.com/v2/movie/imdb/" + imdbId + "?apikey=0df993c66c0c636e29ecbb5344252a4a";
         if (consoleLog) console.log("Netflix Douban Rating URL:\n" + url);
         $httpClient.get(url, function (error, response, data) {
             if (!error) {
                 if (consoleLog) console.log("Netflix Douban Rating response:\n" + JSON.stringify(response));
                 if (consoleLog) console.log("Netflix Douban Rating Data:\n" + data);
                 if (response.status == 200) {
-                    let obj = JSON.parse(data);
-                    let rating = get_douban_rating_message(obj);
+                    const obj = JSON.parse(data);
+                    const rating = get_douban_rating_message(obj);
                     resolve({ rating });
                 } else {
-                    resolve({ rating: "Douban:  ⭐️ N/A" });
+                    resolve({ rating: "Douban:  " + noRatings });
                 }
             } else {
                 if (consoleLog) console.log("Netflix Douban Rating Error:\n" + error);
-                resolve({ rating: "Douban:  ❌ N/A" });
+                resolve({ rating: "Douban:  " + errorRatings });
             }
         });
     });
@@ -116,27 +114,27 @@ function requestIMDbRating(title, year, type) {
                 if (consoleLog) console.log("Netflix IMDb Rating response:\n" + JSON.stringify(response));
                 if (consoleLog) console.log("Netflix IMDb Rating Data:\n" + data);
                 if (response.status == 200) {
-                    let obj = JSON.parse(data);
+                    const obj = JSON.parse(data);
                     if (obj.Response != "False") {
-                        let id = obj.imdbID;
-                        let msg = get_IMDb_message(obj);
+                        const id = obj.imdbID;
+                        const msg = get_IMDb_message(obj);
                         resolve({ id, msg });
                     } else {
-                        reject("⭐️ N/A");
+                        reject(noRatings);
                     }
                 } else if (response.status == 401) {
                     if (IMDbApikeys.length > 1) {
                         updateIMDbApikey();
                         requestIMDbRating(title, year, type);
                     } else {
-                        reject("⭐️ N/A");
+                        reject(noRatings);
                     }
                 } else {
-                    reject("⭐️ N/A");
+                    reject(noRatings);
                 }
             } else {
                 if (consoleLog) console.log("Netflix IMDb Rating Error:\n" + error);
-                reject("❌ N/A");
+                reject(errorRatings);
             }
         });
     });
@@ -144,7 +142,7 @@ function requestIMDbRating(title, year, type) {
 
 function updateIMDbApikey() {
     if (IMDbApikey) IMDbApikeys.splice(IMDbApikeys.indexOf(IMDbApikey), 1);
-    let index = Math.floor(Math.random() * IMDbApikeys.length);
+    const index = Math.floor(Math.random() * IMDbApikeys.length);
     IMDbApikey = IMDbApikeys[index];
     $persistentStore.write(IMDbApikey, imdbApikeyCacheKey);
 }
@@ -155,16 +153,16 @@ function get_IMDb_message(data) {
     let country_message = "";
     let ratings = data.Ratings;
     if (ratings.length > 0) {
-        let imdb_source = ratings[0]["Source"];
+        const imdb_source = ratings[0]["Source"];
         if (imdb_source == "Internet Movie Database") {
-            let imdb_votes = data.imdbVotes;
-            let imdb_rating = ratings[0]["Value"];
+            const imdb_votes = data.imdbVotes;
+            const imdb_rating = ratings[0]["Value"];
             rating_message = "IMDb:  ⭐️ " + imdb_rating + "    " + "" + imdb_votes;
             if (data.Type == "movie") {
                 if (ratings.length > 1) {
-                    let source = ratings[1]["Source"];
+                    const source = ratings[1]["Source"];
                     if (source == "Rotten Tomatoes") {
-                        let tomatoes = ratings[1]["Value"];
+                        const tomatoes = ratings[1]["Value"];
                         tomatoes_message = "Tomatoes:  🍅 " + tomatoes;
                     }
                 }
@@ -176,15 +174,15 @@ function get_IMDb_message(data) {
 }
 
 function get_douban_rating_message(data) {
-    let average = data.rating.average;
-    let numRaters = data.rating.numRaters;
-    let rating_message = `Douban:  ⭐️ ${average.length > 0 ? average + "/10" : "N/A"}   ${numRaters == 0 ? "" : parseFloat(numRaters).toLocaleString()}`;
+    const average = data.rating.average;
+    const numRaters = data.rating.numRaters;
+    const rating_message = `Douban:  ⭐️ ${average.length > 0 ? average + "/10" : "N/A"}   ${numRaters == 0 ? "" : parseFloat(numRaters).toLocaleString()}`;
     return rating_message;
 }
 
 function get_country_message(data) {
-    let country = data;
-    let countrys = country.split(", ");
+    const country = data;
+    const countrys = country.split(", ");
     let emoji_country = "";
     countrys.forEach(item => {
         emoji_country += countryEmoji(item) + " " + item + ", ";
