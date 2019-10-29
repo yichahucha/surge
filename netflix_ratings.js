@@ -1,5 +1,5 @@
 /*
-https://github.com/yichahucha/surge/blob/master/README.md
+README：https://github.com/yichahucha/surge/blob/master/README.md
  */
 
 const consoleLog = false;
