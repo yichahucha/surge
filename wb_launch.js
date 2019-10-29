@@ -1,3 +1,7 @@
+/*
+README：https://github.com/yichahucha/surge/blob/master/README.md
+ */
+
 const path1 = "/interface/sdk/sdkad.php";
 const path2 = "/wbapplua/wbpullad.lua";
 
