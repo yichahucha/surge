@@ -33,6 +33,8 @@ hostname = api.m.jd.com
 ```
 
 ## Quan-X
+
+Remove Weibo's ads, promotion and recommend
 ```
 [rewrite_local]
 ^https?://m?api\.weibo\.c(n|om)/2/(statuses/(unread|extend|positives/get|(friends|video)(/|_)timeline)|stories/(video_stream|home_list)|(groups|fangle)/timeline|profile/statuses|comments/build_comments|photo/recommend_list|service/picfeed|searchall|cardlist|page) url script-response-body https://raw.githubusercontent.com/yichahucha/surge/master/wb_ad.js
