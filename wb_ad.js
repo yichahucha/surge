@@ -1,3 +1,7 @@
+/*
+README：https://github.com/yichahucha/surge/blob/master/README.md
+ */
+
 const path1 = "/groups/timeline";
 const path2 = "/statuses/unread";
 const path3 = "/statuses/extend";
