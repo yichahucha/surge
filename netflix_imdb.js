@@ -1,5 +1,5 @@
 /*
-README：https://github.com/yichahucha/surge/blob/master/README.md
+README：https://github.com/yichahucha/surge/tree/master
  */
 
 const console_log = false;
