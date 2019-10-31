@@ -9,12 +9,6 @@ http-response ^https?://(sdk|wb)app\.uve\.weibo\.com(/interface/sdk/sdkad.php|/w
 hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com
 ```
 
-Daily work check-in reminder
-```
-[Script]
-cron "0 9,18 * * 1-5" script-path=https://raw.githubusercontent.com/yichahucha/surge/master/cron_daily.js
-```
-
 Display Netflix TV series and movie's IMDb ratings, Douban ratings, rotten tomato and country/region
 ```
 [Script]
@@ -30,6 +24,12 @@ Display JD commodity historical price
 http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
 [MITM]
 hostname = api.m.jd.com
+```
+
+Daily work check-in reminder
+```
+[Script]
+cron "0 9,18 * * 1-5" script-path=https://raw.githubusercontent.com/yichahucha/surge/master/cron_daily.js
 ```
 
 ## Quan-X
