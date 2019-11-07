@@ -79,7 +79,7 @@ function history_price_msg(data) {
                 price += "❗️"
             }
             const sale = result[3];
-            const msg = date + get_blank_space(25 - date.length) + price + get_blank_space(15 - price.length) + sale + "\n";
+            const msg = date + get_blank_space(23 - date.length) + price + get_blank_space(15 - price.length) + sale + "\n";
             history_price_msg += msg;
         }
     });
