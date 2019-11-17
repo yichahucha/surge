@@ -29,9 +29,14 @@ if (url.indexOf(path2) != -1) {
             let bestIndex = 0;
             for (let index = 0; index < floors.length; index++) {
                 const element = floors[index];
-                if (element.sortId > lowerword.sortId) {
-                    bestIndex = index;
+                if (element.mId == lowerword.mId) {
+                    bestIndex = index + 1;
                     break;
+                }else {
+                    if (element.sortId > lowerword.sortId) {
+                        bestIndex = index;
+                        break;
+                    }
                 }
             }
             if (data.ok == 1 && data.single) {
@@ -142,7 +147,7 @@ function adword_obj() {
         },
         "mId": "bpAdword",
         "refId": "eAdword_0000000028",
-        "sortId": 12
+        "sortId": 13
     }
 }
 
