@@ -50,7 +50,7 @@ if ($request.headers) {
         const tomatoes = IMDb.msg.tomatoes;
         const country = IMDb.msg.country;
         const doubanRating = Douban.rating;
-        const message = `${country}\n${IMDbrating}\n${doubanRating}${tomatoes.length > 0 ? "\n" + tomatoes : "\n"}`;
+        const message = `${country}\n${IMDbrating}\n${doubanRating}${tomatoes.length > 0 ? "\n" + tomatoes + "\n" : "\n"}`;
         return message;
     }
     let msg = "";
