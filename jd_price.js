@@ -68,9 +68,9 @@ function history_price_msg(data) {
     const lower_msg = "‼️ 历史最低到手价:   ¥" + String(lower) + "   " + lower_date
     const curret_msg = (data.currentPriceStatus ? "   当前价格" + data.currentPriceStatus : "") + "   (仅供参考)";
     const lower_price_msg = lower_msg + curret_msg;
-    const riqi = "日期：";
-    const jiage = "价格：";
-    const youhui = "活动：";
+    const riqi = "日期:  ";
+    const jiage = "价格:  ";
+    const youhui = "活动:  ";
     const title_msg = "〽️ 历史价格走势";
     const title_table_msg = riqi + get_blank_space(25 - riqi.length) + jiage + get_blank_space(25 - jiage.length) + youhui;
     let history_price_msg = "";
@@ -93,7 +93,7 @@ function history_price_msg(data) {
                 price += "❗️"
             }
             const sale = result[3];
-            const msg = date + get_blank_space(22 - date.length) + price + get_blank_space(15 - price.length) + sale + "\n";
+            const msg = date + get_blank_space(20 - date.length) + price + get_blank_space(15 - price.length) + sale + "\n";
             history_price_msg += msg;
         }
     });
