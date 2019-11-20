@@ -61,23 +61,32 @@ if (url.indexOf(path2) != -1) {
 
 function history_price_msg(data) {
     const rex_match = /\[.*?\]/g;
+    const rex_exec = /\[(.*),(.*),"(.*)"\]/;
     const list = data.jiagequshiyh.match(rex_match);
     const lower = data.lowerPriceyh;
     const lower_date = changeDateFormat(data.lowerDateyh);
     const lower_msg = "‼️ 历史最低到手价:   ¥" + String(lower) + "   " + lower_date
     const curret_msg = (data.currentPriceStatus ? "   当前价格" + data.currentPriceStatus : "") + "   (仅供参考)";
+    const lower_price_msg = lower_msg + curret_msg;
     const riqi = "日期：";
     const jiage = "价格：";
     const youhui = "活动：";
-    const title_msg = "〽️ 历史价格走势\n\n" + riqi + get_blank_space(25 - riqi.length) + jiage + get_blank_space(25 - jiage.length) + youhui;
-    const lower_price_msg = lower_msg + curret_msg;
-    let history_price_msg = title_msg + "\n";
-    list.reverse().forEach(item => {
+    const title_msg = "〽️ 历史价格走势";
+    const title_table_msg = riqi + get_blank_space(25 - riqi.length) + jiage + get_blank_space(25 - jiage.length) + youhui;
+    let history_price_msg = "";
+    let start_date = "";
+    let end_date = "";
+    list.reverse().forEach((item, index) => {
         if (item.length > 0) {
-            const rex_exec = /\[(.*),(.*),"(.*)"\]/;
             const result = rex_exec.exec(item);
             const dateUTC = new Date(eval(result[1]));
             const date = dateUTC.format("yyyy-MM-dd");
+            if (index == 0) {
+                end_date = date;
+            }
+            if (index == list.length - 1) {
+                start_date = date;
+            }
             let price = result[2];
             price = "¥" + String(parseFloat(price));
             if (date == lower_date) {
@@ -88,7 +97,9 @@ function history_price_msg(data) {
             history_price_msg += msg;
         }
     });
-    return [lower_price_msg, history_price_msg];
+    const date_range_msg = `(${start_date} ~ ${end_date})`;
+    const price_msg = title_msg + "  " + date_range_msg + "\n\n" + title_table_msg + "\n" + history_price_msg;
+    return [lower_price_msg, price_msg];
 }
 
 function request_hsitory_price(share_url, callback) {
