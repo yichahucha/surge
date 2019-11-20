@@ -32,7 +32,7 @@ if (url.indexOf(path2) != -1) {
                 if (element.mId == lowerword.mId) {
                     bestIndex = index + 1;
                     break;
-                }else {
+                } else {
                     if (element.sortId > lowerword.sortId) {
                         bestIndex = index;
                         break;
@@ -60,8 +60,8 @@ if (url.indexOf(path2) != -1) {
 }
 
 function history_price_msg(data) {
-    const list_str = data.jiagequshiyh + ","
-    const list = list_str.split("],");
+    const rex_match = /\[.*?\]/g;
+    const list = data.jiagequshiyh.match(rex_match);
     const lower = data.lowerPriceyh;
     const lower_date = changeDateFormat(data.lowerDateyh);
     const lower_msg = "‼️ 历史最低到手价:   ¥" + String(lower) + "   " + lower_date
@@ -72,10 +72,10 @@ function history_price_msg(data) {
     const title_msg = "〽️ 历史价格走势\n\n" + riqi + get_blank_space(25 - riqi.length) + jiage + get_blank_space(25 - jiage.length) + youhui;
     const lower_price_msg = lower_msg + curret_msg;
     let history_price_msg = title_msg + "\n";
-    list.reverse().slice(0, 180).forEach(item => {
+    list.reverse().forEach(item => {
         if (item.length > 0) {
-            const rex = /\[(.*),(.*?),"(.*)"/;
-            const result = rex.exec(item);
+            const rex_exec = /\[(.*),(.*),"(.*)"\]/;
+            const result = rex_exec.exec(item);
             const dateUTC = new Date(eval(result[1]));
             const date = dateUTC.format("yyyy-MM-dd");
             let price = result[2];
