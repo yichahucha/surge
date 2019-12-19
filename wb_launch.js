@@ -1,6 +1,5 @@
 /*
 README：https://github.com/yichahucha/surge/tree/master
-@supported A9DA732136CB
  */
 
 const path1 = "/interface/sdk/sdkad.php";
