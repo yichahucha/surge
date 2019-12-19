@@ -42,3 +42,11 @@ Remove Weibo ads, promotion and recommend
 [mitm]
 hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com
 ```
+
+Display JD commodity historical price
+```
+[rewrite_local]
+^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body jd_price_qx.js
+[mitm]
+hostname = api.m.jd.com
+```
