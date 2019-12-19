@@ -102,7 +102,7 @@ function history_price_msg(data) {
     return [lower_price_msg, price_msg];
 }
 
-function request_hsitory_price(share_url, callback) {
+function request_history_price(share_url, callback) {
     const options = {
         method: "POST",
         url: "https://apapia-history.manmanbuy.com/ChromeWidgetServices/WidgetServices.ashx",
