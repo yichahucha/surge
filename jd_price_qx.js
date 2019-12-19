@@ -22,7 +22,7 @@ if (url.indexOf(path2) != -1) {
     const floors = obj.floors;
     const commodity_info = floors[floors.length - 1];
     const shareUrl = commodity_info.data.property.shareUrl;
-    request_hsitory_price(shareUrl, function (data) {
+    request_history_price(shareUrl, function (data) {
         if (data) {
             const lowerword = adword_obj();
             lowerword.data.ad.textColor = "#fe0000";
