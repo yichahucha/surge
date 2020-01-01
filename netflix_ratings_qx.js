@@ -5,15 +5,14 @@ README：https://github.com/yichahucha/surge/tree/master
 const consoleLog = false;
 const imdbApikeyCacheKey = "IMDbApikey";
 const netflixTitleCacheKey = "NetflixTitle";
+var IMDbApikeys = IMDbApikeyList();
+var IMDbApikey = $prefs.valueForKey(imdbApikeyCacheKey);
+if (!IMDbApikey) updateIMDbApikey();
 
 modifyBody()
 
 function modifyBody() {
-    var IMDbApikeys = IMDbApikeys();
-    var IMDbApikey = $prefs.valueForKey(imdbApikeyCacheKey);
-    if (!IMDbApikey) updateIMDbApikey();
     let obj = JSON.parse($response.body);
-    if (consoleLog) console.log("Netflix Original Body:\n" + $response.body);
     const videoID = obj.paths[0][1];
     const video = obj.value.videos[videoID];
     const map = getTitleMap();
@@ -184,7 +183,7 @@ function errorTip() {
     return { noData: "⭐️ N/A", error: "❌ N/A" }
 }
 
-function IMDbApikeys() {
+function IMDbApikeyList() {
     const apikeys = [
         "PlzBanMe", "4e89234e",
         "f75e0253", "d8bb2d6b",
