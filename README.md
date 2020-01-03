@@ -73,3 +73,12 @@ JD
 [mitm]
 hostname = api.m.jd.com
 ```
+Taobao (beta)
+```
+[filter_local]
+ip-cidr, 203.119.0.0/16, reject
+[rewrite_local]
+^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail url script-response-body tb_price_qx.js
+[mitm]
+hostname = trade-acs.m.taobao.com
+```
