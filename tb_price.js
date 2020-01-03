@@ -2,7 +2,7 @@
 README：https://github.com/yichahucha/surge/tree/master
  */
 
-const console_log = false
+const console_log = true
 const url = $request.url
 const body = $response.body
 
