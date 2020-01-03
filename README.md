@@ -18,12 +18,22 @@ http-response ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22vid
 hostname = ios.prod.ftl.netflix.com
 ```
 
-Display JD commodity historical price
+Display commodity historical price
+
+JD
 ```
 [Script]
 http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
 [MITM]
 hostname = api.m.jd.com
+```
+
+Taobao
+```
+[Script]
+http-response ^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail/ requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
+[MITM]
+hostname = trade-acs.m.taobao.com
 ```
 
 Daily work check-in reminder
