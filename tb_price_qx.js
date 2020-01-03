@@ -17,24 +17,28 @@ if (true) {
     tradeConsumerProtection = value.global.data.tradeConsumerProtection
     let service = tradeConsumerProtection.tradeConsumerService.service
     let nonService = tradeConsumerProtection.tradeConsumerService.nonService
+
     let item = obj.data.item
     let shareUrl = `https://item.taobao.com/item.htm?id=${item.itemId}`
 
     request_hsitory_price(shareUrl, function (data) {
         if (data) {
+            let historyItem = getHistoryItem()
             if (data.ok == 1 && data.single) {
                 const lower_price = lower_price_msg(data.single)
                 const result = history_price_item(data.single)
                 const tbitems = result[1]
                 service.items = service.items.concat(nonService.items)
-                service.items.push({
-                    icon: "https://s2.ax1x.com/2020/01/03/lU2Pw6.png", title: "历史价格",
-                    desc: lower_price
-                })
+                historyItem.desc = lower_price
+                service.items.push(historyItem)
                 nonService.title = "价格走势"
                 nonService.items = tbitems
-                apiStack.value = JSON.stringify(value)
             }
+            if (data.ok == 0 && data.msg.length > 0) {
+                historyItem.desc = data.msg
+                service.items.push(historyItem)
+            }
+            apiStack.value = JSON.stringify(value)
             $done({ body: JSON.stringify(obj) })
         } else {
             $done({ body })
@@ -71,7 +75,7 @@ function history_price_item(data) {
             }
             let price = result[2];
             price = "¥" + String(parseFloat(price));
-            const msg = date + get_blank_space(20 - date.length) + price + get_blank_space(15 - price.length);
+            const msg = date + get_blank_space(50 - date.length) + price;
             tbitem = {
                 icon: "https://s2.ax1x.com/2020/01/03/lU2AYD.png",
                 title: msg
@@ -85,8 +89,8 @@ function history_price_item(data) {
 
 function request_hsitory_price(share_url, callback) {
     const options = {
-        url: "https://apapia-history.manmanbuy.com/ChromeWidgetServices/WidgetServices.ashx",
         method: "POST",
+        url: "https://apapia-history.manmanbuy.com/ChromeWidgetServices/WidgetServices.ashx",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
             "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_1_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 - mmbWebBrowse - ios"
@@ -119,6 +123,14 @@ function get_blank_space(length) {
     return blank;
 }
 
+function getHistoryItem() {
+    return {
+        icon: "https://s2.ax1x.com/2020/01/03/lU2Pw6.png",
+        title: "历史价格",
+        desc: ""
+    }
+}
+
 function customTradeConsumerProtection() {
     return {
         "tradeConsumerService": {
@@ -134,6 +146,8 @@ function customTradeConsumerProtection() {
                 "title": "其他"
             }
         },
+        "passValue": "all",
+        "url": "https://h5.m.taobao.com/app/detailsubpage/consumer/index.js",
         "type": "0"
     }
 }
