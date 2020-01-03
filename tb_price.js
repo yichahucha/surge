@@ -2,6 +2,7 @@
 README：https://github.com/yichahucha/surge/tree/master
  */
 
+const isQuantumultX = $task !== undefined
 const console_log = false
 const url = $request.url
 const body = $response.body
@@ -96,15 +97,25 @@ function request_hsitory_price(share_url, callback) {
         },
         body: "methodName=getBiJiaInfo_wxsmall&p_url=" + encodeURIComponent(share_url)
     }
-    $httpClient.post(options, function (error, response, data) {
-        if (!error) {
-            callback(JSON.parse(data));
-            if (console_log) console.log("Data:\n" + data);
-        } else {
+    if (isQuantumultX) {
+        $task.fetch(options).then(response => {
+            callback(JSON.parse(response.body));
+            if (console_log) $notify("Body", "", response.body);
+        }, reason => {
             callback(null, null);
-            if (console_log) console.log("Error:\n" + error);
-        }
-    })
+            if (console_log) $notify("Error", "", reason.error);
+        });
+    } else {
+        $httpClient.post(options, function (error, response, data) {
+            if (!error) {
+                callback(JSON.parse(data));
+                if (console_log) console.log("Data:\n" + data);
+            } else {
+                callback(null, null);
+                if (console_log) console.log("Error:\n" + error);
+            }
+        })
+    }
 }
 
 function changeDateFormat(cellval) {
