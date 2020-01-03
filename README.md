@@ -28,7 +28,7 @@ http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness
 hostname = api.m.jd.com
 ```
 
-Taobao
+Taobao(beta)
 ```
 [Script]
 http-response ^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
