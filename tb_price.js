@@ -75,7 +75,7 @@ function history_price_item(data) {
             }
             let price = result[2];
             price = "¥" + String(parseFloat(price));
-            const msg = date + get_blank_space(55 - date.length) + price;
+            const msg = date + get_blank_space(50 - date.length) + price;
             tbitem = {
                 icon: "https://s2.ax1x.com/2020/01/03/lU2AYD.png",
                 title: msg
