@@ -29,7 +29,8 @@ if (true) {
                 const result = history_price_item(data.single)
                 const tbitems = result[1]
                 service.items = service.items.concat(nonService.items)
-                historyItem.desc = lower_price
+                historyItem.desc = lower_price[0]
+                historyItem.title = lower_price[1]
                 service.items.unshift(historyItem)
                 nonService.title = "价格走势"
                 nonService.items = tbitems
@@ -51,7 +52,9 @@ function lower_price_msg(data) {
     const lower_date = changeDateFormat(data.lowerDateyh);
     const lower_msg = "历史最低到手价:   ¥" + String(lower) + "   " + lower_date
     const curret_msg = (data.currentPriceStatus ? "   当前价格" + data.currentPriceStatus : "") + "   (仅供参考)";
-    return lower_msg + curret_msg;
+    const lower1 = lower_msg + curret_msg
+    const lower2 = "最低到手价💰 " + String(lower)
+    return [lower1,lower2];
 }
 
 function history_price_item(data) {
