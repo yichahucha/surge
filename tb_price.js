@@ -53,7 +53,7 @@ function lower_price_msg(data) {
     const lower_msg = "历史最低到手价:   ¥" + String(lower) + "   " + lower_date
     const curret_msg = (data.currentPriceStatus ? "   当前价格" + data.currentPriceStatus : "") + "   (仅供参考)";
     const lower1 = lower_msg + curret_msg
-    const lower2 = "最低到手价💰 " + String(lower)
+    const lower2 = "历史最低¥" + String(lower)
     return [lower1,lower2];
 }
 
