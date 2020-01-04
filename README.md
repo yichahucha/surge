@@ -28,7 +28,7 @@ http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness
 hostname = api.m.jd.com
 ```
 
-Taobao (beta)
+taobao (beta)
 ```
 [Rule]
 IP-CIDR, 203.119.128.0/17, REJECT, no-resolve
@@ -73,9 +73,10 @@ JD
 [mitm]
 hostname = api.m.jd.com
 ```
-Taobao (beta)
+taobao (beta)
 ```
 [filter_local]
+# 建议放在第一条
 ip-cidr, 203.119.128.0/17, reject, no-resolve
 [rewrite_local]
 ^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail url script-response-body tb_price_qx.js
