@@ -31,7 +31,7 @@ hostname = api.m.jd.com
 taobao (beta)
 ```
 [Rule]
-# 目前这条规则屏蔽的是阿里云IP，其他使用阿里云的应用可能会有问题（钉钉等），谨慎使用
+# 目前这条规则屏蔽的是阿里云IP，其他使用阿里云IP的应用可能会有问题（钉钉等），谨慎使用
 IP-CIDR, 203.119.128.0/17, REJECT, no-resolve
 [Script]
 http-response ^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
@@ -78,7 +78,7 @@ taobao (beta)
 ```
 [filter_local]
 # 注意优先级
-# 目前这条规则屏蔽的是阿里云IP，其他使用阿里云的应用可能会有问题（钉钉等），谨慎使用
+# 目前这条规则屏蔽的是阿里云IP，其他使用阿里云IP的应用可能会有问题（钉钉等），谨慎使用
 ip-cidr, 203.119.128.0/17, reject, no-resolve
 [rewrite_local]
 ^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail url script-response-body tb_price_qx.js
