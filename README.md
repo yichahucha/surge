@@ -31,7 +31,7 @@ hostname = api.m.jd.com
 Taobao (beta)
 ```
 [Rule]
-IP-CIDR, 203.119.0.0/16, REJECT, no-resolve
+IP-CIDR, 203.119.128.0/17, REJECT, no-resolve
 [Script]
 http-response ^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
 [MITM]
@@ -76,7 +76,7 @@ hostname = api.m.jd.com
 Taobao (beta)
 ```
 [filter_local]
-ip-cidr, 203.119.0.0/16, reject, no-resolve
+ip-cidr, 203.119.128.0/17, reject, no-resolve
 [rewrite_local]
 ^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail url script-response-body tb_price_qx.js
 [mitm]
