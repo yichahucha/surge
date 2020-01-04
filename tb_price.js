@@ -30,7 +30,7 @@ if (true) {
                 const tbitems = result[1]
                 service.items = service.items.concat(nonService.items)
                 historyItem.desc = lower_price
-                service.items.push(historyItem)
+                service.items.unshift(historyItem)
                 nonService.title = "价格走势"
                 nonService.items = tbitems
             }
