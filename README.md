@@ -33,7 +33,7 @@ taobao (beta)
 [Script]
 http-response https?:\/\/(trade-acs\.m\.taobao\.com|.+)(\/amdc\/mobileDispatch|\/gw\/mtop\.taobao\.detail\.getdetail) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
 [MITM]
-hostname = trade-acs.m.taobao.com,amdc.m.taobao.com
+hostname = trade-acs.m.taobao.com, amdc.m.taobao.com
 ```
 
 Daily work check-in reminder
@@ -76,5 +76,5 @@ taobao (beta)
 [rewrite_local]
 https?:\/\/(trade-acs\.m\.taobao\.com|.+)(\/amdc\/mobileDispatch|\/gw\/mtop\.taobao\.detail\.getdetail) url script-response-body tb_price.js
 [mitm]
-hostname = trade-acs.m.taobao.com,amdc.m.taobao.com
+hostname = trade-acs.m.taobao.com, amdc.m.taobao.com
 ```
