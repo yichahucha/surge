@@ -30,17 +30,10 @@ hostname = api.m.jd.com
 
 taobao (beta)
 ```
-[Rule]
-# 注意优先级（建议放在第一条）
-# 这两条规则可以最大程度缩小匹配的 IP 范围，减少干扰其他应用，不一定适用所有人，可以自己抓包调节
-IP-CIDR, 203.119.144.0/23, REJECT, no-resolve
-IP-CIDR, 203.119.175.0/24, REJECT, no-resolve
-# 新增一条规则，不能用的把这条也加上试试
-IP-CIDR, 106.11.162.0/24, REJECT, no-resolve
 [Script]
-http-response ^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
+http-response https?:\/\/(trade-acs\.m\.taobao\.com|.+)(\/amdc\/mobileDispatch|\/gw\/mtop\.taobao\.detail\.getdetail) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
 [MITM]
-hostname = trade-acs.m.taobao.com
+hostname = trade-acs.m.taobao.com,amdc.m.taobao.com
 ```
 
 Daily work check-in reminder
@@ -80,15 +73,8 @@ hostname = api.m.jd.com
 ```
 taobao (beta)
 ```
-[filter_local]
-# 注意优先级（建议放在第一条）
-# 这两条规则可以最大程度缩小匹配的 IP 范围，减少干扰其他应用，不一定适用所有人，可以自己抓包调节
-ip-cidr, 203.119.144.0/23, reject, no-resolve
-ip-cidr, 203.119.175.0/24, reject, no-resolve
-# 新增一条规则，不能用的把这条也加上试试
-ip-cidr, 106.11.162.0/24, reject, no-resolve
 [rewrite_local]
-^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail url script-response-body tb_price.js
+https?:\/\/(trade-acs\.m\.taobao\.com|.+)(\/amdc\/mobileDispatch|\/gw\/mtop\.taobao\.detail\.getdetail) url script-response-body tb_price.js
 [mitm]
-hostname = trade-acs.m.taobao.com
+hostname = trade-acs.m.taobao.com,amdc.m.taobao.com
 ```
