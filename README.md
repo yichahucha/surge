@@ -42,7 +42,7 @@ IP-CIDR, 47.102.83.0/24, REJECT, no-resolve
 http-response ^https?://amdc.m.taobao.com/amdc/mobileDispatch requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
 http-response ^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
 [MITM]
-hostname = trade-acs.m.taobao.com
+hostname = trade-acs.m.taobao.com,amdc.m.taobao.com
 ```
 
 Daily work check-in reminder
@@ -94,5 +94,5 @@ ip-cidr, 47.102.83.0/24, reject, no-resolve
 ^https?://amdc.m.taobao.com/amdc/mobileDispatch url script-response-body tb_price.js
 ^https://trade-acs.m.taobao.com/gw/mtop.taobao.detail.getdetail url script-response-body tb_price.js
 [mitm]
-hostname = trade-acs.m.taobao.com
+hostname = trade-acs.m.taobao.com,amdc.m.taobao.com
 ```
