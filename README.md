@@ -96,4 +96,5 @@ ip-cidr, 47.102.83.0/24, reject
 [mitm]
 hostname = trade-acs.m.taobao.com,amdc.m.taobao.com
 ```
-Group：[t.me/scriptgroup](http://t.me/scriptgroup)
+
+[Group](http://t.me/scriptgroup)
