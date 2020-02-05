@@ -1,5 +1,4 @@
 ## Surge
-
 Remove Weibo ads, promotion and recommend
 ```
 [Script]
@@ -28,7 +27,7 @@ http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness
 hostname = api.m.jd.com
 ```
 
-taobao (beta)
+taobao
 ```
 [Rule]
 # 注意优先级（建议放在第一条）
@@ -38,7 +37,7 @@ IP-CIDR, 203.119.175.0/24, REJECT, no-resolve
 IP-CIDR, 106.11.162.0/24, REJECT, no-resolve
 IP-CIDR, 47.102.83.0/24, REJECT, no-resolve
 [Script]
-# 使用脚本屏蔽 IP，不生效的卸载 tb 重装试试，使用这个脚本就不用写规则了（beta）
+# 使用脚本屏蔽 IP，不生效或者失效需要卸载 tb 重装，使用脚本不需要写规则
 http-response ^https?://amdc\.m\.taobao\.com/amdc/mobileDispatch requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
 http-response ^https://trade-acs\.m\.taobao\.com/gw/mtop\.taobao\.detail\.getdetail requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
 [MITM]
@@ -80,7 +79,7 @@ JD
 [mitm]
 hostname = api.m.jd.com
 ```
-taobao (beta)
+taobao
 ```
 [filter_local]
 # 注意优先级（建议放在第一条）
@@ -90,11 +89,11 @@ ip-cidr, 203.119.175.0/24, reject
 ip-cidr, 106.11.162.0/24, reject
 ip-cidr, 47.102.83.0/24, reject
 [rewrite_local]
-# 使用脚本屏蔽 IP，不生效的卸载 tb 重装试试，使用这个脚本就不用写规则了（beta）
+# 使用脚本屏蔽 IP，不生效或者失效需要卸载 tb 重装，使用脚本不需要写规则
 ^https?://amdc\.m\.taobao\.com/amdc/mobileDispatch url script-response-body tb_price.js
 ^https://trade-acs\.m\.taobao\.com/gw/mtop\.taobao\.detail\.getdetail url script-response-body tb_price.js
 [mitm]
 hostname = trade-acs.m.taobao.com,amdc.m.taobao.com
 ```
 
-[Group](http://t.me/scriptgroup)
+[Issue Group](http://t.me/scriptgroup)
