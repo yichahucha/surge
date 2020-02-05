@@ -17,9 +17,7 @@ http-response ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22vid
 hostname = ios.prod.ftl.netflix.com
 ```
 
-Display commodity historical price
-
-JD
+Display JD historical price
 ```
 [Script]
 http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
@@ -27,7 +25,7 @@ http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness
 hostname = api.m.jd.com
 ```
 
-taobao
+Display taobao historical price
 ```
 [Rule]
 # 注意优先级（建议放在第一条）
@@ -70,16 +68,15 @@ Display Netflix TV series and movie's IMDb ratings, Douban ratings, rotten tomat
 hostname = ios.prod.ftl.netflix.com
 ```
 
-Display commodity historical price
-
-JD
+Display JD historical price
 ```
 [rewrite_local]
 ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body jd_price.js
 [mitm]
 hostname = api.m.jd.com
 ```
-taobao
+
+Display taobao historical price
 ```
 [filter_local]
 # 注意优先级（建议放在第一条）
