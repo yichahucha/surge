@@ -1,4 +1,4 @@
-## Surge
+# Surge
 Remove weibo ads
 ```
 [Script]
@@ -48,7 +48,7 @@ Daily work check-in reminder
 cron "0 9,18 * * 1-5" script-path=https://raw.githubusercontent.com/yichahucha/surge/master/cron_daily.js
 ```
 
-## Quan-X
+# Quan-X
 
 Remove weibo ads
 ```
