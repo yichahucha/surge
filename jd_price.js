@@ -11,11 +11,8 @@ const $tool = tool();
 
 if (url.indexOf(path1) != -1) {
     let obj = JSON.parse(body);
-    delete obj.serverConfig.httpdns;
-    delete obj.serverConfig.dnsvip;
-    delete obj.serverConfig.dnsvip_v6;
+    obj.serverConfig.httpdns = "0";
     $done({ body: JSON.stringify(obj) });
-    if (console_log) $tool.notify("JD", "", "httpdns closed");
 }
 
 if (url.indexOf(path2) != -1) {
