@@ -12,6 +12,8 @@ const $tool = tool();
 if (url.indexOf(path1) != -1) {
     let obj = JSON.parse(body);
     obj.serverConfig.httpdns = "0";
+    obj.serverConfig.dnsvip = "";
+    obj.serverConfig.dnsvip_v6 = "";
     $done({ body: JSON.stringify(obj) });
 }
 
