@@ -12,8 +12,6 @@ const $tool = tool();
 if (url.indexOf(path1) != -1) {
     let obj = JSON.parse(body);
     delete obj.serverConfig.httpdns;
-    delete obj.serverConfig.dnsvip;
-    delete obj.serverConfig.dnsvip_v6;
     $done({ body: JSON.stringify(obj) });
 }
 
