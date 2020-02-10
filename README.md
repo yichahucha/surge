@@ -21,7 +21,7 @@ hostname = ios.prod.ftl.netflix.com
 
 Display jd historical price
 ```
-# 使用 surge 不生效或失效的检查一下有没有这条神机的复写，有的话删除试试
+# 使用 surge 不生效或失效的检查一下有没有这条神机的复写，删除试试
 # ^https?:\/\/api\.m\.jd.com\/client\.action\?functionId=(start|queryMaterialAdverts) - reject
 [Script]
 http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
