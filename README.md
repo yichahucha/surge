@@ -21,7 +21,7 @@ hostname = ios.prod.ftl.netflix.com
 
 Display jd historical price
 ```
-# 使用不生效或失效的检查一下有没有这两条复写，如果有删除试试
+# 使用不生效或失效的检查一下配置有没有这两条复写，如果有删除试试
 # ^https?:\/\/api\.m\.jd.com\/client\.action\?functionId=start - reject
 # ^https?:\/\/api\.m\.jd.com\/client\.action\?functionId=(start|queryMaterialAdverts) - reject
 [Script]
