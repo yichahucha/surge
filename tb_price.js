@@ -4,7 +4,7 @@ README：https://github.com/yichahucha/surge/tree/master
 
 const $tool = tool()
 const $base64 = new Base64()
-const consoleLog = true
+const consoleLog = false
 const url = $request.url
 const body = $response.body
 const path1 = "/amdc/mobileDispatch"
