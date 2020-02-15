@@ -4,7 +4,7 @@ README：https://github.com/yichahucha/surge/tree/master
 
 const path1 = "serverConfig";
 const path2 = "wareBusiness";
-const log = false;
+const consolelog = false;
 const url = $request.url;
 const body = $response.body;
 const $tool = tool();
