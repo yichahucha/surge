@@ -58,9 +58,6 @@ function priceSummary(data) {
         }
         summary += `\n${item.Name}   ${item.Price}   ${item.Date}   ${item.Difference}`
     })
-    historySummary(data.single).forEach((item) => {
-        summary += `\n${item.Name}   ${item.Price}   ${item.Date}   ${item.Difference}`
-    });
     return summary
 }
 
