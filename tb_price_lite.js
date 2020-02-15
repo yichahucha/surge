@@ -116,12 +116,16 @@ function historySummary(single) {
 }
 
 function difference(currentPrice, price) {
-    let difference = currentPrice - price
+    let difference = strip(currentPrice - price)
     if (difference == 0) {
         return "-"
     } else {
         return `${difference > 0 ? "↑" : "↓"}${String(difference)}`
     }
+}
+
+function strip(num, precision = 12) {
+    return +parseFloat(num.toPrecision(precision));
 }
 
 function requestPrice(share_url, callback) {
