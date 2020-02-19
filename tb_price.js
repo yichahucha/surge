@@ -32,41 +32,46 @@ if (url.indexOf(path2) != -1) {
     let obj = JSON.parse(body)
     let apiStack = obj.data.apiStack[0]
     let value = JSON.parse(apiStack.value)
+    let tradeConsumerProtection = null
     if (value.global) {
-        let tradeConsumerProtection = value.global.data.tradeConsumerProtection
+        tradeConsumerProtection = value.global.data.tradeConsumerProtection
         if (!tradeConsumerProtection) {
             value.global.data["tradeConsumerProtection"] = customTradeConsumerProtection()
+            tradeConsumerProtection = value.global.data.tradeConsumerProtection
         }
-        tradeConsumerProtection = value.global.data.tradeConsumerProtection
-        let service = tradeConsumerProtection.tradeConsumerService.service
-        let nonService = tradeConsumerProtection.tradeConsumerService.nonService
-
-        let item = obj.data.item
-        let shareUrl = `https://item.taobao.com/item.htm?id=${item.itemId}`
-
-        requestPrice(shareUrl, function (data) {
-            if (data) {
-                if (data.ok == 1 && data.single) {
-                    const lower = lowerMsgs(data.single)
-                    const tbitems = priceSummary(data)
-                    const tip = data.PriceRemark.Tip
-                    service.items = service.items.concat(nonService.items)
-                    service.items.unshift(customItem(lower[1], `${lower[0]} ${tip}` + "（仅供参考）"))
-                    nonService.title = "价格详情"
-                    nonService.items = tbitems
-                }
-                if (data.ok == 0 && data.msg.length > 0) {
-                    service.items.unshift(customItem("历史价格", data.msg))
-                }
-                apiStack.value = JSON.stringify(value)
-                $done({ body: JSON.stringify(obj) })
-            } else {
-                $done({ body })
-            }
-        })
     } else {
-        $done({ body })
+        tradeConsumerProtection = value.tradeConsumerProtection
+        if (!tradeConsumerProtection) {
+            value["tradeConsumerProtection"] = customTradeConsumerProtection()
+            tradeConsumerProtection = value.tradeConsumerProtection
+        }
     }
+    let service = tradeConsumerProtection.tradeConsumerService.service
+    let nonService = tradeConsumerProtection.tradeConsumerService.nonService
+
+    let item = obj.data.item
+    let shareUrl = `https://item.taobao.com/item.htm?id=${item.itemId}`
+
+    requestPrice(shareUrl, function (data) {
+        if (data) {
+            if (data.ok == 1 && data.single) {
+                const lower = lowerMsgs(data.single)
+                const tbitems = priceSummary(data)
+                const tip = data.PriceRemark.Tip
+                service.items = service.items.concat(nonService.items)
+                service.items.unshift(customItem(lower[1], `${lower[0]} ${tip}` + "（仅供参考）"))
+                nonService.title = "价格详情"
+                nonService.items = tbitems
+            }
+            if (data.ok == 0 && data.msg.length > 0) {
+                service.items.unshift(customItem("历史价格", data.msg))
+            }
+            apiStack.value = JSON.stringify(value)
+            $done({ body: JSON.stringify(obj) })
+        } else {
+            $done({ body })
+        }
+    })
 }
 
 function lowerMsgs(data) {
