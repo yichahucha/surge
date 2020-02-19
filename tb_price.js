@@ -91,7 +91,7 @@ function priceSummary(data) {
         } else if (index == 4) {
             item.Name = "三十天最低"
         }
-        summary = `${item.Name}${getSpace(10)}${item.Price}${getSpace(10)}${item.Date}`
+        summary = `${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
         tbitems.push(customItem(summary))
     })
     return tbitems
