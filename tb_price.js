@@ -76,7 +76,7 @@ function setConsumerProtection(data, consumerProtection) {
         items.unshift(item)
     }
     if (data.ok == 0 && data.msg.length > 0) {
-        let item = customItem("历史价格", [data.msg])
+        let item = customItem("暂无历史价格", [data.msg])
         basicService.services.unshift(item)
         items.unshift(item)
     }
@@ -97,7 +97,7 @@ function setTradeConsumerProtection(data, tradeConsumerProtection) {
         service.items.unshift(item)
     }
     if (data.ok == 0 && data.msg.length > 0) {
-        service.items.unshift(customItem("历史价格", data.msg))
+        service.items.unshift(customItem("暂无历史价格", data.msg))
     }
     return tradeConsumerProtection
 }
