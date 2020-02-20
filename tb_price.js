@@ -65,13 +65,13 @@ if (url.indexOf(path2) != -1) {
 }
 
 function setConsumerProtection(data, consumerProtection) {
-    const lower = lowerMsgs(data.single)
-    const tip = data.PriceRemark.Tip
-    const summary = priceSummary(data)[1]
     let basicService = consumerProtection.serviceProtection.basicService
     let items = consumerProtection.items
     if (data.ok == 1 && data.single) {
-        let item = customItem(lower[1], [`${lower[0]} ${tip}（仅供参考）\n${summary}`])
+        const lower = lowerMsgs(data.single)
+        const tip = data.PriceRemark.Tip
+        const summary = priceSummary(data)[1]
+        const item = customItem(lower[1], [`${lower[0]} ${tip}（仅供参考）\n${summary}`])
         basicService.services.unshift(item)
         items.unshift(item)
     }
@@ -84,12 +84,12 @@ function setConsumerProtection(data, consumerProtection) {
 }
 
 function setTradeConsumerProtection(data, tradeConsumerProtection) {
-    const lower = lowerMsgs(data.single)
-    const tip = data.PriceRemark.Tip
-    const tbitems = priceSummary(data)[0]
     let service = tradeConsumerProtection.tradeConsumerService.service
     if (data.ok == 1 && data.single) {
-        let item = customItem(lower[1], `${lower[0]} ${tip}（仅供参考）`)
+        const lower = lowerMsgs(data.single)
+        const tip = data.PriceRemark.Tip
+        const tbitems = priceSummary(data)[0]
+        const item = customItem(lower[1], `${lower[0]} ${tip}（仅供参考）`)
         let nonService = tradeConsumerProtection.tradeConsumerService.nonService
         service.items = service.items.concat(nonService.items)
         nonService.title = "价格详情"
