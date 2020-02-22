@@ -34,30 +34,34 @@ if (url.indexOf(path2) != -1) {
     let shareUrl = `https://item.taobao.com/item.htm?id=${item.itemId}`
     requestPrice(shareUrl, function (data) {
         if (data) {
-            let apiStack = obj.data.apiStack[0]
-            let value = JSON.parse(apiStack.value)
-            let tradeConsumerProtection = null
-            let consumerProtection = null
-            if (value.global) {
-                tradeConsumerProtection = value.global.data.tradeConsumerProtection
-                consumerProtection = value.global.data.consumerProtection
-            } else {
-                tradeConsumerProtection = value.tradeConsumerProtection
-                consumerProtection = value.consumerProtection
-            }
-            if (tradeConsumerProtection) {
-                tradeConsumerProtection = setTradeConsumerProtection(data, tradeConsumerProtection)
-            } else {
-                let vertical = value.vertical
-                if (vertical && vertical.hasOwnProperty("tmallhkDirectSale")) {
-                    value["tradeConsumerProtection"] = customTradeConsumerProtection()
-                    value.tradeConsumerProtection = setTradeConsumerProtection(data, value.tradeConsumerProtection)
+            if (obj.data.apiStack) {
+                let apiStack = obj.data.apiStack[0]
+                let value = JSON.parse(apiStack.value)
+                let tradeConsumerProtection = null
+                let consumerProtection = null
+                if (value.global) {
+                    tradeConsumerProtection = value.global.data.tradeConsumerProtection
+                    consumerProtection = value.global.data.consumerProtection
                 } else {
-                    consumerProtection = setConsumerProtection(data, consumerProtection)
+                    tradeConsumerProtection = value.tradeConsumerProtection
+                    consumerProtection = value.consumerProtection
                 }
+                if (tradeConsumerProtection) {
+                    tradeConsumerProtection = setTradeConsumerProtection(data, tradeConsumerProtection)
+                } else {
+                    let vertical = value.vertical
+                    if (vertical && vertical.hasOwnProperty("tmallhkDirectSale")) {
+                        value["tradeConsumerProtection"] = customTradeConsumerProtection()
+                        value.tradeConsumerProtection = setTradeConsumerProtection(data, value.tradeConsumerProtection)
+                    } else {
+                        consumerProtection = setConsumerProtection(data, consumerProtection)
+                    }
+                }
+                apiStack.value = JSON.stringify(value)
+                $done({ body: JSON.stringify(obj) })
+            } else {
+                $done({ body })
             }
-            apiStack.value = JSON.stringify(value)
-            $done({ body: JSON.stringify(obj) })
         } else {
             $done({ body })
         }
