@@ -34,9 +34,9 @@ Display taobao historical price
 ```
 # 不生效或失效的需要卸载 tb 重装，注意不开脚本进 tb 会失效
 [Script]
-http-response ^https?://(trade-acs| amdc)\.m\.taobao\.com/(gw/mtop\.taobao\.detail\.getdetail|amdc/mobileDispatch) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
+http-response ^https?://(trade-acs|amdc)\.m\.taobao\.com/(gw/mtop\.taobao\.detail\.getdetail|amdc/mobileDispatch) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
 # lite
-# http-response ^https://(trade-acs| amdc)\.m\.taobao\.com/(gw/mtop\.taobao\.detail\.getdetail|amdc/mobileDispatch) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price_lite.js
+# http-response ^https://(trade-acs|amdc)\.m\.taobao\.com/(gw/mtop\.taobao\.detail\.getdetail|amdc/mobileDispatch) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price_lite.js
 [MITM]
 hostname = trade-acs.m.taobao.com,amdc.m.taobao.com
 ```
@@ -81,9 +81,9 @@ Display taobao historical price
 ```
 # 不生效或失效的需要卸载 tb 重装，注意不开脚本进 tb 会失效
 [rewrite_local]
-^https://(trade-acs| amdc)\.m\.taobao\.com/(gw/mtop\.taobao\.detail\.getdetail|amdc/mobileDispatch) url script-response-body tb_price.js
+^https://(trade-acs|amdc)\.m\.taobao\.com/(gw/mtop\.taobao\.detail\.getdetail|amdc/mobileDispatch) url script-response-body tb_price.js
 # lite
-# ^https://(trade-acs| amdc)\.m\.taobao\.com/(gw/mtop\.taobao\.detail\.getdetail|amdc/mobileDispatch) url script-response-body tb_price_lite.js
+# ^https://(trade-acs|amdc)\.m\.taobao\.com/(gw/mtop\.taobao\.detail\.getdetail|amdc/mobileDispatch) url script-response-body tb_price_lite.js
 [mitm]
 hostname = trade-acs.m.taobao.com,amdc.m.taobao.com
 ```
