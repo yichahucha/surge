@@ -10,7 +10,6 @@ const path2 = "/gw/mtop.taobao.detail.getdetail"
 
 if (url.indexOf(path1) != -1) {
     if ($tool.isResponse) {
-        $tool.notify("", "", "脚本已更新，此配置方式已废弃，请参考文档更新配置并更新脚本" + "\nGitHub:  " + "https://github.com/yichahucha/surge/tree/master")
         $done()
     } else {
         let body = $request.body
