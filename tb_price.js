@@ -3,8 +3,8 @@ README：https://github.com/yichahucha/surge/tree/master
  */
 
 const $tool = new Tool()
-const consoleLog = false
 const $base64 = new Base64()
+const consoleLog = false
 const url = $request.url
 const path1 = "/amdc/mobileDispatch"
 const path2 = "/gw/mtop.taobao.detail.getdetail"
