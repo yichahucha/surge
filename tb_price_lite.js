@@ -46,7 +46,7 @@ if (url.indexOf(path1) != -1) {
 }
 
 if (url.indexOf(path2) != -1) {
-    $done({ body })
+    $done({ $response.body })
     const obj = JSON.parse(body)
     let item = obj.data.item
     let shareUrl = `https://item.taobao.com/item.htm?id=${item.itemId}`
