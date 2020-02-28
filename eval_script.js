@@ -5,17 +5,18 @@
  * [task_local]
  * 0 0 * * * eval_script.js
  * 
- * 2.conf 配置说明：
- * 参考下面 conf 对象，key = 远程脚本的 URL，value = 匹配脚本对应的 URL
+ * 2.__conf 配置说明：
+ * 参考下面 __conf 对象，key = 远程脚本的 URL，value = 匹配脚本对应的 URL
  * 
- * 3.脚本使用，只需要改一下之前配置好的本地脚本名为本脚本名，例如京东 jd_price.js 改为 eval_script.js 即可，例如：
+ * 3.修改配置文件的本地脚本为此脚本，例如之前京东 jd_price.js 改为 eval_script.js 即可：
  * [rewrite_local]
+ * # ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body jd_price.js
  * ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body eval_script.js
  * [mitm]
  * hostname = api.m.jd.com
  */
 
-const conf = {
+const __conf = {
     "https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js": "^https?:\/\/api\.m\.jd.com",
     "https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js": ["^https?://trade-acs\.m\.taobao\.com", "^https?://amdc\.m\.taobao\.com"],
     "https://raw.githubusercontent.com/yichahucha/surge/master/nf_rating.js": "^https?://ios\.prod\.ftl\.netflix\.com",
@@ -24,17 +25,17 @@ const conf = {
     //添加自定义远程脚本...
 }
 
-const $tool = new Tool()
-const isTask = $tool.isTask
+const __tool = new __Tool()
+const __isTask = __tool.isTask
 
-if (isTask) {
+if (__isTask) {
     const downloadScript = (url) => {
         return new Promise((resolve) => {
-            $tool.get(url, (error, response, body) => {
+            __tool.get(url, (error, response, body) => {
                 let filename = url.match(/.*\/(.*?)$/)[1]
                 if (!error) {
                     if (response.statusCode == 200) {
-                        $tool.write(body, url)
+                        __tool.write(body, url)
                         resolve(`🪓${filename} update success`)
                         console.log(`Update success: ${url}`)
                     } else {
@@ -50,7 +51,7 @@ if (isTask) {
     }
     const promises = (() => {
         let all = []
-        Object.keys(conf).forEach((url) => {
+        Object.keys(__conf).forEach((url) => {
             all.push(downloadScript(url))
         });
         return all
@@ -59,46 +60,46 @@ if (isTask) {
     Promise.all(promises).then(vals => {
         console.log("Stop updating.")
         console.log(vals.join("\n"))
-        let lastDate = $tool.read("ScriptLastUpdateDate")
+        let lastDate = __tool.read("ScriptLastUpdateDate")
         lastDate = lastDate ? lastDate : new Date()
-        $tool.notify("Update done.", `${lastDate.Format("yyyy-MM-dd HH:mm:ss")} last update.`, `${vals.join("\n")}`)
-        $tool.write(new Date(), "ScriptLastUpdateDate")
+        __tool.notify("Update done.", `${lastDate.Format("yyyy-MM-dd HH:mm:ss")} last update.`, `${vals.join("\n")}`)
+        __tool.write(new Date(), "ScriptLastUpdateDate")
         $done()
     })
 }
 
-if (!isTask) {
-    const url = $request.url
-    const script = (() => {
+if (!__isTask) {
+    const __url = $request.url
+    const __script = (() => {
         let s = null
-        for (let key in conf) {
-            let value = conf[key]
+        for (let key in __conf) {
+            let value = __conf[key]
             if (Array.isArray(value)) {
                 value.some((item) => {
-                    if (url.match(item)) {
-                        s = { url: key, content: $tool.read(key) }
+                    if (__url.match(item)) {
+                        s = { url: key, content: __tool.read(key) }
                         return true
                     }
                 })
             } else {
-                if (url.match(value)) {
-                    s = { url: key, content: $tool.read(key) }
+                if (__url.match(value)) {
+                    s = { url: key, content: __tool.read(key) }
                 }
             }
         }
         return s
     })()
-    if (script) {
-        if (script.content) {
-            eval(script.content)
-            console.log(`Execute script: ${script.url}`)
+    if (__script) {
+        if (__script.content) {
+            eval(__script.content)
+            console.log(`Execute script: ${__script.url}`)
         } else {
             $done({})
-            console.log(`Not found script: ${script.url}`)
+            console.log(`Not found script: ${__script.url}`)
         }
     } else {
         $done({})
-        console.log(`Not match URL: ${url}`)
+        console.log(`Not match URL: ${__url}`)
     }
 }
 
@@ -124,7 +125,7 @@ Date.prototype.Format = function (fmt) {
     return fmt;
 }
 
-function Tool() {
+function __Tool() {
     _node = (() => {
         if (typeof require == "function") {
             const request = require('request')
