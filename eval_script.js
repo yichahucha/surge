@@ -8,7 +8,7 @@
  * conf 配置说明：
  * key = 远程脚本的URL  value = 脚本匹配对应的URL
  * 
- * 脚本使用，只需要改一下之前配置的本地脚本名为本脚本名，例如京东 jd_price.js 改为 eval_price.js 即可：
+ * 脚本使用，只需要改一下之前配置的本地脚本名为本脚本名，例如京东 jd_price.js 改为 eval_script.js 即可：
  * [rewrite_local]
  * ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body eval_script.js
  * [mitm]
