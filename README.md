@@ -115,5 +115,3 @@ Script management tool
 [task_local]
 0 0 * * * eval_script.js
 ```
-
-[Issue Group](http://t.me/scriptgroup)
