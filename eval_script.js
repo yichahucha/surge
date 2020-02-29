@@ -61,9 +61,9 @@ if (__isTask) {
         console.log("Stop updating.")
         console.log(vals.join("\n"))
         let lastDate = __tool.read("ScriptLastUpdateDate")
-        lastDate = lastDate ? lastDate : new Date()
-        __tool.notify("Update done.", `${lastDate.Format("yyyy-MM-dd HH:mm:ss")} last update.`, `${vals.join("\n")}`)
-        __tool.write(new Date(), "ScriptLastUpdateDate")
+        lastDate = lastDate ? lastDate : new Date().Format("yyyy-MM-dd HH:mm:ss")
+        __tool.notify("Update done.", `${lastDate} last update.`, `${vals.join("\n")}`)
+        __tool.write(new Date().Format("yyyy-MM-dd HH:mm:ss"), "ScriptLastUpdateDate")
         $done()
     })
 }
