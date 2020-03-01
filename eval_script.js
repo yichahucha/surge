@@ -32,14 +32,12 @@ const __conf = String.raw`
 [remote]
 //配置远程订阅
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
-https://raw.githubusercontent.com/yichahucha/surge/master/sub_script1.conf
-
 
 
 [local]
 //配置本地脚本
 //京东
-https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js url ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig)
+//https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js url ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig)
 
 
 
