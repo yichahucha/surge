@@ -108,3 +108,10 @@ DingDing clock in
 [task_local]
 0 9,18 * * 1-5 clock_in.js
 ```
+
+Script management tool
+```
+# 远程脚本管理，脚本内添加配置
+[task_local]
+0 0 * * * eval_script.js
+```
