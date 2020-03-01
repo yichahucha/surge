@@ -9,10 +9,10 @@
  * 
  * 参考下面 __conf 示例
  * 
- * [远程订阅]
+ * [远程订阅脚本]
  * 参考示例：https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
  * 
- * [本地添加]
+ * [本地添加脚本远程连接]
  * 格式为：远程脚本的链接 url 匹配脚本对应的正则1,匹配脚本对应的正则2
  * 
  * 如果是本地添加需要修改配置文件的本地脚本为此脚本，例如之前京东 jd_price.js 改为 eval_script.js 即可：
@@ -30,12 +30,12 @@ const __conf = String.raw`
 
 
 [remote]
-//配置远程订阅
+//配置脚本远程订阅
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 
 [local]
-//配置本地脚本
+//配置脚本远程连接
 //京东
 //https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js url ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig)
 
