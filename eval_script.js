@@ -12,7 +12,7 @@
  * [远程配置]
  * 1.添加注释，格式为：####匹配脚本对应的正则1,匹配脚本对应的正则2 eval 远程脚本的链接
  * 2.修改原脚本路径为 eval_script.js 的脚本路径
- * 参考示例：https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
+ * 参考示例：https://raw.githubusercontent.com/yichahucha/surge/master/sub_script1.conf
  * 
  * [本地配置]
  * 1.添加配置，格式为：匹配脚本对应的正则1,匹配脚本对应的正则2 eval 远程脚本的链接
@@ -188,7 +188,9 @@ function ____parseRemoteConf(conf) {
         if (line.length > 0 && /^#{3}/.test(line)) {
             line = line.replace(/^#*/, "")
             line = line.replace(/^\s*/, "")
-            newLines.push(line)
+            if (line.length > 0) {
+                newLines.push(line)
+            }
         }
     })
     return newLines.join("\n")
