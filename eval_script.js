@@ -10,14 +10,15 @@
  * 参考下面 __conf 示例
  * 
  * [远程配置]
- * 1.添加注释，格式为：####匹配脚本对应的正则1,匹配脚本对应的正则2 eval 远程脚本的链接
- * 2.修改原脚本路径为 eval_script.js 的脚本路径
  * 参考示例：https://raw.githubusercontent.com/yichahucha/surge/master/sub_script1.conf
  * 
  * [本地配置]
+ * jd 脚本举例
  * 1.添加配置，格式为：匹配脚本对应的正则1,匹配脚本对应的正则2 eval 远程脚本的链接
+ * [local]
+ * ^https?://api\.m\.jd\.com/client\.action\？functionId=(wareBusiness|serverConfig) eval https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
+ *
  * 2.修改配置文件原脚本路径为 eval_script.js 的脚本路径
- * 例如修改配置文件 jd 脚本：
  * [rewrite_local]
  * #^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body jd_price.js
  * ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body eval_script.js
@@ -37,10 +38,6 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 [local]
 //custom local...
-
-//jd
-//^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) eval https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
-
 
 
 `
