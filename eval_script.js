@@ -1,7 +1,7 @@
 /**
  * 远程脚本管理（QuanX 举例）
  * 
- * 1.设置定时任务更新添加的远程脚本，第一次运行需要手动执行一下更新脚本（Qanx 普通调试模式容易更新失败，使用最新 TF 红色按钮调试），例如设置每天凌晨更新脚本：
+ * 1.设置定时任务更新添加的远程脚本，第一次运行需要手动执行一下更新脚本（Qanx 普通调试模式容易更新失败，使用最新 TF 橙色按钮调试），例如设置每天凌晨更新脚本：
  * [task_local]
  * 0 0 * * * eval_script.js
  * 
@@ -47,7 +47,7 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 const __tool = new ____Tool()
 const __isTask = __tool.isTask
 if (__isTask) {
-    const downloadScript = (url) => {
+    const downloadFile = (url) => {
         return new Promise((resolve) => {
             __tool.get(url, (error, response, body) => {
                 let filename = url.match(/.*\/(.*?)$/)[1]
@@ -73,14 +73,14 @@ if (__isTask) {
             const remoteConf = ____removeGarbage(____getConfInfo(__conf, "remote"))
             const localConf = ____removeGarbage(____getConfInfo(__conf, "local"))
             if (remoteConf.length > 0) {
-                const promises = (() => {
+                const confPromises = (() => {
                     let all = []
                     remoteConf.forEach((url) => {
-                        all.push(downloadScript(url))
+                        all.push(downloadFile(url))
                     })
                     return all
                 })()
-                Promise.all(promises).then(result => {
+                Promise.all(confPromises).then(result => {
                     let allRemoteConf = ""
                     let allRemoteMSg = ""
                     result.forEach(data => {
@@ -105,15 +105,15 @@ if (__isTask) {
     getConf()
         .then((conf) => {
             const parseConf = ____parseConf(conf.content)
-            const promises = (() => {
+            const scriptPromises = (() => {
                 let all = []
                 Object.keys(parseConf).forEach((url) => {
-                    all.push(downloadScript(url))
+                    all.push(downloadFile(url))
                 })
                 return all
             })()
             console.log("Start updating...")
-            Promise.all(promises).then(result => {
+            Promise.all(scriptPromises).then(result => {
                 console.log("Stop updating.")
                 const notifyMsg = (() => {
                     let msg = conf.msg
