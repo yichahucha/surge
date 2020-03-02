@@ -1,22 +1,23 @@
 /**
  * 脚本管理工具（QuanX 举例）
  * 
- * 1.设置定时任务更新添加的远程脚本，第一次运行需要手动执行一下更新脚本（Qanx 普通调试模式容易更新失败，使用最新 TF 橙色按钮调试），例如设置每天凌晨更新脚本：
+ * 一.设置定时任务更新添加的远程脚本，第一次运行需要手动执行一下更新脚本（Qanx 普通调试模式容易更新失败，使用最新 TF 橙色按钮调试），例如设置每天凌晨更新脚本：
  * [task_local]
  * 0 0 * * * eval_script.js
  * 
- * 2.__conf 配置说明：
+ * 二.__conf 配置说明：
  * 
  * 参考下面 __conf 示例
  * 
  * [远程配置]
- * 格式为：###远程脚本的链接 url 匹配脚本对应的正则1,匹配脚本对应的正则2
+ * 1.添加注释格式为：###远程脚本的链接 url 匹配脚本对应的正则1,匹配脚本对应的正则2
+ * 2.修改原脚本路径为 eval_script.js 的脚本路径
  * 参考示例：https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
  * 
  * [本地配置]
- * 格式为：远程脚本的链接 url 匹配脚本对应的正则1,匹配脚本对应的正则2
- * 
- * 如果是本地配置需要修改配置文件的本地脚本路径为此脚本（eval_script.js）的路径，例如之前京东 jd_price.js 改为 eval_script.js 即可：
+ * 1.添加配置格式为：远程脚本的链接 url 匹配脚本对应的正则1,匹配脚本对应的正则2
+ * 2.修改原脚本路径为 eval_script.js 的脚本路径
+ * 例如修改京东脚本：
  * [rewrite_local]
  * #^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body jd_price.js
  * ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body eval_script.js
