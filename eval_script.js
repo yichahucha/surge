@@ -233,12 +233,13 @@ function ____parseConf(conf) {
                 }
                 confObj[remote] = match
             } else {
-                __tool.notify("Configuration error", "", line)
-                throw "Configuration error:" + line
+                __tool.notify("Conf error", "", line)
+                $done()
+                throw new Error(`Conf error: ${line}`)
             }
         }
     })
-    console.log(`Configuration information:  ${JSON.stringify(confObj)}`)
+    console.log(`Conf information:  ${JSON.stringify(confObj)}`)
     return confObj
 }
 
