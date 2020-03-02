@@ -30,8 +30,7 @@ const __conf = String.raw`
 
 
 [remote]
-https://raw.githubusercontent.com/yichahucha/surge/master/sub_script1.conf
-https://raw.githubusercontent.com/yichahucha/surge/master/sub_script2.conf
+https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 //custom remote...
 
