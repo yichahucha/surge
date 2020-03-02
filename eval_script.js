@@ -30,14 +30,17 @@ const __conf = String.raw`
 
 
 [remote]
-https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 //custom remote...
+
+https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
+
 
 
 [local]
+//custom local...
+
 //jd
 //^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) eval https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
-//custom local...
 
 
 `
@@ -45,7 +48,7 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 const __tool = new ____Tool()
 const __isTask = __tool.isTask
 const __log = false
-const __debug = false
+const __debug = true
 
 if (__isTask) {
     const downloadFile = (url) => {
@@ -169,14 +172,9 @@ if (!__isTask) {
 }
 
 function ____getConfInfo(conf, type) {
-    const rex = new RegExp("\\[" + type + "\\](.|\\n)*?($|\\n\\[)", "g")
-    let result = rex.exec(conf)
-    result = result[0].split("\n")
-    if (result[2].length > 0) {
-        result.pop()
-    }
-    result.shift()
-    return result
+    const regExp = new RegExp(`(?<=\\[${type}\\])(.|\\n)+?(?=($|\\[))`)
+    const result = conf.match(regExp)[0]
+    return result.split("\n")
 }
 
 function ____parseRemoteConf(conf) {
