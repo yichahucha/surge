@@ -16,7 +16,7 @@
  * [本地配置]
  * 格式为：远程脚本的链接 url 匹配脚本对应的正则1,匹配脚本对应的正则2
  * 
- * 如果是本地配置需要修改配置文件的本地脚本路径为此脚本 eval_script.js 的路径，例如之前京东 jd_price.js 改为 eval_script.js 即可：
+ * 如果是本地配置需要修改配置文件的本地脚本路径为此脚本（eval_script.js）的路径，例如之前京东 jd_price.js 改为 eval_script.js 即可：
  * [rewrite_local]
  * # ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body jd_price.js
  * ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body eval_script.js
