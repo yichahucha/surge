@@ -1,5 +1,5 @@
 /**
- * 远程脚本管理（QuanX 举例）
+ * 脚本管理工具（QuanX 举例）
  * 
  * 1.设置定时任务更新添加的远程脚本，第一次运行需要手动执行一下更新脚本（Qanx 普通调试模式容易更新失败，使用最新 TF 橙色按钮调试），例如设置每天凌晨更新脚本：
  * [task_local]
@@ -18,7 +18,7 @@
  * 
  * 如果是本地配置需要修改配置文件的本地脚本路径为此脚本（eval_script.js）的路径，例如之前京东 jd_price.js 改为 eval_script.js 即可：
  * [rewrite_local]
- * # ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body jd_price.js
+ * #^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body jd_price.js
  * ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body eval_script.js
  * [mitm]
  * hostname = api.m.jd.com
