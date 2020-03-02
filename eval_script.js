@@ -10,7 +10,7 @@
  * 参考下面 __conf 示例
  * 
  * [远程配置]
- * 参考示例：https://raw.githubusercontent.com/yichahucha/surge/master/sub_script1.conf
+ * 参考示例：https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
  * 
  * [本地配置]
  * jd 脚本举例
