@@ -25,7 +25,6 @@
  * hostname = api.m.jd.com
  */
 
-//conf
 const __conf = String.raw`
 
 
