@@ -31,14 +31,12 @@ const __conf = String.raw`
 
 [remote]
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
-
 //custom remote...
 
 
 [local]
 //jd
 //^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) eval https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
-
 //custom local...
 
 
