@@ -49,7 +49,7 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 const __tool = new ____Tool()
 const __isTask = __tool.isTask
 const __log = false
-const __debug = false
+const __debug = true
 
 if (__isTask) {
     const downloadFile = (url) => {
