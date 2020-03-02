@@ -25,22 +25,21 @@
  * hostname = api.m.jd.com
  */
 
-
-//配置
+//conf
 const __conf = String.raw`
 
 
-
 [remote]
-//远程配置
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
+
+//custom remote...
 
 
 [local]
-//本地配置
 //jd
 //https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js url ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig)
 
+//custom local...
 
 
 `
