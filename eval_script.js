@@ -10,12 +10,12 @@
  * 参考下面 __conf 示例
  * 
  * [远程配置]
- * 1.添加注释，格式为：###远程脚本的链接 url 匹配脚本对应的正则1,匹配脚本对应的正则2
+ * 1.添加注释，格式为：####匹配脚本对应的正则1,匹配脚本对应的正则2 eval 远程脚本的链接
  * 2.修改原脚本路径为 eval_script.js 的脚本路径
  * 参考示例：https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
  * 
  * [本地配置]
- * 1.添加配置，格式为：远程脚本的链接 url 匹配脚本对应的正则1,匹配脚本对应的正则2
+ * 1.添加配置，格式为：匹配脚本对应的正则1,匹配脚本对应的正则2 eval 远程脚本的链接
  * 2.修改配置文件原脚本路径为 eval_script.js 的脚本路径
  * 例如修改配置文件 jd 脚本：
  * [rewrite_local]
@@ -30,14 +30,15 @@ const __conf = String.raw`
 
 
 [remote]
-https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
+https://raw.githubusercontent.com/yichahucha/surge/master/sub_script1.conf
+https://raw.githubusercontent.com/yichahucha/surge/master/sub_script2.conf
 
 //custom remote...
 
 
 [local]
 //jd
-//https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js url ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig)
+//^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) eval https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
 
 //custom local...
 
@@ -46,6 +47,7 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 const __tool = new ____Tool()
 const __isTask = __tool.isTask
+const __log = false
 
 if (__isTask) {
     const downloadFile = (url) => {
@@ -104,7 +106,7 @@ if (__isTask) {
             }
         })
     })
-    
+
     getConf()
         .then((conf) => {
             const parseConf = ____parseConf(conf.content)
@@ -153,18 +155,18 @@ if (!__isTask) {
         }
         return s
     })()
-    
+
     if (__script) {
         if (__script.content) {
             eval(__script.content)
-            console.log(`Request url: ${__url}\nMatch url: ${__script.match}\nExecute script: ${__script.url}`)
+            if (__log) console.log(`Request url: ${__url}\nMatch url: ${__script.match}\nExecute script: ${__script.url}`)
         } else {
             $done({})
-            console.log(`Request url: ${__url}\nMatch url: ${__script.match}\nScript not executed. Script not found: ${__script.url}`)
+            if (__log) console.log(`Request url: ${__url}\nMatch url: ${__script.match}\nScript not executed. Script not found: ${__script.url}`)
         }
     } else {
         $done({})
-        console.log(`No match url: ${__url}`)
+        if (__log) console.log(`No match url: ${__url}`)
     }
 }
 
@@ -184,8 +186,8 @@ function ____parseRemoteConf(conf) {
     let newLines = []
     lines.forEach((line) => {
         line = line.replace(/^\s*/, "")
-        if (line.length > 0 && line.substring(0, 3) == "###") {
-            line = line.replace("###", "")
+        if (line.length > 0 && /^#{3}/.test(line)) {
+            line = line.replace(/^#*/, "")
             line = line.replace(/^\s*/, "")
             newLines.push(line)
         }
@@ -210,14 +212,24 @@ function ____parseConf(conf) {
     lines.forEach((line) => {
         line = line.replace(/^\s*/, "")
         if (line.length > 0 && line.substring(0, 2) != "//") {
+            let urlRegex = /.+\s+url\s+.+/
+            let evalRegex = /.+\s+eval\s+.+/
             const avaliable = (() => {
-                const format = /^https?:\/\/.*\s+url\s+.*/
-                return format.test(line)
+                return urlRegex.test(line) || evalRegex.test(line)
             })()
             if (avaliable) {
-                const value = line.split("url")
-                const remote = value[0].replace(/\s/g, "")
-                const match = value[1].replace(/\s/g, "")
+                let remote = ""
+                let match = ""
+                if (urlRegex.test(line)) {
+                    const value = line.split("url")
+                    remote = value[0].replace(/\s/g, "")
+                    match = value[1].replace(/\s/g, "")
+                }
+                if (evalRegex.test(line)) {
+                    const value = line.split("eval")
+                    remote = value[1].replace(/\s/g, "")
+                    match = value[0].replace(/\s/g, "")
+                }
                 confObj[remote] = match
             } else {
                 __tool.notify("Configuration error", "", line)
