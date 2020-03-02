@@ -47,6 +47,7 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 const __tool = new ____Tool()
 const __isTask = __tool.isTask
+
 if (__isTask) {
     const downloadFile = (url) => {
         return new Promise((resolve) => {
@@ -81,7 +82,9 @@ if (__isTask) {
                     })
                     return all
                 })()
+                console.log("Start updating conf...")
                 Promise.all(confPromises).then(result => {
+                    console.log("Stop updating conf.")
                     let allRemoteConf = ""
                     let allRemoteMSg = ""
                     result.forEach(data => {
@@ -113,9 +116,9 @@ if (__isTask) {
                 })
                 return all
             })()
-            console.log("Start updating...")
+            console.log("Start updating script...")
             Promise.all(scriptPromises).then(result => {
-                console.log("Stop updating.")
+                console.log("Stop updating script.")
                 const notifyMsg = (() => {
                     let msg = conf.msg
                     result.forEach(data => {
@@ -151,6 +154,7 @@ if (!__isTask) {
         }
         return s
     })()
+    
     if (__script) {
         if (__script.content) {
             eval(__script.content)
