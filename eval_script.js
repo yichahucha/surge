@@ -17,7 +17,7 @@
  * [本地配置]
  * 1.添加配置，格式为：远程脚本的链接 url 匹配脚本对应的正则1,匹配脚本对应的正则2
  * 2.修改配置文件原脚本路径为 eval_script.js 的脚本路径
- * 例如修改配置文件京东脚本：
+ * 例如修改配置文件 jd 脚本：
  * [rewrite_local]
  * #^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body jd_price.js
  * ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body eval_script.js
@@ -38,7 +38,7 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 [local]
 //本地配置
-//京东
+//jd
 //https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js url ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig)
 
 
