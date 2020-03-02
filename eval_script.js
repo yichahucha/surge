@@ -5,7 +5,7 @@
  * [task_local]
  * 0 0 * * * eval_script.js
  * 
- * 2.__conf 配置脚本远程链接说明：
+ * 2.__conf 配置说明：
  * 
  * 参考下面 __conf 示例
  * 
