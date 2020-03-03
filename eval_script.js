@@ -30,14 +30,14 @@ const __conf = String.raw`
 
 
 [remote]
-//custom remote...
+// custom remote...
 
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 
 
 [local]
-//custom local...
+// custom local...
 
 
 `
@@ -108,26 +108,56 @@ if (__isTask) {
 
     getConf()
         .then((conf) => {
-            let parseConf = ____parseConf(conf.content)
+            const confObj = ____parseConf(conf.content)
+            const scriptUrls = Object.keys(confObj)
             const scriptPromises = (() => {
                 let all = []
-                Object.keys(parseConf).forEach((url) => {
+                scriptUrls.forEach((url) => {
                     all.push(downloadFile(url))
                 })
                 return all
             })()
+            const ____sequenceQueue = async (urls) => {
+                let results = []
+                for (let i = 0; i < urls.length; i++) {
+                    let result = await downloadFile(urls[i])
+                    results.push(result)
+                }
+                return results
+            }
+            const ____concurrentQueue = async (promises) => {
+                return new Promise((resolve) => {
+                    Promise.all(promises).then(result => {
+                        resolve(result)
+                    })
+                })
+            }
+            let sliceLength = 20
+            let part1 = scriptPromises.slice(0, sliceLength)
+            let part2 = scriptUrls.slice(sliceLength)
+            __tool.notify("", "", `Start updating ${scriptUrls.length} scripts...`)
             console.log("Start updating script...")
-            Promise.all(scriptPromises).then(result => {
+            ____concurrentQueue(part1).then(result1 => {
+                if (part2.length > 0) {
+                    return new Promise((resolve) => {
+                        ____sequenceQueue(part2).then((result2) => {
+                            resolve(result1.concat(result2))
+                        })
+                    })
+                } else {
+                    return result1
+                }
+            }).then((result) => {
                 console.log("Stop updating script.")
-                let notifyMsg = (() => {
+                const resultMsg = (() => {
                     let msg = conf.msg
                     result.forEach(data => {
                         msg += msg.length > 0 ? "\n" + data.msg : data.msg
                     });
                     return msg
                 })()
-                console.log(notifyMsg)
-                const count = ((msgs) => {
+                console.log(resultMsg);
+                const resultCount = ((msgs) => {
                     let success = 0
                     let fail = 0
                     msgs.forEach(msg => {
@@ -136,15 +166,15 @@ if (__isTask) {
                     });
                     return { success, fail }
                 })
-                let notifyMsgs = notifyMsg.split("\n")
-                let countObj = count(notifyMsgs)
-                notifyMsg = `${notifyMsgs.slice(0, 20).join("\n")}${notifyMsgs.length > 20 ? "\n......" : ""}\n${__emoji}success: ${countObj.success}   fail: ${countObj.fail}`
+                let resultMsgs = resultMsg.split("\n")
+                let count = resultCount(resultMsgs)
+                let notifyMsg = `${resultMsgs.slice(0, 20).join("\n")}${resultMsgs.length > 20 ? "\n......" : ""}\n${__emoji}success: ${count.success}   fail: ${count.fail}`
 
                 let lastDate = __tool.read("ScriptLastUpdateDate")
                 lastDate = lastDate ? lastDate : new Date().Format("yyyy-MM-dd HH:mm:ss")
 
                 __tool.notify("Update Done.", `${lastDate} last update.`, `${notifyMsg}`)
-                __tool.write(JSON.stringify(parseConf), "ScriptConfObject")
+                __tool.write(JSON.stringify(confObj), "ScriptConfObject")
                 __tool.write(new Date().Format("yyyy-MM-dd HH:mm:ss"), "ScriptLastUpdateDate")
                 $done()
             })
@@ -168,7 +198,6 @@ if (!__isTask) {
         }
         return s
     })()
-
     if (__script) {
         if (__script.content) {
             eval(__script.content)
