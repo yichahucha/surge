@@ -46,6 +46,7 @@ const __tool = new ____Tool()
 const __isTask = __tool.isTask
 const __log = false
 const __debug = true
+const __emoji = "🪓"
 
 if (__isTask) {
     const downloadFile = (url) => {
@@ -55,14 +56,14 @@ if (__isTask) {
                 if (!error) {
                     if (response.statusCode == 200) {
                         __tool.write(body, url)
-                        resolve({ body, msg: `🪓${filename} update success` })
+                        resolve({ body, msg: `${__emoji}${filename} update success` })
                         console.log(`Update success: ${url}`)
                     } else {
-                        resolve({ body, msg: `🪓${filename} update fail` })
+                        resolve({ body, msg: `${__emoji}${filename} update fail` })
                         console.log(`Update fail ${response.statusCode}: ${url}`)
                     }
                 } else {
-                    resolve({ body: null, msg: `🪓${filename} update fail` })
+                    resolve({ body: null, msg: `${__emoji}${filename} update fail` })
                     console.log(`Update fail ${error}: ${url}`)
                 }
             })
@@ -107,7 +108,7 @@ if (__isTask) {
 
     getConf()
         .then((conf) => {
-            const parseConf = ____parseConf(conf.content)
+            let parseConf = ____parseConf(conf.content)
             const scriptPromises = (() => {
                 let all = []
                 Object.keys(parseConf).forEach((url) => {
@@ -118,7 +119,7 @@ if (__isTask) {
             console.log("Start updating script...")
             Promise.all(scriptPromises).then(result => {
                 console.log("Stop updating script.")
-                const notifyMsg = (() => {
+                let notifyMsg = (() => {
                     let msg = conf.msg
                     result.forEach(data => {
                         msg += msg.length > 0 ? "\n" + data.msg : data.msg
@@ -126,8 +127,22 @@ if (__isTask) {
                     return msg
                 })()
                 console.log(notifyMsg)
+                const count = ((msgs) => {
+                    let success = 0
+                    let fail = 0
+                    msgs.forEach(msg => {
+                        if (msg.match("success")) success++
+                        if (msg.match("fail")) fail++
+                    });
+                    return { success, fail }
+                })
+                let notifyMsgs = notifyMsg.split("\n")
+                let countObj = count(notifyMsgs)
+                notifyMsg = `${notifyMsgs.slice(0, 20).join("\n")}${notifyMsgs.length > 20 ? "\n......" : ""}\n${__emoji}success: ${countObj.success}   fail: ${countObj.fail}`
+
                 let lastDate = __tool.read("ScriptLastUpdateDate")
                 lastDate = lastDate ? lastDate : new Date().Format("yyyy-MM-dd HH:mm:ss")
+
                 __tool.notify("Update Done.", `${lastDate} last update.`, `${notifyMsg}`)
                 __tool.write(JSON.stringify(parseConf), "ScriptConfObject")
                 __tool.write(new Date().Format("yyyy-MM-dd HH:mm:ss"), "ScriptLastUpdateDate")
@@ -172,13 +187,13 @@ function ____getConfInfo(conf, type) {
     const rex = new RegExp("\\[" + type + "\\](.|\\n)*?(?=\\n($|\\[))", "g")
     let result = rex.exec(conf)
     if (result) {
-      result = result[0].split("\n")
-      result.shift()
+        result = result[0].split("\n")
+        result.shift()
     } else {
-      result = []
+        result = []
     }
     return result
-  }
+}
 
 function ____parseRemoteConf(conf) {
     const lines = conf.split("\n")
