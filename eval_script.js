@@ -49,87 +49,97 @@ const __emoji = "🪓"
 const __concurrencyLimit = 5
 
 if (__isTask) {
-    const getConf = (() => {
+    const ____getConf = (() => {
         return new Promise((resolve) => {
-            const remoteConf = ____removeGarbage(____getConfInfo(__conf, "remote"))
-            const localConf = ____removeGarbage(____getConfInfo(__conf, "local"))
+            const remoteConf = ____removeGarbage(____extractConf(__conf, "remote"))
+            const localConf = ____removeGarbage(____extractConf(__conf, "local"))
             if (remoteConf.length > 0) {
-                __tool.notify("", "", `Start updating ${remoteConf.length} confs...`)
                 console.log("Start updating conf...")
+                __tool.notify("", "", `Start updating ${remoteConf.length} confs...`)
                 ____concurrentQueueLimit(remoteConf, __concurrencyLimit, (url) => {
                     return ____downloadFile(url)
                 })
                     .then(result => {
                         console.log("Stop updating conf.")
-                        let allRemoteConf = ""
-                        let allRemoteMSg = ""
+                        let content = []
                         result.forEach(data => {
                             if (data.body) {
-                                allRemoteConf += "\n" + ____parseRemoteConf(data.body)
+                                content = content.concat(____parseRemoteConf(data.body))
                             }
-                            allRemoteMSg += allRemoteMSg.length > 0 ? "\n" + data.msg : data.msg
                         });
-                        let content = localConf.join("\n")
-                        if (allRemoteConf.length > 0) {
-                            content = `${content}\n${allRemoteConf}`
-                        }
-                        resolve({ content, msg: allRemoteMSg })
+                        content = content.concat(localConf)
+                        resolve({ content, result })
                     })
             } else {
-                const content = localConf.join("\n")
-                resolve({ content: content, msg: "" })
+                resolve({ content: localConf, result: [] })
             }
         })
     })
 
-    let beginDate = new Date()
-    getConf()
+    const begin = new Date()
+    ____getConf()
         .then((conf) => {
-            const confObj = ____parseConf(conf.content)
-            const scriptUrls = Object.keys(confObj)
-            __tool.notify("", "", `Start updating ${scriptUrls.length} scripts...`)
+            return new Promise((resolve, reject) => {
+                if (conf.content.length > 0) {
+                    resolve(conf)
+                } else {
+                    reject(`Invalid configuration information! Please check!`)
+                }
+            })
+        })
+        .then((conf) => {
+            const confContent = ____parseConf(conf.content)
+            const confResult = conf.result
+            const scriptUrls = Object.keys(confContent)
             console.log("Start updating script...")
+            __tool.notify("", "", `Start updating ${scriptUrls.length} scripts...`)
             ____concurrentQueueLimit(scriptUrls, __concurrencyLimit, (url) => {
-                return ____downloadFile(url)
+                return new Promise((resolve) => {
+                    ____downloadFile(url).then((data) => {
+                        if (data.code == 200) {
+                            __tool.write(data.body, data.url)
+                        }
+                        resolve(data)
+                    })
+                })
             })
                 .then(result => {
                     console.log("Stop updating script.")
-                    __tool.write(JSON.stringify(confObj), "ScriptConfObject")
-                    const resultMsg = (() => {
-                        let msg = conf.msg
-                        result.forEach(data => {
-                            msg += msg.length > 0 ? "\n" + data.msg : data.msg
-                        });
-                        return msg
-                    })()
-                    return resultMsg
-                })
-                .then((resultMsg) => {
-                    console.log(resultMsg);
-                    const resultCount = ((msgs) => {
+                    __tool.write(JSON.stringify(confContent), "ScriptConfContentKey")
+                    const resultInfo = (() => {
+                        let message = ""
                         let success = 0
                         let fail = 0
-                        msgs.forEach(msg => {
-                            if (msg.match("success")) success++
-                            if (msg.match("fail")) fail++
+                        confResult.concat(result).forEach(data => {
+                            if (data.message.match("success")) success++
+                            if (data.message.match("fail")) fail++
+                            message += message.length > 0 ? "\n" + data.message : data.message
                         });
-                        return { success, fail }
-                    })
-                    let resultMsgs = resultMsg.split("\n")
-                    let count = resultCount(resultMsgs)
-                    let notifyMsg = `${resultMsgs.slice(0, 20).join("\n")}${resultMsgs.length > 20 ? `\n${__emoji}......\n` : ""}`
-                    let lastDate = __tool.read("ScriptLastUpdateDate")
+                        return { message, count: { success, fail } }
+                    })()
+                    return resultInfo
+                })
+                .then((resultInfo) => {
+                    console.log(resultInfo.message)
+                    let messages = resultInfo.message.split("\n")
+                    let notifyMessage = `${messages.slice(0, 20).join("\n")}${messages.length > 20 ? `\n${__emoji}......\n` : ""}`
+                    let lastDate = __tool.read("ScriptLastUpdateDateKey")
                     lastDate = lastDate ? lastDate : new Date().Format("yyyy-MM-dd HH:mm:ss")
-                    __tool.notify("Update Done", `Success: ${count.success}   Fail: ${count.fail}   Tasks: ${____timeDiff(beginDate, new Date())}s`, `${notifyMsg}\n${lastDate} last update`)
-                    __tool.write(new Date().Format("yyyy-MM-dd HH:mm:ss"), "ScriptLastUpdateDate")
+                    __tool.notify("Update Done", `Success: ${resultInfo.count.success}   Fail: ${resultInfo.count.fail}   Tasks: ${____timeDiff(begin, new Date())}s`, `${notifyMessage}\n${lastDate} last update`)
+                    __tool.write(new Date().Format("yyyy-MM-dd HH:mm:ss"), "ScriptLastUpdateDateKey")
                     $done()
                 })
+        })
+        .catch((error) => {
+            console.log(error)
+            if (__debug) __tool.notify("", "", error)
+            $done()
         })
 }
 
 if (!__isTask) {
     const __url = $request.url
-    const __confObj = JSON.parse(__tool.read("ScriptConfObject"))
+    const __confObj = JSON.parse(__tool.read("ScriptConfContentKey"))
     const __script = (() => {
         let script = null
         for (let key in __confObj) {
@@ -179,8 +189,8 @@ function ____concurrentQueueLimit(list, limit, asyncHandle) {
     let results = []
     let recursion = (arr) => {
         return asyncHandle(arr.shift())
-            .then((result) => {
-                results.push(result)
+            .then((data) => {
+                results.push(data)
                 if (arr.length !== 0) return recursion(arr)
                 else return 'finish'
             })
@@ -201,23 +211,23 @@ function ____downloadFile(url) {
         __tool.get(url, (error, response, body) => {
             let filename = url.match(/.*\/(.*?)$/)[1]
             if (!error) {
-                if (response.statusCode == 200) {
-                    __tool.write(body, url)
-                    resolve({ body, msg: `${__emoji}${filename} update success` })
+                const code = response.statusCode
+                if (code == 200) {
+                    resolve({ url, code, body, message: `${__emoji}${filename} update success` })
                     console.log(`Update success: ${url}`)
                 } else {
-                    resolve({ body, msg: `${__emoji}${filename} update fail` })
+                    resolve({ url, code, body, message: `${__emoji}${filename} update fail` })
                     console.log(`Update fail ${response.statusCode}: ${url}`)
                 }
             } else {
-                resolve({ body: null, msg: `${__emoji}${filename} update fail` })
+                resolve({ url, code: null, body: null, message: `${__emoji}${filename} update fail` })
                 console.log(`Update fail ${error}: ${url}`)
             }
         })
     })
 }
 
-function ____getConfInfo(conf, type) {
+function ____extractConf(conf, type) {
     const rex = new RegExp("\\[" + type + "\\](.|\\n)*?(?=\\n($|\\[))", "g")
     let result = rex.exec(conf)
     if (result) {
@@ -242,22 +252,23 @@ function ____parseRemoteConf(conf) {
             }
         }
     })
-    return newLines.join("\n")
-}
-
-function ____removeGarbage(lines) {
-    let newLines = []
-    lines.forEach((line) => {
-        line = line.replace(/^\s*/, "")
-        if (line.length > 0 && line.substring(0, 2) != "//") {
-            newLines.push(line)
-        }
-    })
     return newLines
 }
 
-function ____parseConf(conf) {
-    const lines = conf.split("\n")
+function ____removeGarbage(lines) {
+    if (lines.length > 0) {
+        let i = lines.length;
+        while (i--) {
+            const line = lines[i]
+            if (line.length == 0 || line.substring(0, 2) == "//") {
+                lines.splice(i, 1)
+            }
+        }
+    }
+    return lines
+}
+
+function ____parseConf(lines) {
     let confObj = {}
     lines.forEach((line) => {
         line = line.replace(/^\s*/, "")
@@ -337,12 +348,12 @@ function ____Tool() {
     this.write = (value, key) => {
         if (_isQuanX) return $prefs.setValueForKey(value, key)
         if (_isSurge) return $persistentStore.write(value, key)
-        if (_node) console.log(`${key} write success`);
+        if (_node) console.log(`Write success: ${key}`);
     }
     this.read = (key) => {
         if (_isQuanX) return $prefs.valueForKey(key)
         if (_isSurge) return $persistentStore.read(key)
-        if (_node) console.log(`${key} read success`);
+        if (_node) console.log(`Read success: ${key}`);
     }
     this.get = (options, callback) => {
         if (_isQuanX) {
