@@ -161,14 +161,14 @@ if (!__isTask) {
     if (__script) {
         if (__script.content) {
             eval(__script.content)
-            if (__log) console.log(`Request url: ${__url}\nMatch url: ${__script.match}\nExecute script: ${__script.url}`)
+            if (__log) console.log(`Request URL: ${__url}\nMatch URL: ${__script.match}\nExecute script: ${__script.url}`)
         } else {
             $done({})
-            if (__log) console.log(`Request url: ${__url}\nMatch url: ${__script.match}\nScript not executed. Script not found: ${__script.url}`)
+            if (__log) console.log(`Request URL: ${__url}\nMatch URL: ${__script.match}\nScript not executed. Script not found: ${__script.url}`)
         }
     } else {
         $done({})
-        if (__log) console.log(`No match url: ${__url}`)
+        if (__log) console.log(`No match URL: ${__url}`)
     }
 }
 
@@ -214,14 +214,14 @@ function ____downloadFile(url) {
                 const code = response.statusCode
                 if (code == 200) {
                     resolve({ url, code, body, message: `${__emoji}${filename} update success` })
-                    console.log(`Update success: ${url}`)
+                    console.log(`Update Success: ${url}`)
                 } else {
                     resolve({ url, code, body, message: `${__emoji}${filename} update fail` })
-                    console.log(`Update fail ${response.statusCode}: ${url}`)
+                    console.log(`Update Fail ${response.statusCode}: ${url}`)
                 }
             } else {
                 resolve({ url, code: null, body: null, message: `${__emoji}${filename} update fail` })
-                console.log(`Update fail ${error}: ${url}`)
+                console.log(`Update Fail ${error}: ${url}`)
             }
         })
     })
@@ -301,7 +301,7 @@ function ____parseConf(lines) {
             }
         }
     })
-    if (__log) console.log(`Conf information:  ${JSON.stringify(confObj)}`)
+    if (__log) console.log(`Conf Information:  ${JSON.stringify(confObj)}`)
     return confObj
 }
 
@@ -319,9 +319,9 @@ function ____parseMatch(match) {
 }
 
 function ____throwConfError(line) {
-    __tool.notify("Conf error", "", line)
+    __tool.notify("Conf Error", "", line)
     $done()
-    throw new Error(`Conf error: ${line}`)
+    throw new Error(`Conf Error: ${line}`)
 }
 
 function ____Tool() {
@@ -348,12 +348,12 @@ function ____Tool() {
     this.write = (value, key) => {
         if (_isQuanX) return $prefs.setValueForKey(value, key)
         if (_isSurge) return $persistentStore.write(value, key)
-        if (_node) console.log(`Write success: ${key}`);
+        if (_node) console.log(`Write Success: ${key}`);
     }
     this.read = (key) => {
         if (_isQuanX) return $prefs.valueForKey(key)
         if (_isSurge) return $persistentStore.read(key)
-        if (_node) console.log(`Read success: ${key}`);
+        if (_node) console.log(`Read Success: ${key}`);
     }
     this.get = (options, callback) => {
         if (_isQuanX) {
