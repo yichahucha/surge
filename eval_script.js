@@ -33,7 +33,6 @@ const __conf = String.raw`
 // custom remote...
 
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
-https://raw.githubusercontent.com/Wangsc1/All/master/nzw9314_eval.conf
 
 
 [local]
