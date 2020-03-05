@@ -44,7 +44,6 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 const __tool = new ____Tool()
 const __isTask = __tool.isTask
 const __log = false
-const __debug = true
 const __emoji = "🪓"
 const __concurrencyLimit = 5
 
@@ -82,15 +81,33 @@ if (__isTask) {
             return new Promise((resolve, reject) => {
                 if (conf.content.length > 0) {
                     resolve(conf)
+                    if (__log) console.log(conf.content)
                 } else {
-                    reject(`Invalid configuration information! Please check!`)
+                    let message = ""
+                    conf.result.forEach(data => {
+                        message += message.length > 0 ? "\n" + data.message : data.message
+                    });
+                    __tool.notify("", "", message)
+                    reject(`Unavailable configuration! Please check!`)
                 }
             })
         })
         .then((conf) => {
-            const confContent = ____parseConf(conf.content)
+            return new Promise((resolve, reject) => {
+                const result = ____parseConf(conf.content)
+                if (result.obj) {
+                    conf["obj"] = result.obj
+                    resolve(conf)
+                    if (__log) console.log(result.obj)
+                } else {
+                    reject(`Configuration information error: ${result.error}`)
+                }
+            })
+        })
+        .then((conf) => {
+            const confObj = conf.obj
             const confResult = conf.result
-            const scriptUrls = Object.keys(confContent)
+            const scriptUrls = Object.keys(confObj)
             console.log("Start updating script...")
             __tool.notify("", "", `Start updating ${scriptUrls.length} scripts...`)
             ____concurrentQueueLimit(scriptUrls, __concurrencyLimit, (url) => {
@@ -105,7 +122,7 @@ if (__isTask) {
             })
                 .then(result => {
                     console.log("Stop updating script.")
-                    __tool.write(JSON.stringify(confContent), "ScriptConfContentKey")
+                    __tool.write(JSON.stringify(confObj), "ScriptConfObjKey")
                     const resultInfo = (() => {
                         let message = ""
                         let success = 0
@@ -120,44 +137,50 @@ if (__isTask) {
                     return resultInfo
                 })
                 .then((resultInfo) => {
-                    console.log(resultInfo.message)
-                    let messages = resultInfo.message.split("\n")
-                    let notifyMessage = `${messages.slice(0, 20).join("\n")}${messages.length > 20 ? `\n${__emoji}......\n` : ""}`
-                    let lastDate = __tool.read("ScriptLastUpdateDateKey")
-                    lastDate = lastDate ? lastDate : new Date().Format("yyyy-MM-dd HH:mm:ss")
-                    __tool.notify("Update Done", `Success: ${resultInfo.count.success}   Fail: ${resultInfo.count.fail}   Tasks: ${____timeDiff(begin, new Date())}s`, `${notifyMessage}\n${lastDate} last update`)
-                    __tool.write(new Date().Format("yyyy-MM-dd HH:mm:ss"), "ScriptLastUpdateDateKey")
+                    const messages = resultInfo.message.split("\n")
+                    const detail = `${messages.slice(0, 20).join("\n")}${messages.length > 20 ? `\n${__emoji}......` : ""}`
+                    const summary = `Success: ${resultInfo.count.success}   Fail: ${resultInfo.count.fail}   Tasks: ${____timeDiff(begin, new Date())}s`
+                    const nowDate = `${new Date().Format("yyyy-MM-dd HH:mm:ss")} last update`
+                    const lastDate = __tool.read("ScriptLastUpdateDateKey")
+                    console.log(`${summary}\n${detail}\n${lastDate ? lastDate : nowDate}`)
+                    __tool.notify("Update Done", summary, `${detail}\n${lastDate ? lastDate : nowDate}`)
+                    __tool.write(nowDate, "ScriptLastUpdateDateKey")
                     $done()
                 })
         })
         .catch((error) => {
             console.log(error)
-            if (__debug) __tool.notify("", "", error)
+            __tool.notify("", "", error)
             $done()
         })
 }
 
 if (!__isTask) {
     const __url = $request.url
-    const __confObj = JSON.parse(__tool.read("ScriptConfContentKey"))
+    const __confObj = JSON.parse(__tool.read("ScriptConfObjKey"))
     const __script = (() => {
         let script = null
-        for (let key in __confObj) {
-            let value = __confObj[key]
-            value.some((url) => {
+        const keys = Object.keys(__confObj)
+        for (let i = keys.length; i--;) {
+            if (script) break
+            const key = keys[i]
+            const value = __confObj[key]
+            for (let j = value.length; j--;) {
+                const url = value[j]
                 try {
                     if (__url.match(url)) {
                         script = { url: key, content: __tool.read(key), match: url }
-                        return true
+                        break
                     }
                 } catch (error) {
                     __tool.notify("", "", `Regular Error: ${url}\nRequest URL: ${__url}`)
                     console.log(`${error}\nRegular Error: ${url}\nRequest URL: ${__url}`)
                 }
-            })
+            }
         }
         return script
     })()
+
     if (__script) {
         if (__script.content) {
             eval(__script.content)
@@ -178,7 +201,7 @@ function ____timeDiff(begin, end) {
 
 async function ____sequenceQueue(urls) {
     let results = []
-    for (let i = 0; i < urls.length; i++) {
+    for (let i = 0, len = urls.length; i < len; i++) {
         let result = await ____downloadFile(urls[i])
         results.push(result)
     }
@@ -187,7 +210,7 @@ async function ____sequenceQueue(urls) {
 
 function ____concurrentQueueLimit(list, limit, asyncHandle) {
     let results = []
-    let recursion = (arr) => {
+    const recursion = (arr) => {
         return asyncHandle(arr.shift())
             .then((data) => {
                 results.push(data)
@@ -195,9 +218,10 @@ function ____concurrentQueueLimit(list, limit, asyncHandle) {
                 else return 'finish'
             })
     };
-    let listCopy = [].concat(list)
+    const listCopy = [].concat(list)
     let asyncList = []
-    if (list.length < limit) limit = list.length
+    if (list.length < limit)
+        limit = list.length
     while (limit--) {
         asyncList.push(recursion(listCopy))
     }
@@ -209,7 +233,7 @@ function ____concurrentQueueLimit(list, limit, asyncHandle) {
 function ____downloadFile(url) {
     return new Promise((resolve) => {
         __tool.get(url, (error, response, body) => {
-            let filename = url.match(/.*\/(.*?)$/)[1]
+            const filename = url.match(/.*\/(.*?)$/)[1]
             if (!error) {
                 const code = response.statusCode
                 if (code == 200) {
@@ -242,8 +266,8 @@ function ____extractConf(conf, type) {
 function ____parseRemoteConf(conf) {
     const lines = conf.split("\n")
     let newLines = []
-    lines.forEach((line) => {
-        line = line.replace(/^\s*/, "")
+    for (let i = 0, len = lines.length; i < len; i++) {
+        let line = lines[i].replace(/^\s*/, "")
         if (line.length > 0 && /^#{3}/.test(line)) {
             line = line.replace(/^#*/, "")
             line = line.replace(/^\s*/, "")
@@ -251,7 +275,7 @@ function ____parseRemoteConf(conf) {
                 newLines.push(line)
             }
         }
-    })
+    }
     return newLines
 }
 
@@ -270,11 +294,11 @@ function ____removeGarbage(lines) {
 
 function ____parseConf(lines) {
     let confObj = {}
-    lines.forEach((line) => {
-        line = line.replace(/^\s*/, "")
+    for (let i = 0, len = lines.length; i < len; i++) {
+        let line = lines[i].replace(/^\s*/, "")
         if (line.length > 0 && line.substring(0, 2) != "//") {
-            let urlRegex = /.+\s+url\s+.+/
-            let evalRegex = /.+\s+eval\s+.+/
+            const urlRegex = /.+\s+url\s+.+/
+            const evalRegex = /.+\s+eval\s+.+/
             const avaliable = (() => {
                 return urlRegex.test(line) || evalRegex.test(line)
             })()
@@ -294,15 +318,14 @@ function ____parseConf(lines) {
                 if (remote.length > 0 && match.length > 0) {
                     confObj[remote] = match
                 } else {
-                    if (__debug) ____throwConfError(line)
+                    return { obj: null, error: line }
                 }
             } else {
-                if (__debug) ____throwConfError(line)
+                return { obj: null, error: line }
             }
         }
-    })
-    if (__log) console.log(`Conf Information:  ${JSON.stringify(confObj)}`)
-    return confObj
+    }
+    return { obj: confObj, error: null }
 }
 
 function ____parseMatch(match) {
@@ -316,12 +339,6 @@ function ____parseMatch(match) {
         }
     }
     return matchs
-}
-
-function ____throwConfError(line) {
-    __tool.notify("Conf Error", "", line)
-    $done()
-    throw new Error(`Conf Error: ${line}`)
 }
 
 function ____Tool() {
