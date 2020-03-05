@@ -81,8 +81,8 @@ if (__isTask) {
         .then((conf) => {
             return new Promise((resolve, reject) => {
                 if (conf.content.length > 0) {
-                    resolve(conf)
                     if (__log) console.log(conf.content)
+                    resolve(conf)
                 } else {
                     let message = ""
                     conf.result.forEach(data => {
@@ -97,8 +97,8 @@ if (__isTask) {
                 const result = ____parseConf(conf.content)
                 if (result.obj) {
                     conf["obj"] = result.obj
-                    resolve(conf)
                     if (__log) console.log(result.obj)
+                    resolve(conf)
                 } else {
                     reject(`Configuration information error: ${result.error}`)
                 }
@@ -138,11 +138,11 @@ if (__isTask) {
                 })
                 .then((resultInfo) => {
                     const messages = resultInfo.message.split("\n")
-                    const detail = `${messages.slice(0, 20).join("\n")}${messages.length > 20 ? `\n${__emoji}......` : ""}`
+                    const detail = `${messages.slice(0, 25).join("\n")}${messages.length > 20 ? `\n${__emoji}......` : ""}`
                     const summary = `Success: ${resultInfo.count.success}   Fail: ${resultInfo.count.fail}   Tasks: ${____timeDiff(begin, new Date())}s`
                     const nowDate = `${new Date().Format("yyyy-MM-dd HH:mm:ss")} last update`
                     const lastDate = __tool.read("ScriptLastUpdateDateKey")
-                    console.log(`${summary}\n${detail}\n${lastDate ? lastDate : nowDate}`)
+                    console.log(`${summary}\n${resultInfo.message}\n${lastDate ? lastDate : nowDate}`)
                     __tool.notify("Update Done", summary, `${detail}\n${lastDate ? lastDate : nowDate}`)
                     __tool.write(nowDate, "ScriptLastUpdateDateKey")
                     $done()
@@ -199,10 +199,10 @@ function ____timeDiff(begin, end) {
     return Math.ceil((end.getTime() - begin.getTime()) / 1000)
 }
 
-async function ____sequenceQueue(urls) {
+async function ____sequenceQueue(urls, asyncHandle) {
     let results = []
     for (let i = 0, len = urls.length; i < len; i++) {
-        let result = await ____downloadFile(urls[i])
+        let result = await asyncHandle(urls[i])
         results.push(result)
     }
     return results
@@ -237,15 +237,15 @@ function ____downloadFile(url) {
             if (!error) {
                 const code = response.statusCode
                 if (code == 200) {
-                    resolve({ url, code, body, message: `${__emoji}${filename} update success` })
                     console.log(`Update Success: ${url}`)
+                    resolve({ url, code, body, message: `${__emoji}${filename} update success` })
                 } else {
-                    resolve({ url, code, body, message: `${__emoji}${filename} update fail` })
                     console.log(`Update Fail ${response.statusCode}: ${url}`)
+                    resolve({ url, code, body, message: `${__emoji}${filename} update fail` })
                 }
             } else {
+                console.log(`Update Fail ${error}`)
                 resolve({ url, code: null, body: null, message: `${__emoji}${filename} update fail` })
-                console.log(`Update Fail ${error}: ${url}`)
             }
         })
     })
