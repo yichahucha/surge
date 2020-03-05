@@ -29,13 +29,13 @@
 const __conf = String.raw`
 
 
-[remote]
+[eval_remote]
 // custom remote...
 
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 
-[local]
+[eval_local]
 // custom local...
 
 
@@ -51,8 +51,8 @@ const __concurrencyLimit = 5
 if (__isTask) {
     const ____getConf = (() => {
         return new Promise((resolve) => {
-            const remoteConf = ____removeGarbage(____extractConf(__conf, "remote"))
-            const localConf = ____removeGarbage(____extractConf(__conf, "local"))
+            const remoteConf = ____removeGarbage(____extractConf(__conf, "eval_remote"))
+            const localConf = ____removeGarbage(____extractConf(__conf, "eval_local"))
             if (remoteConf.length > 0) {
                 console.log("Start updating conf...")
                 if (__debug) __tool.notify("", "", `Start updating ${remoteConf.length} confs...`)
