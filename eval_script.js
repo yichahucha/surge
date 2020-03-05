@@ -150,7 +150,7 @@ if (__isTask) {
         })
         .catch((error) => {
             console.log(error)
-            __tool.notify("", "", error)
+            __tool.notify("eval_script.js", "", error)
             $done()
         })
 }
