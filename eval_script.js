@@ -44,6 +44,7 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 const __tool = new ____Tool()
 const __isTask = __tool.isTask
 const __log = false
+const __debug = false
 const __emoji = "🪓"
 const __concurrencyLimit = 5
 
@@ -54,7 +55,7 @@ if (__isTask) {
             const localConf = ____removeGarbage(____extractConf(__conf, "local"))
             if (remoteConf.length > 0) {
                 console.log("Start updating conf...")
-                __tool.notify("", "", `Start updating ${remoteConf.length} confs...`)
+                if (__debug) __tool.notify("", "", `Start updating ${remoteConf.length} confs...`)
                 ____concurrentQueueLimit(remoteConf, __concurrencyLimit, (url) => {
                     return ____downloadFile(url)
                 })
@@ -87,8 +88,7 @@ if (__isTask) {
                     conf.result.forEach(data => {
                         message += message.length > 0 ? "\n" + data.message : data.message
                     });
-                    __tool.notify("", "", message)
-                    reject(`Unavailable configuration! Please check!`)
+                    reject(message.length > 0 ? message : `Unavailable configuration! Please check!`)
                 }
             })
         })
