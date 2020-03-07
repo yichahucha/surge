@@ -38,7 +38,7 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_eval.conf
 [eval_local]
 // custom local...
 
-^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) eval https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
+response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) eval https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
 
 
 `
