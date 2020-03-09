@@ -56,7 +56,7 @@ const __isTask = __tool.isTask
 const __concurrencyLimit = 5
 const __log = false
 const __debug = false
-const __developmentMode = true
+const __developmentMode = false
 
 if (__isTask) {
     const ____getConf = (() => {
