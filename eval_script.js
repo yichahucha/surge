@@ -133,13 +133,13 @@ if (__isTask) {
                     console.log(`${summary}\n${resultInfo.message}\n${lastDate ? lastDate : nowDate}`)
                     __tool.notify(`${__emojiDone}Update Done`, summary, `${detail}\n${__emoji}${lastDate ? lastDate : nowDate}`)
                     __tool.write(nowDate, "ScriptLastUpdateDateKey")
-                    $done()
+                    __tool.done({})
                 })
         })
         .catch((error) => {
-            console.log(error)
+            __tool.done({})
             __tool.notify("[eval_script.js]", "", error)
-            $done()
+            console.log(error)
         })
 }
 
@@ -191,14 +191,14 @@ if (!__isTask) {
                             eval(__script.content)
                             if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType}==${type}`, `Execute script: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
                         } catch (error) {
-                            $done({})
+                            __tool.done({})
                             if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType}`, `Script execute error: ${error}\nScript: ${__script.url}\nRegular: ${__script.match}\nRequest: ${__url}`)
                         }
                     } else {
                         eval(__script.content)
                     }
                 } else {
-                    $done({})
+                    __tool.done({})
                     if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType}!=${type}`, `Script types do not match! Don't execute script.\nScript: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
                 }
             } else {
@@ -207,7 +207,7 @@ if (!__isTask) {
                         eval(__script.content)
                         if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType} ${"request&&response"}`, `Execute script: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
                     } catch (error) {
-                        $done({})
+                        __tool.done({})
                         if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType}`, `Script execute error: ${error}\nScript: ${__script.url}\nRegular: ${__script.match}\nRequest: ${__url}`)
                     }
                 } else {
@@ -215,11 +215,11 @@ if (!__isTask) {
                 }
             }
         } else {
-            $done({})
+            __tool.done({})
             if (__log) console.log(`Script not found: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
         }
     } else {
-        $done({})
+        __tool.done({})
         if (__log) console.log(`Script not matched: ${__url}`)
     }
 }
@@ -415,6 +415,11 @@ function ____Tool() {
             return "request"
         }
     })()
+    this.done = (obj) => {
+        if (_isQuanX) $done(obj)
+        if (_isSurge) $done(obj)
+        if (_node) console.log("Script Done.");
+    }
     this.notify = (title, subtitle, message) => {
         if (_isQuanX) $notify(title, subtitle, message)
         if (_isSurge) $notification.post(title, subtitle, message)
