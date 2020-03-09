@@ -26,6 +26,7 @@
  * hostname = api.m.jd.com
  */
 
+
 const __conf = String.raw`
 
 
@@ -52,9 +53,10 @@ const __showLine = 20
 
 const __tool = new ____Tool()
 const __isTask = __tool.isTask
+const __concurrencyLimit = 5
 const __log = false
 const __debug = false
-const __concurrencyLimit = 5
+const __developmentMode = true
 
 if (__isTask) {
     const ____getConf = (() => {
@@ -119,13 +121,23 @@ if (__isTask) {
             console.log("Start updating script...")
             __tool.notify("", "", `Start updating ${scriptUrls.length} scripts...`)
             ____concurrentQueueLimit(scriptUrls, __concurrencyLimit, (url) => {
+                const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
                 return new Promise((resolve) => {
-                    ____downloadFile(url).then((data) => {
-                        if (data.code == 200) {
-                            __tool.write(data.body, data.url)
+                    if (urlRegex.test(url)) {
+                        ____downloadFile(url).then((data) => {
+                            if (data.code == 200) {
+                                __tool.write(data.body, data.url)
+                            }
+                            resolve(data)
+                        })
+                    } else {
+                        if (__developmentMode) {
+                            __tool.write(url, url)
+                            resolve({ body: url, url, message: `${__emoji}${url} function set success` })
+                        } else {
+                            resolve({ body: "", url, message: `${__emoji}${url} The script url is not available!` })
                         }
-                        resolve(data)
-                    })
+                    }
                 })
             })
                 .then(result => {
@@ -165,7 +177,13 @@ if (__isTask) {
 
 if (!__isTask) {
     const __url = $request.url
-    const __confObj = JSON.parse(__tool.read("ScriptConfObjKey"))
+    const __confObj = (() => {
+        if (__developmentMode) {
+            return ____parseDevelopmentModeConf(__conf)
+        } else {
+            return JSON.parse(__tool.read("ScriptConfObjKey"))
+        }
+    })()
     const __script = (() => {
         let script = null
         const keys = Object.keys(__confObj)
@@ -175,14 +193,21 @@ if (!__isTask) {
             const value = __confObj[key]
             for (let j = value.length; j--;) {
                 const match = value[j]
-                try {
+                if (__debug) {
+                    try {
+                        if (__url.match(match.regular)) {
+                            script = { url: key, match, content: __tool.read(key) }
+                            break
+                        }
+                    } catch (error) {
+                        if (__debug) __tool.notify("[eval_script.js]", "", `Error regular : ${match.regular}\nRequest: ${__url}`)
+                        if (__log) console.log(`${error}\nError regular : ${match.regular}\nRequest: ${__url}`)
+                    }
+                } else {
                     if (__url.match(match.regular)) {
                         script = { url: key, match, content: __tool.read(key) }
                         break
                     }
-                } catch (error) {
-                    if (__debug) __tool.notify("[eval_script.js]", "", `Error regular : ${match.regular}\nRequest: ${__url}`)
-                    if (__log) console.log(`${error}\nError regular : ${match.regular}\nRequest: ${__url}`)
                 }
             }
         }
@@ -191,27 +216,41 @@ if (!__isTask) {
 
     if (__script) {
         if (__script.content) {
-            try {
-                const type = __script.match.type
-                if (type && type.length > 0) {
-                    if (__tool.scriptType == type) {
-                        eval(__script.content)
-                        if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType}==${type}`, `Execute script: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
-                        if (__log) console.log(`Execute script: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
+            const type = __script.match.type
+            if (type && type.length > 0) {
+                if (__tool.scriptType == type) {
+                    if (__debug) {
+                        try {
+                            eval(__script.content)
+                            if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType}==${type}`, `Execute script: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
+                            if (__log) console.log(`Execute script: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
+                        } catch (error) {
+                            $done({})
+                            if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType}`, `Script execute error: ${error}\nScript: ${__script.url}\nRegular: ${__script.match}\nRequest: ${__url}`)
+                            if (__log) console.log(`Script execute error : ${error}\nScript: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
+                        }
                     } else {
-                        $done({})
-                        if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType}!=${type}`, `Script types do not match! Don't execute script.\nScript: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
+                        eval(__script.content)
+                    }
+                } else {
+                    $done({})
+                    if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType}!=${type}`, `Script types do not match! Don't execute script.\nScript: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
+                    if (__log) console.log(`Execute script: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
+                }
+            } else {
+                if (__debug) {
+                    try {
+                        eval(__script.content)
+                        if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType} ${"request&&response"}`, `Execute script: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
                         if (__log) console.log(`Execute script: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
+                    } catch (error) {
+                        $done({})
+                        if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType}`, `Script execute error: ${error}\nScript: ${__script.url}\nRegular: ${__script.match}\nRequest: ${__url}`)
+                        if (__log) console.log(`Script execute error : ${error}\nScript: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
                     }
                 } else {
                     eval(__script.content)
-                    if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType} ${"request&&response"}`, `Execute script: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
-                    if (__log) console.log(`Execute script: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
                 }
-            } catch (error) {
-                $done({})
-                if (__debug) __tool.notify("[eval_script.js]", `${__tool.method} ${__tool.scriptType}`, `Script execute error: ${error}\nScript: ${__script.url}\nRegular: ${__script.match}\nRequest: ${__url}`)
-                if (__log) console.log(`Script execute error : ${error}\nScript: ${__script.url}\nRegular: ${__script.match.regular}\nRequest: ${__url}`)
             }
         } else {
             $done({})
@@ -221,6 +260,12 @@ if (!__isTask) {
         $done({})
         if (__log) console.log(`Script not matched: ${__url}`)
     }
+}
+
+function ____parseDevelopmentModeConf(conf) {
+    const localConf = ____removeGarbage(____extractConf(__conf, "eval_local"))
+    const result = ____parseConf(localConf)
+    return result.obj
 }
 
 function ____timeDiff(begin, end) {
