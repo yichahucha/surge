@@ -58,41 +58,40 @@ if (url.indexOf(path2) != -1) {
                 let tradeConsumerProtection = null
                 let consumerProtection = null
                 let trade = null
-                let vertical = null
                 if (value.global) {
                     tradeConsumerProtection = value.global.data.tradeConsumerProtection
                     consumerProtection = value.global.data.consumerProtection
                     trade = value.global.data.trade
-                    vertical = value.global.data.vertical
                 } else {
                     tradeConsumerProtection = value.tradeConsumerProtection
                     consumerProtection = value.consumerProtection
                     trade = value.trade
-                    vertical = value.vertical
                 }
                 if (trade && trade.useWap == "true") {
                     $done({ body })
                     sendNotify(data, shareUrl)
-                } else if (vertical && vertical.hasOwnProperty("tmallhkDirectSale")) {
-                    value["tradeConsumerProtection"] = customTradeConsumerProtection()
-                    value.tradeConsumerProtection = setTradeConsumerProtection(data, value.tradeConsumerProtection)
                 } else {
                     if (tradeConsumerProtection) {
                         tradeConsumerProtection = setTradeConsumerProtection(data, tradeConsumerProtection)
                     } else {
-                        consumerProtection = setConsumerProtection(data, consumerProtection)
+                        let vertical = value.vertical
+                        if (vertical && vertical.hasOwnProperty("tmallhkDirectSale")) {
+                            $done({ body })
+                            sendNotify(data, shareUrl)
+                        } else {
+                            consumerProtection = setConsumerProtection(data, consumerProtection)
+                        }
                     }
+                    apiStack.value = JSON.stringify(value)
+                    $done({ body: JSON.stringify(obj) })
                 }
-                apiStack.value = JSON.stringify(value)
-                $done({ body: JSON.stringify(obj) })
+            } else {
+                $done({ body })
+                sendNotify(data, shareUrl)
             }
         } else {
             $done({ body })
-            sendNotify(data, shareUrl)
         }
-    } else {
-        $done({ body })
-    }
     })
 }
 
