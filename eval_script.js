@@ -4,20 +4,19 @@ const __conf = String.raw`
 [eval_remote]
 // custom remote...
 
-https://raw.githubusercontent.com/yichahucha/surge/master/sub_eval.conf
+https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 
 [eval_local]
-// custom local...
 
-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) eval https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
+// custom local...
 
 
 `
 
 const __emoji = "• "
-const __emojiSuccess = "😁"
-const __emojiFail = "😓"
+const __emojiSuccess = "😋"
+const __emojiFail = "🤪"
 const __emojiTasks = "🕐"
 const __emojiDone = "✔️"
 const __showLine = 20
