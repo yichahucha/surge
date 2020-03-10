@@ -15,8 +15,8 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 `
 
 const __emoji = "• "
-const __emojiSuccess = "😋"
-const __emojiFail = "🤪"
+const __emojiSuccess = "😀"
+const __emojiFail = "🙃"
 const __emojiTasks = "🕐"
 const __emojiDone = "✔️"
 const __showLine = 20
