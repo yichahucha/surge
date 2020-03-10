@@ -73,27 +73,26 @@ if (url.indexOf(path2) != -1) {
                 if (trade && trade.useWap == "true") {
                     $done({ body })
                     sendNotify(data, shareUrl)
+                } else if (vertical && vertical.hasOwnProperty("tmallhkDirectSale")) {
+                    value["tradeConsumerProtection"] = customTradeConsumerProtection()
+                    value.tradeConsumerProtection = setTradeConsumerProtection(data, value.tradeConsumerProtection)
                 } else {
                     if (tradeConsumerProtection) {
                         tradeConsumerProtection = setTradeConsumerProtection(data, tradeConsumerProtection)
                     } else {
-                        if (vertical && vertical.hasOwnProperty("tmallhkDirectSale")) {
-                            value["tradeConsumerProtection"] = customTradeConsumerProtection()
-                            value.tradeConsumerProtection = setTradeConsumerProtection(data, value.tradeConsumerProtection)
-                        } else {
-                            consumerProtection = setConsumerProtection(data, consumerProtection)
-                        }
+                        consumerProtection = setConsumerProtection(data, consumerProtection)
                     }
-                    apiStack.value = JSON.stringify(value)
-                    $done({ body: JSON.stringify(obj) })
                 }
-            } else {
-                $done({ body })
-                sendNotify(data, shareUrl)
+                apiStack.value = JSON.stringify(value)
+                $done({ body: JSON.stringify(obj) })
             }
         } else {
             $done({ body })
+            sendNotify(data, shareUrl)
         }
+    } else {
+        $done({ body })
+    }
     })
 }
 
