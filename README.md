@@ -125,7 +125,7 @@ Script management tool
 ```
 
 
-2.在 eval_script.js 中配置需要管理的脚本，可以配置远程和配置本地，提供一个远程示例
+2.在 eval_script.js 中配置需要管理的脚本，可以配置远程和配置本地，提供一个复写订阅适配 eval_script 的远程示例
 
 ```
 
