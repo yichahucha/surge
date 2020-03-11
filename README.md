@@ -129,8 +129,8 @@ Script management tool
 
 ```
 
-远程格式为: ####匹配正则 eval 脚本连接
-本地格式为: 匹配正则 eval 脚本连接
+远程格式为: ####脚本类型(request/response) 匹配正则 eval 脚本连接
+本地格式为: 脚本类型(request/response) 匹配正则 eval 脚本连接
 
 [eval_remote]
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
