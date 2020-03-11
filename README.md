@@ -146,4 +146,4 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 [rewrite_remote]
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf, tag=eval, enabled=true
 ```
-4.以上都配置好，脚本生效
+4.以上都配置好，示例脚本生效
