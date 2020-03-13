@@ -4,6 +4,9 @@ README：https://github.com/yichahucha/surge/tree/master
 
 const path1 = "serverConfig";
 const path2 = "wareBusiness";
+const path3 = "start";
+const path4 = "myOrderInfo";
+const path5 = "orderTrackBusiness";
 const consolelog = false;
 const url = $request.url;
 const body = $response.body;
@@ -34,6 +37,26 @@ if (url.indexOf(path2) != -1) {
             }
         }
     })
+}
+
+if (url.indexOf(path3) != -1) {
+  body.images = [];
+  body.showTimesDaily = 0;
+  $done({
+    body: JSON.stringify(body)
+  });
+}
+
+if (url.indexOf(path4) != -1 || url.indexOf(path5) != -1) {
+  body.floors = body.floors.filter(function(item) {
+    if (item.mId == "bannerFloor" || item.mId == "orderTrackPush" || item.mId == "jdDeliveryBanner" || item.mId == "commonBanner") {
+      return false;
+    }
+    return true;
+  });
+  $done({
+    body: JSON.stringify(body)
+  });
 }
 
 function lowerMsgs(data) {
