@@ -23,7 +23,7 @@ Display jd historical price
 # ^https?:\/\/api\.m\.jd.com\/client\.action\?functionId=start - reject
 # ^https?:\/\/api\.m\.jd.com\/client\.action\?functionId=(start|queryMaterialAdverts) - reject
 [Script]
-http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
+http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig|start|myOrderInfo|orderTrackBusiness) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
 [MITM]
 hostname = api.m.jd.com
 ```
@@ -80,7 +80,7 @@ hostname = ios.prod.ftl.netflix.com
 Display jd historical price
 ```
 [rewrite_local]
-^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body jd_price.js
+^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig|start|myOrderInfo|orderTrackBusiness) url script-response-body jd_price.js
 [mitm]
 hostname = api.m.jd.com
 ```
