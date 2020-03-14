@@ -15,7 +15,7 @@ QX:
 0 0 * * * eval_script.js
 
 
-2.在 eval_script.js 中配置需要管理的脚本，可以配置远程和配置本地，提供两个配置示例
+2.在 eval_script.js 中配置需要管理的脚本，可以配置远程和配置本地，提供两个配置示例（也可以直接使用 surge 或 qx 脚本配置）
 
 远程格式为: #### 脚本类型(request/response) 匹配正则 eval 脚本连接
 本地格式为: 脚本类型(request/response) 匹配正则 eval 脚本连接
