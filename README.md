@@ -1,4 +1,4 @@
-# eval_script.js 使用示例（适用于 Surge 和 QX ）
+# eval_script.js 使用示例（适用 Surge 和 QX ）
 
 ```
 1.设置定时任务更新脚本，第一次需手动更新，脚本多的情况下有可能更新失败（Surge 和 QX 橙色按钮更新成功率最高），确保脚本更新成功
