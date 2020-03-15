@@ -161,5 +161,5 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 ^https?://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$
 
-这个正则会对所有 http 请求和配置了 hostname 域名的 https 请求执行 eval_script.js 脚本，请求执行一遍，响应执行一遍，一些本不应该执行脚本的请求，也执行了 eval_script.js 脚本（有点资源浪费，个别请求可能还会报错，有问题的需要自己排查），所以按需配置 hostname，不需要的域名尽量删除掉
+这个正则会对所有 http 请求和配置了 hostname 的 https 请求执行 eval_script.js 脚本，请求执行一遍，响应执行一遍，一些本不应该执行脚本的请求，也执行了 eval_script.js 脚本（有点资源浪费，个别请求可能还会报错，有问题的需要自己排查），所以按需配置 hostname，不需要的 hostname 尽量删除掉
 ```
