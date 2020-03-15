@@ -149,10 +149,10 @@ hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.pro
 2.在 eval_script.js 中配置需要管理的脚本，支持本地和远程配置，格式为: 脚本类型(request/response) 匹配正则 eval 脚本连接
 
 [eval_local]
-# 添加 eval_script 格式脚本 或者 直接使用 surge、qx 脚本配置
+# 添加 eval_script 格式脚本 或者 使用 surge、qx 脚本配置
 
 [eval_remote]
-# 添加 eval_script 格式远程 或者 qx 远程复写
+# 添加 eval_script 格式远程 或者 其他远程复写
 # https://raw.githubusercontent.com/yichahucha/surge/master/sub_eval.conf
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
