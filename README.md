@@ -45,7 +45,7 @@ hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.pro
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 
-3.以上都配置好，示例脚本生效，以后大部分情况下只需要在 eval_script.js 添加新脚本或者订阅新脚本，在对应App 配置文件中添加脚本的 hostname 即可
+3.以上都配置好，示例脚本生效，以后大部分情况下只需要在 eval_script.js 添加新脚本或者订阅新脚本，在对应 App 添加脚本的 hostname 即可
 
 
 注意：
