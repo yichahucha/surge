@@ -154,7 +154,7 @@ hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.pro
 [eval_remote]
 # 添加 eval_script 格式远程 或者 使用 qx 远程复写
 # https://raw.githubusercontent.com/yichahucha/surge/master/sub_eval.conf
-https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
+# https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 
 3.以上都配置好，示例脚本生效，以后大部分情况下只需要在 eval_script.js 添加新脚本或者订阅新脚本，在对应 App 添加脚本的 hostname 即可
