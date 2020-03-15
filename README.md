@@ -125,7 +125,6 @@ cron "0 0 * * *" debug=1,script-path=eval_script.js
 
 http-request ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ requires-body=0,script-path=eval_script.js
 http-response ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ requires-body=1,script-path=eval_script.js
-
 # http
 http-response ^http://amdc\.m\.taobao\.com/amdc/mobileDispatch requires-body=1,script-path=eval_script.js
 
@@ -140,7 +139,6 @@ QX:
 [rewrite_local]
 ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ url script-request-header eval_script.js
 ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ url script-response-body eval_script.js
-
 # http 
 ^http://amdc\.m\.taobao\.com/amdc/mobileDispatch url script-response-body eval_script.js
 
@@ -157,7 +155,6 @@ hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.pro
 [eval_remote]
 # 添加 eval_script 格式远程 或者 qx 远程复写
 # https://raw.githubusercontent.com/yichahucha/surge/master/sub_eval.conf
-
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 
