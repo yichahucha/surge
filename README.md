@@ -115,7 +115,7 @@ Script management tool
 ```
 
 # eval_script.js 使用示例
-```
+```properties
 1.在 App 中添加配置如下，第一次需手动执行任务更新脚本，脚本多的情况下有可能更新失败（Surge 和 QX 橙色按钮更新成功率最高），确保脚本更新成功
 
 Surge:
@@ -149,15 +149,14 @@ hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.pro
 
 2.在 eval_script.js 中配置需要管理的脚本，支持本地和远程配置
 
-远程格式为: #### 脚本类型(request/response) 匹配正则 eval 脚本连接
-本地格式为: 脚本类型(request/response) 匹配正则 eval 脚本连接
+格式为: 脚本类型(request/response) 匹配正则 eval 脚本连接
 
 [eval_local]
-// 添加 eval_script 格式脚本 或者 直接使用 surge、qx 脚本配置
-// issue eval https://t.me/joinchat/GNhmPg1pixfpvKyD0h-8YA
+# 添加 eval_script 格式脚本 或者 直接使用 surge、qx 脚本配置
+# issue eval https://t.me/joinchat/GNhmPg1pixfpvKyD0h-8YA
 
 [eval_remote]
-// 添加 eval_script 格式远程 或者 qx 远程复写
+# 添加 eval_script 格式远程 或者 qx 远程复写
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 
