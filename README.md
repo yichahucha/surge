@@ -1,6 +1,6 @@
 # Surge
 Remove weibo ads
-```
+```properties
 [Script]
 http-response ^https?://(sdk|wb)app\.uve\.weibo\.com(/interface/sdk/sdkad.php|/wbapplua/wbpullad.lua) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/wb_launch.js
 http-response ^https?://m?api\.weibo\.c(n|om)/2/(statuses/(unread|extend|positives/get|(friends|video)(/|_)(mix)?timeline)|stories/(video_stream|home_list)|(groups|fangle)/timeline|profile/statuses|comments/build_comments|photo/recommend_list|service/picfeed|searchall|cardlist|page|!/photos/pic_recommend_status) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/wb_ad.js
@@ -9,7 +9,7 @@ hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com
 ```
 
 Display netflix ratings（IMDb、douaban）
-```
+```properties
 [Script]
 http-request ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D script-path=https://raw.githubusercontent.com/yichahucha/surge/master/nf_rating.js
 http-response ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/nf_rating.js
@@ -18,7 +18,7 @@ hostname = ios.prod.ftl.netflix.com
 ```
 
 Display jd historical price
-```
+```properties
 # 不生效或失效的检查一下配置有没有这两条复写，删除试试
 # ^https?:\/\/api\.m\.jd.com\/client\.action\?functionId=start - reject
 # ^https?:\/\/api\.m\.jd.com\/client\.action\?functionId=(start|queryMaterialAdverts) - reject
@@ -29,7 +29,7 @@ hostname = api.m.jd.com
 ```
 
 Display taobao historical price
-```
+```properties
 # 不生效或失效的需要卸载 tb 重装，注意不开脚本进 tb 会失效
 [Script]
 http-response ^http://amdc\.m\.taobao\.com/amdc/mobileDispatch requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js
@@ -46,13 +46,13 @@ hostname = trade-acs.m.taobao.com
 ```
 
 DingDing clock in
-```
+```properties
 [Script]
 cron "0 9,18 * * 1-5" script-path=https://raw.githubusercontent.com/yichahucha/surge/master/clock_in.js
 ```
 
 Script management tool
-```
+```properties
 [Script]
 cron "0 0 * * *" eval_script.js
 ```
@@ -60,7 +60,7 @@ cron "0 0 * * *" eval_script.js
 # Quan-X
 
 Remove weibo ads
-```
+```properties
 [rewrite_local]
 ^https?://(sdk|wb)app\.uve\.weibo\.com(/interface/sdk/sdkad.php|/wbapplua/wbpullad.lua) url script-response-body wb_launch.js
 ^https?://m?api\.weibo\.c(n|om)/2/(statuses/(unread|extend|positives/get|(friends|video)(/|_)(mix)?timeline)|stories/(video_stream|home_list)|(groups|fangle)/timeline|profile/statuses|comments/build_comments|photo/recommend_list|service/picfeed|searchall|cardlist|page|!/photos/pic_recommend_status) url script-response-body wb_ad.js
@@ -69,7 +69,7 @@ hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com
 ```
 
 Display netflix ratings（IMDb、douaban）
-```
+```properties
 [rewrite_local]
 ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D url script-request-header nf_rating.js
 ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D url script-response-body nf_rating.js
@@ -78,7 +78,7 @@ hostname = ios.prod.ftl.netflix.com
 ```
 
 Display jd historical price
-```
+```properties
 [rewrite_local]
 ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body jd_price.js
 [mitm]
@@ -86,7 +86,7 @@ hostname = api.m.jd.com
 ```
 
 Display taobao historical price
-```
+```properties
 # 不生效或失效的需要卸载 tb 重装，注意不开脚本进 tb 会失效
 [rewrite_local]
 ^http://amdc\.m\.taobao\.com/amdc/mobileDispatch url script-response-body tb_price.js
@@ -103,7 +103,7 @@ hostname = trade-acs.m.taobao.com
 ```
 
 DingDing clock in
-```
+```properties
 [task_local]
 0 9,18 * * 1-5 clock_in.js
 ```
