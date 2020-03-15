@@ -1,62 +1,3 @@
-# eval_script.js 使用示例
-```
-1.在 App 中添加配置如下，第一次需手动执行任务更新脚本，脚本多的情况下有可能更新失败（Surge 和 QX 橙色按钮更新成功率最高），确保脚本更新成功
-
-Surge:
-
-[Script]
-cron "0 0 * * *" debug=1,script-path=eval_script.js
-
-http-request ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ requires-body=0,script-path=eval_script.js
-http-response ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ requires-body=1,script-path=eval_script.js
-
-# http
-http-response ^http://amdc\.m\.taobao\.com/amdc/mobileDispatch requires-body=1,script-path=eval_script.js
-
-[MITM]
-hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.prod.ftl.netflix.com, trade-acs.m.taobao.com
-
-QX:
-
-[task_local]
-0 0 * * * eval_script.js
-
-[rewrite_local]
-^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ url script-request-header eval_script.js
-^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ url script-response-body eval_script.js
-
-# http 
-^http://amdc\.m\.taobao\.com/amdc/mobileDispatch url script-response-body eval_script.js
-
-[mitm]
-hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.prod.ftl.netflix.com, trade-acs.m.taobao.com
-
-2.在 eval_script.js 中配置需要管理的脚本，支持本地和远程配置
-
-远程格式为: #### 脚本类型(request/response) 匹配正则 eval 脚本连接
-本地格式为: 脚本类型(request/response) 匹配正则 eval 脚本连接
-
-[eval_local]
-// 添加 eval_script 格式脚本 或者 直接使用 surge、qx 脚本配置
-// issue eval https://t.me/joinchat/GNhmPg1pixfpvKyD0h-8YA
-
-[eval_remote]
-// 添加 eval_script 格式远程 或者 qx 远程复写
-https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
-
-
-3.以上都配置好，示例脚本生效，以后大部分情况下只需要在 eval_script.js 添加新脚本或者订阅新脚本，在对应 App 添加脚本的 hostname 即可
-
-
-注意：
-
-^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$
-
-这个正则会对所有配置了 hostname 域名的 https 请求执行 eval_script.js 脚本，请求执行一遍，响应执行一遍，一些本不应该执行脚本的请求，也执行了 eval_script.js 脚本（有点资源浪费，个别请求可能还会报错，有问题的需要自己排查），所以按需配置 hostname，不需要的域名尽量删除掉
-
-另外以上配置默认是不包含 http 请求的脚本 和 修改请求体的脚本，这两类脚本不会走 eval_script.js ，也就是你在 eval_script.js 配置的对应脚本不会生效，需要单独配置这类脚本来命中 eval_script.js，让 eval_script.js 执行目标脚本，参考上边 http 脚本配置示例，修改请求体的脚本同理
-```
-
 # Surge
 Remove weibo ads
 ```
@@ -171,4 +112,63 @@ Script management tool
 ```
 [task_local]
 0 0 * * * eval_script.js
+```
+
+# eval_script.js 使用示例
+```
+1.在 App 中添加配置如下，第一次需手动执行任务更新脚本，脚本多的情况下有可能更新失败（Surge 和 QX 橙色按钮更新成功率最高），确保脚本更新成功
+
+Surge:
+
+[Script]
+cron "0 0 * * *" debug=1,script-path=eval_script.js
+
+http-request ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ requires-body=0,script-path=eval_script.js
+http-response ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ requires-body=1,script-path=eval_script.js
+
+# http
+http-response ^http://amdc\.m\.taobao\.com/amdc/mobileDispatch requires-body=1,script-path=eval_script.js
+
+[MITM]
+hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.prod.ftl.netflix.com, trade-acs.m.taobao.com
+
+QX:
+
+[task_local]
+0 0 * * * eval_script.js
+
+[rewrite_local]
+^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ url script-request-header eval_script.js
+^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ url script-response-body eval_script.js
+
+# http 
+^http://amdc\.m\.taobao\.com/amdc/mobileDispatch url script-response-body eval_script.js
+
+[mitm]
+hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.prod.ftl.netflix.com, trade-acs.m.taobao.com
+
+2.在 eval_script.js 中配置需要管理的脚本，支持本地和远程配置
+
+远程格式为: #### 脚本类型(request/response) 匹配正则 eval 脚本连接
+本地格式为: 脚本类型(request/response) 匹配正则 eval 脚本连接
+
+[eval_local]
+// 添加 eval_script 格式脚本 或者 直接使用 surge、qx 脚本配置
+// issue eval https://t.me/joinchat/GNhmPg1pixfpvKyD0h-8YA
+
+[eval_remote]
+// 添加 eval_script 格式远程 或者 qx 远程复写
+https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
+
+
+3.以上都配置好，示例脚本生效，以后大部分情况下只需要在 eval_script.js 添加新脚本或者订阅新脚本，在对应 App 添加脚本的 hostname 即可
+
+
+注意：
+
+^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$
+
+这个正则会对所有配置了 hostname 域名的 https 请求执行 eval_script.js 脚本，请求执行一遍，响应执行一遍，一些本不应该执行脚本的请求，也执行了 eval_script.js 脚本（有点资源浪费，个别请求可能还会报错，有问题的需要自己排查），所以按需配置 hostname，不需要的域名尽量删除掉
+
+另外以上配置默认是不包含 http 请求的脚本 和 修改请求体的脚本，这两类脚本不会走 eval_script.js ，也就是你在 eval_script.js 配置的对应脚本不会生效，需要单独配置这类脚本来命中 eval_script.js，让 eval_script.js 执行目标脚本，参考上边 http 脚本配置示例，修改请求体的脚本同理
 ```
