@@ -147,9 +147,7 @@ QX:
 [mitm]
 hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.prod.ftl.netflix.com, trade-acs.m.taobao.com
 
-2.在 eval_script.js 中配置需要管理的脚本，支持本地和远程配置
-
-格式为: 脚本类型(request/response) 匹配正则 eval 脚本连接
+2.在 eval_script.js 中配置需要管理的脚本，支持本地和远程配置，格式为: 脚本类型(request/response) 匹配正则 eval 脚本连接
 
 [eval_local]
 # 添加 eval_script 格式脚本 或者 直接使用 surge、qx 脚本配置
