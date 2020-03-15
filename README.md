@@ -37,11 +37,11 @@ hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.pro
 本地格式为: 脚本类型(request/response) 匹配正则 eval 脚本连接
 
 [eval_local]
-// 添加 eval_script 格式的脚本 或者 直接使用 surge、qx 脚本配置
+// 添加 eval_script 格式脚本 或者 直接使用 surge、qx 脚本配置
+// issue eval https://t.me/joinchat/GNhmPg1pixfpvKyD0h-8YA
 
 [eval_remote]
-// 添加 eval_script 格式远程配置 或者 qx 远程复写
-
+// 添加 eval_script 格式远程 或者 qx 远程复写
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 
