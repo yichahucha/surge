@@ -150,10 +150,10 @@ hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.pro
 
 [eval_local]
 # 添加 eval_script 格式脚本 或者 使用 surge、qx 脚本配置
+# response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) eval https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js
 
 [eval_remote]
 # 添加 eval_script 格式远程 或者 使用 qx 远程复写
-# https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_eval.conf
 
 
