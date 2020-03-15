@@ -114,7 +114,7 @@ Script management tool
 0 0 * * * eval_script.js
 ```
 
-# 脚本管理 eval_script.js 使用示例
+# 脚本管理工具 eval_script.js 使用示例
 ```properties
 1.在 App 中添加配置如下，第一次需手动执行任务更新脚本，脚本多的情况下有可能更新失败（Surge 和 QX 橙色按钮更新成功率最高），确保脚本更新成功
 
