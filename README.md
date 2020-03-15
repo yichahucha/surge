@@ -7,8 +7,8 @@ Surge:
 [Script]
 cron "0 0 * * *" debug=1,script-path=eval_script.js
 
-http-request ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp))$ requires-body=0,script-path=eval_script.js
-http-response ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp))$ requires-body=1,script-path=eval_script.js
+http-request ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ requires-body=0,script-path=eval_script.js
+http-response ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ requires-body=1,script-path=eval_script.js
 
 # http
 http-response ^http://amdc\.m\.taobao\.com/amdc/mobileDispatch requires-body=1,script-path=eval_script.js
@@ -22,8 +22,8 @@ QX:
 0 0 * * * eval_script.js
 
 [rewrite_local]
-^https://.*(?<!\.(png|jpg|jpeg|gif|bmp))$ url script-request-header eval_script.js
-^https://.*(?<!\.(png|jpg|jpeg|gif|bmp))$ url script-response-body eval_script.js
+^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ url script-request-header eval_script.js
+^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$ url script-response-body eval_script.js
 
 # http 
 ^http://amdc\.m\.taobao\.com/amdc/mobileDispatch url script-response-body eval_script.js
@@ -50,7 +50,7 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 注意：
 
-^https://.*(?<!\.(png|jpg|jpeg|gif|bmp))$
+^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp))$
 
 这个正则会对所有配置了 hostname 域名的 https 请求执行 eval_script.js 脚本，请求执行一遍，响应执行一遍，一些本不应该执行脚本的请求，也执行了 eval_script.js 脚本（有点资源浪费，个别请求可能还会报错，有问题的需要自己排查），所以按需配置 hostname，不需要的域名尽量删除掉
 
