@@ -145,7 +145,7 @@ QX:
 ^https://.*(?<!\.(png|jpg|jpeg|gif|bmp|webp|heic))$ url script-response-body eval_script.js
 
 # request body
-# ^https?://.+/amdc/mobileDispatch url script-request-body tb_price.js
+# ^https?://.+/amdc/mobileDispatch url script-request-body eval_script.js
 
 # http 
 ^http://amdc\.m\.taobao\.com/amdc/mobileDispatch url script-response-body eval_script.js
