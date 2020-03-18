@@ -147,7 +147,6 @@ QX:
 # request body
 # ^https?://.+/amdc/mobileDispatch url script-request-body eval_script.js
 
-
 [mitm]
 hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com,  api.m.jd.com, ios.prod.ftl.netflix.com, trade-acs.m.taobao.com
 
