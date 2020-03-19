@@ -3,9 +3,9 @@ README：https://github.com/yichahucha/surge/tree/master
  */
 
 const $tool = new Tool()
-const consoleLog = false;
 const imdbApikeyCacheKey = "IMDbApikey";
 const netflixTitleCacheKey = "NetflixTitle";
+const consoleLog = false;
 
 if (!$tool.isResponse) {
     let url = $request.url;
@@ -27,7 +27,6 @@ if (!$tool.isResponse) {
     var IMDbApikey = $tool.read(imdbApikeyCacheKey);
     if (!IMDbApikey) updateIMDbApikey();
     let obj = JSON.parse($response.body);
-    if (consoleLog) console.log("Netflix Original Body:\n" + $response.body);
     const videoID = obj.paths[0][1];
     const video = obj.value.videos[videoID];
     const map = getTitleMap();
@@ -60,18 +59,9 @@ if (!$tool.isResponse) {
         .then(message => msg = message)
         .catch(error => msg = error + "\n")
         .finally(() => {
-            let summary = obj.value.videos[videoID].summary;
-            if (summary && summary.imageTypeIdentifier && summary.imageTypeIdentifier.match(/^top/)) {
-                const ranking = `#${summary.supplementalMessage ? summary.supplementalMessage.match(/\d/g).join("") : ""}`;
-                const ratings = msg.split("\n")
-                let rating = msg
-                if (ratings.length > 1) rating = `${ratings[1].split("   ")[0].replace(/\s{2}/g, " ")}  ${ratings[2].split("   ")[0].replace(/\s{2}/g, " ")}`
-                summary["supplementalMessage"] = `${ranking}  ${rating}`;
-            } else {
-                summary["supplementalMessage"] = `${msg}${summary && summary.supplementalMessage ? "\n" + summary.supplementalMessage : ""}`;
-            }
-            if (consoleLog) console.log("Netflix Modified Body:\n" + JSON.stringify(obj));
+            summary["supplementalMessage"] = `${msg}${summary && summary.supplementalMessage ? "\n" + summary.supplementalMessage : ""}`;
             $done({ body: JSON.stringify(obj) });
+            if (consoleLog) console.log("Netflix Modified Body:\n" + JSON.stringify(obj));
         });
 }
 
