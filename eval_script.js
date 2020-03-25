@@ -155,6 +155,7 @@ if (__tool.isTask) {
                 const quanxUpdateContent = `${hostname}\n\n${Array.from(new Set(storeObj.quanxConfContents)).join("\n\n")}`
                 const surgeUpdateContent = `${hostname}\n\n${Array.from(new Set(storeObj.surgeConfContents)).join("\n\n")}`
                 const args = [{ path: __quanxPath, content: quanxUpdateContent, commit: __quanxCommit }, { path: __surgePath, content: surgeUpdateContent, commit: __surgeCommit }]
+                console.log("Start updating github...")
                 const update = async () => {
                     let results = []
                     for (let i = 0, len = args.length; i < len; i++) {
@@ -164,6 +165,7 @@ if (__tool.isTask) {
                             results.push(result)
                         }
                     }
+                    console.log("Stop updating github.")
                     return results
                 }
                 return update()
@@ -201,7 +203,7 @@ if (__tool.isTask) {
             const summary = `${__emojiSuccess}Success: ${resultInfo.count.success}  ${__emojiFail}Fail: ${resultInfo.count.fail}   ${__emojiTasks}Tasks: ${____timeDiff(begin, new Date())}s`
             const nowDate = `${new Date().Format("yyyy-MM-dd HH:mm:ss")} last update`
             const lastDate = __tool.read("ScriptLastUpdateDateKey")
-            console.log(`${summary}\n${resultInfo.message}\n${lastDate ? lastDate : nowDate}`)
+            console.log(`\n${summary}\n${resultInfo.message}\n${lastDate ? lastDate : nowDate}${github.length > 0 ? `\n\n${github}` : ""}`)
             __tool.notify(`${__emojiDone}Update Done`, summary, `${detail}\n${__emoji}${lastDate ? lastDate : nowDate}${github.length > 0 ? `\n\n${github}` : ""}`)
             __tool.write(nowDate, "ScriptLastUpdateDateKey")
             __tool.done({})
@@ -412,14 +414,14 @@ function ____downloadFile(url) {
             if (!error) {
                 const code = response.statusCode
                 if (code == 200) {
-                    console.log(`update Success: ${url}`)
+                    console.log(`update success: ${url}`)
                     resolve({ url, code, body, message: `${__emoji}${filename} update success` })
                 } else {
-                    console.log(`update Fail ${response.statusCode}: ${url}`)
+                    console.log(`update fail ${response.statusCode}: ${url}`)
                     resolve({ url, code, body, message: `${__emoji}${filename} update fail` })
                 }
             } else {
-                console.log(`update Fail ${error}`)
+                console.log(`update fail ${error}`)
                 resolve({ url, code: null, body: null, message: `${__emoji}${filename} update fail` })
             }
         })
@@ -493,12 +495,12 @@ function ____parseConf(lines) {
                 const requiresBody = ____surgeArg(result[3].trim()).requiresBody
                 surgeConfContents.push(`${line.replace(____surgeArg(result[3].trim()).scriptPath, "eval_script.js")}`)
                 quanxConfContents.push(`${result[2].trim()} url script-${result[1].trim()}-${requiresBody == "1" ? "body" : "header"} eval_script.js`)
-                //eval
+                // eval
                 line = `${result[1].trim()} ${result[2].trim()} eval ${____surgeArg(result[3].trim()).scriptPath}`
             } else if (quanx.test(line)) {
                 const result = line.match(quanx)
                 const type = result[2].split("-")
-                //content
+                // content
                 let requires = 0
                 if (type[0].trim() == "response") {
                     requires = 1
@@ -509,7 +511,7 @@ function ____parseConf(lines) {
                 }
                 surgeConfContents.push(`http-${type[0].trim()} ${result[1].trim()} ${requires == 0 ? "" : `requires-body=${requires},`}script-path=eval_script.js`)
                 quanxConfContents.push(`${line.replace(result[3].trim(), "eval_script.js")}`)
-                //eval
+                // eval
                 line = `${type[0].trim()} ${result[1].trim()} eval ${result[3].trim()}`
 
             }
