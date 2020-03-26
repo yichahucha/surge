@@ -19,7 +19,7 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 // 是否开启 GitHub 更新
 const __isUpdateGithub = true
-// GitHub Token（ Token 优先级高，如果不使用 Token 请设置为空 ""）
+// GitHub Token（如果使用账号密码 Token 请设置为空 ""）
 const __token = ""
 // GitHub 账号
 const __username = "xxx"
@@ -29,10 +29,12 @@ const __password = "xxx"
 const __owner = "yichahucha"
 // GitHub 仓库名
 const __repo = "surge"
-// GitHub 文件路径（没有文件新生成，已有文件覆盖，路径为空 "" 不更新）
-const __quanxPath = "eval_script/quanx.txt"
-const __surgePath = "eval_script/surge.txt"
-// GitHub 提交日志
+// GitHub 分支（不指定就使用默认分支）
+const __branch = "master"
+// GitHub 文件路径（没有文件新创建，已有文件覆盖更新，路径为空 "" 不更新）
+const __quanxPath = "eval_sub/quanx.txt"
+const __surgePath = "eval_sub/surge.txt"
+// GitHub 更新日志
 const __quanxCommit = "update"
 const __surgeCommit = "update"
 
@@ -317,19 +319,16 @@ async function ____updateGitHub(path, content, message) {
     const url = `https://api.github.com/repos/${__owner}/${__repo}/contents/${path}`
     const options = {
         url: url,
-        headers: { "Content-Type": "application/json; charset=utf-8", "User-Agent": "eval_script" }
+        headers: { "Content-Type": "application/json; charset=utf-8", "User-Agent": "eval_script.js" }
     }
     if (__token.length > 0) {
         options.headers["Authorization"] = `Token ${__token}`
     } else {
         options.headers["Authorization"] = `Basic ${__base64.encode(`${__username}:${__password}`)}`
     }
-    const body = {
-        message: message,
-        content: __base64.encode(content)
-    }
     const getContent = () => {
         return new Promise(function (resolve, reject) {
+            if (__branch.length > 0) options.url += `?ref=${__branch}`
             options["method"] = "GET"
             __tool.get(options, (error, response, body) => {
                 if (!error) {
@@ -350,7 +349,13 @@ async function ____updateGitHub(path, content, message) {
     }
     const updateContent = (sha) => {
         return new Promise(function (resolve, reject) {
+            const body = {
+                message: message,
+                content: __base64.encode(content)
+            }
+            if (__branch) body["branch"] = __branch
             if (sha) body["sha"] = sha
+            options.url = url
             options["body"] = JSON.stringify(body)
             options["method"] = "PUT"
             __tool.put(options, (error, response, body) => {
