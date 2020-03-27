@@ -45,7 +45,7 @@ const __emojiTasks = "🕐"
 const __emojiUpdateSuccess = "🟢"
 const __emojiUpdateFail = "🟠"
 const __emojiGitHub = "🔵"
-const __showLine = 20
+const __showLine = 15
 
 const __log = false
 const __debug = false
