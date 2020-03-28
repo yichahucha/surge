@@ -114,7 +114,7 @@ Script management tool
 0 0 * * * eval_script.js
 ```
 
-# eval_script.js 使用示例（QuanX举例，Surge 同理）
+# eval_script.js 使用示例（QuanX 举例）
 
 ```properties
 1.设置任务
