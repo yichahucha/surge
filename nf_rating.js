@@ -17,10 +17,12 @@ if (!$tool.isResponse) {
     const isEnglish = url.match(/languages=en/) ? true : false;
     if (!title && !isEnglish) {
         const currentSummary = urlDecode.match(/\["videos","(\d+)","current","summary"\]/);
-        url = url.replace("&path=" + encodeURIComponent(currentSummary[0]), "");
+        if (currentSummary) {
+            url = url.replace("&path=" + encodeURIComponent(currentSummary[0]), "");
+        }
         url = url.replace(/&languages=(.*?)&/, "&languages=en-US&");
     }
-    url += "&path=" + encodeURIComponent(`[${videos[0]},"details"]`);
+    // url += "&path=" + encodeURIComponent(`[${videos[0]},"details"]`);
     $done({ url });
 } else {
     var IMDbApikeys = IMDbApikeys();
@@ -38,13 +40,13 @@ if (!$tool.isResponse) {
     }
     let year = null;
     let type = video.summary.type;
-    // if (type == "movie") {
-    //     year = video.details.releaseYear;
-    // }
     if (type == "show") {
         type = "series";
     }
-    delete video.details;
+    // if (type == "movie") {
+    //     year = video.details.releaseYear;
+    // }
+    // delete video.details;
     const requestRatings = async () => {
         const IMDb = await requestIMDbRating(title, year, type);
         const Douban = await requestDoubanRating(IMDb.id);
