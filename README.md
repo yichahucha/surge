@@ -170,3 +170,5 @@ const __surgePath = "eval_sub/surge.txt"
 
 5.在 QuanX 订阅 GitHub 生成的文件
 ```
+
+[Issue Group](https://t.me/joinchat/GNhmPg1pixfpvKyD0h-8YA)
