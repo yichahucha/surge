@@ -28,7 +28,7 @@ if (url.indexOf(path1) != -1) {
         body = $base64.encode(JSON.stringify(obj))
         $done({ body })
     } else {
-        let headers = $response.headers
+        let headers = $request.headers
         let body = $request.body
         $tool.notify("", "", headers["User-Agent"])
         if (headers["User-Agent"].indexOf("%E6%89%8B%E6%9C%BA%E6%B7%98%E5%AE%9D") != -1) {
