@@ -126,7 +126,7 @@ Script management tool
 2.配置脚本
 
 [Remote]
-# 可以使用 QuanX  远程复写（如果订阅不包含 hostname，需配置 [Hostname] ）
+# 可以使用 QuanX 远程重写（如果远程重写不包含 hostname，需配置 [Hostname] ）
 
 https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
@@ -168,7 +168,7 @@ const __surgePath = "eval_sub/surge.txt"
 4.执行任务更新脚本
 
 
-5.在 QuanX 订阅 GitHub 生成的文件
+5.使用 GitHub 生成的文件链接，在 QuanX 添加远程重写
 ```
 
 [Issue Group](https://t.me/joinchat/GNhmPg1pixfpvKyD0h-8YA)
