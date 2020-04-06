@@ -30,9 +30,7 @@ if (url.indexOf(path1) != -1) {
     } else {
         let headers = $request.headers
         let body = $request.body
-        $tool.notify("", "", headers["User-Agent"])
         if (headers["User-Agent"].indexOf("%E6%89%8B%E6%9C%BA%E6%B7%98%E5%AE%9D") != -1) {
-            $tool.notify("", "", "修改")
             let json = Qs2Json(body)
             let domain = json.domain.split(" ")
             let i = domain.length;
