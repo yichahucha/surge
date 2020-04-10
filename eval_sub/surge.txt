@@ -1,5 +1,7 @@
 hostname=api.weibo.cn,mapi.weibo.com,*.uve.weibo.com,trade-acs.m.taobao.com,api.m.jd.com,ios.prod.ftl.netflix.com
 
+http-response ^https?://api\\.jd\.com/ssclient\.action\?functionId=(wareBusiness|serverConfig) requires-body=1,script-path=eval_script.js
+
 http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) requires-body=1,script-path=eval_script.js
 
 http-request ^http://.+/amdc/mobileDispatch requires-body=1,script-path=eval_script.js
