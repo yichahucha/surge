@@ -1,5 +1,7 @@
 
 
+^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) url script-response-body eval_script.js
+
 ^http://.+/amdc/mobileDispatch url script-request-body eval_script.js
 
 ^https?://trade-acs\.m\.taobao\.com/gw/mtop\.taobao\.detail\.getdetail url script-response-body eval_script.js
