@@ -17,9 +17,9 @@ https://raw.githubusercontent.com/yichahucha/surge/master/sub_script.conf
 
 `
 
-// 是否开启 GitHub 更新
+// 是否更新 GitHub（如果开启 true，需配置 token 或 账号密码）
 const __isUpdateGithub = true
-// GitHub Token（如果使用账号密码 Token 请设置为空 ""）
+// GitHub Token（如果使用账号密码 token 请设置为空 ""）
 const __token = ""
 // GitHub 账号
 const __username = "xxx"
