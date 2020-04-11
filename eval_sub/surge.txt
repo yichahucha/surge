@@ -1,4 +1,4 @@
-
+hostname=www.baidu.com,www.google.com
 
 http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig) requires-body=1,script-path=eval_script.js
 
