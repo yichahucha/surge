@@ -1,5 +1,5 @@
 [MITM]
-hostname = api.weibo.cn,mapi.weibo.com,*.uve.weibo.com,trade-acs.m.taobao.com,api.m.jd.com,ios.prod.ftl.netflix.com
+hostname = %INSERT% api.weibo.cn,mapi.weibo.com,*.uve.weibo.com,trade-acs.m.taobao.com,api.m.jd.com,ios.prod.ftl.netflix.com
 
 [Script]
 eval_script.js = type=http-response,requires-body=1,pattern=^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig),script-path=eval_script.js
