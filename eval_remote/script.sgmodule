@@ -1,5 +1,4 @@
-#!name=script module
-#!desc=eval_script.js
+#!name=eval_script module
 
 [MITM]
 hostname = %INSERT% api.weibo.cn,mapi.weibo.com,*.uve.weibo.com,trade-acs.m.taobao.com,api.m.jd.com,ios.prod.ftl.netflix.com
