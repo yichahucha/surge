@@ -136,22 +136,23 @@ api.weibo.cn, mapi.weibo.com, *.uve.weibo.com, trade-acs.m.taobao.com, api.m.jd.
 
 3.配置 GitHub
 
-# GitHub Token（如果使用账号密码 Token 请设置为空 ""）
+// 是否更新 GitHub（如果开启 true，需配置 token 或 账号密码）
+const __isUpdateGithub = true
+// GitHub Token（如果使用账号密码 token 请设置为空 ""）
 const __token = ""
-# GitHub 账号
+// GitHub 账号
 const __username = "xxx"
-# GitHub 密码
+// GitHub 密码
 const __password = "xxx"
-# GitHub 用户名
+// GitHub 用户名
 const __owner = "yichahucha"
-# GitHub 仓库名
+// GitHub 仓库名
 const __repo = "surge"
-# GitHub 分支（不指定就使用默认分支）
+// GitHub 分支（不指定就使用默认分支）
 const __branch = "master"
-# GitHub 文件路径（没有文件新创建，已有文件覆盖更新）
-# 默认生成两个文件，不需要的路径设置为空 “”
-const __quanxPath = "eval_sub/quanx.txt"
-const __surgePath = "eval_sub/surge.txt"
+// GitHub 文件路径（没有文件新创建，已有文件覆盖更新，路径为空 "" 不更新）
+const __quanxPath = "eval_script/qx_script.txt" // qaunx 远程重写格式文件
+const __surgePath = "eval_script/sg_script.sgmodule" // surge 脚本模块格式文件
 
 
 4.执行任务更新脚本
