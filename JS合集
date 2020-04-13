@@ -1,0 +1,37 @@
+#!name=JS合集
+#!desc=js.
+#!system=ios
+
+[Script]
+jd_price.js = type=http-response,pattern=^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js,script-update-interval=0
+tb_price.js = requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js,type=http-request,pattern=^http://.+/amdc/mobileDispatch
+tb_price.js = type=http-response,pattern=^https?://trade-acs\.m\.taobao\.com/gw/mtop\.taobao\.detail\.getdetail,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js,script-update-interval=0
+
+# Netflix评分
+nf_rating.js = script-path=https://raw.githubusercontent.com/yichahucha/surge/master/nf_rating.js,type=http-request,pattern=^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D
+nf_rating.js = requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/nf_rating.js,type=http-response,pattern=^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D
+# 枫之谷
+All_pro.js = requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/honjow/MyScripts/master/JS/MapleStoryM/All_pro.js,type=http-response,pattern=^https://m-api.nexon.com/sdk/enterToy.nx
+# 彩云天气
+ColorWeather.js = type=http-response,pattern=^https:\/\/biz\.caiyunapp\.com\/v2\/user\?app_name\=weather,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/NobyDa/Script/master/QuantumultX/File/ColorWeather.js,script-update-interval=0
+# 扫描全能王
+CamScanner.js = requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/NobyDa/Script/master/Surge/JS/CamScanner.js,type=http-response,pattern=https:\/\/(api|api-cs)\.intsig\.net\/purchase\/cs\/query_property\?
+# vsco
+vsco.js = type=http-response,pattern=https?:\/\/vsco\.co\/api\/subscriptions\/2.1\/,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/NobyDa/Script/master/QuantumultX/File/vsco.js,script-update-interval=0
+# 一言
+Calendar.js = script-path=https://raw.githubusercontent.com/MeetaGit/MeetaRules/master/Surge/Scripting/Calendar.js,script-update-interval=0,type=cron,cronexp=0 8-20/6 * * *
+# 京东多合一签到
+JD_DailyBonus.js = script-path=https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js,type=cron,cronexp=2 0 * * *
+# 腾讯视频
+videoqq.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/videoqq/videoqq.js,script-update-interval=0,type=cron,cronexp=2 0 * * *
+
+# 电信签到
+10000.js =脚本路径= https：//raw.githubusercontent.com/chavyleung/scripts/master/10000/10000.js,script-update-interval=0,type=cron,cronexp=1 0 * * *
+
+[MITM]
+hostname = %APPEND% api.m.jd.com, trade-acs.m.taobao.com,ios.prod.ftl.netflix.com,m-api.nexon.com,biz.caiyunapp.com, ap*.intsig.net,vsco.co
+
+
+
+
+#
