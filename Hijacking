@@ -1,7 +1,7 @@
 #!name=Hijacking
 #!desc=Remove Hijacking's regional restrictions.restrictions.
 #!system=ios
-
+#搬运自@ConnersHua
 [Rule]
 DOMAIN-SUFFIX,17gouwuba.com,REJECT-TINYGIF
 DOMAIN-SUFFIX,186078.com,REJECT-TINYGIF
