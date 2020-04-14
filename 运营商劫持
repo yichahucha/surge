@@ -1,7 +1,7 @@
 #!name=运营商劫持
 #!desc=Hijacking,regional restrictions.
 #!system=ios
-# Internet Service Providers Hijacking 运营商劫持
+ 
 DOMAIN-SUFFIX,17gouwuba.com
 DOMAIN-SUFFIX,186078.com
 DOMAIN-SUFFIX,189zj.cn
