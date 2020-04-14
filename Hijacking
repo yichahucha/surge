@@ -1,6 +1,8 @@
 #!name=Hijacking
-#!desc=Hijacking,regional restrictions.
+#!desc=Remove Hijacking's regional restrictions.restrictions.
 #!system=ios
+
+[Rule]
  
 DOMAIN-SUFFIX,17gouwuba.com
 DOMAIN-SUFFIX,186078.com
