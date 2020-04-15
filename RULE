@@ -1,15 +1,24 @@
-#!name=Rule
-#!desc=Remove Rule's regional restrictions.
+#!name=Get cookie
+#!desc=该模块适用于定时签到脚本的Cookie获取. 
 #!system=ios
 
-[Rule]
-RULE-SET,https://github.com/ConnersHua/Profiles/raw/master/Surge/Ruleset/China.list,DIRECT
-RULE-SET,https://raw.githubusercontent.com/ConnersHua/Profiles/master/Surge/Ruleset/Unbreak.list,DIRECT
-RULE-SET,https://raw.githubusercontent.com/NobyDa/Script/master/Surge/Download.list,DIRECT
-# 热点
-DOMAIN-SUFFIX,api.tophub.today,DIRECT
-# 淘宝
-IP-CIDR,203.119.144.0/23,REJECT,no-resolve
-IP-CIDR,203.119.175.0/24,REJECT,no-resolve
-IP-CIDR,106.11.162.0/24,REJECT,no-resolve
-IP-CIDR,47.102.83.0/24,REJECT,no-resolve
+[Script]
+
+#> 京东
+# 浏览器登录 https://bean.m.jd.com 点击签到并且出现签到日历
+JD_DailyBonus.js = type=http-request,pattern=https:\/\/api\.m\.jd\.com\/client\.action.*functionId=signBean,script-path=https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
+
+# > 中国电信
+10000.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/10000/10000.cookie.js,type=http-request,pattern=^https:\/\/wapside.189.cn:9001\/api\/home\/homeInfo
+10000.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/10000/10000.cookie.js,type=http-response,pattern=^https:\/\/wapside.189.cn:9001\/api\/home\/homeInfo
+
+# > 腾讯视频签到
+videoqq.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/videoqq/videoqq.cookie.js,type=http-request,pattern=^https:\/\/access.video.qq.com\/user\/auth_refresh
+
+# > 微信小程序活动抽奖 
+WeChatLottery_new.js = script-path=https://raw.githubusercontent.com/zZPiglet/Task/master/WeChatLottery/WeChatLottery_new.js,type=http-request,pattern=^https:\/\/api-hdcj\.9w9\.com\/v\d\/sign
+
+
+
+[MITM]
+hostname = %APPEND% api.m.jd.com,  wapside.189.cn:9001, api-hdcj.9w9.com, *.video.qq.com
