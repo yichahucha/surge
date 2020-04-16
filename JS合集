@@ -15,8 +15,6 @@ nf_rating.js = requires-body=1,script-path=https://raw.githubusercontent.com/yic
 All_pro.js = requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/honjow/MyScripts/master/JS/MapleStoryM/All_pro.js,type=http-response,pattern=^https://m-api.nexon.com/sdk/enterToy.nx
 # > 微信公众号
 WeChat.js = script-path=https://Choler.github.io/Surge/Script/WeChat.js,type=http-request,pattern=^https://mp\.weixin\.qq\.com/mp/getappmsgad
-# > YouTube
-YouTube.js = script-path=https://Choler.github.io/Surge/Script/YouTube.js,type=http-request,pattern=^https://[\s\S]*\.googlevideo\.com/.*&(oad|ctier)
 # > 网易蜗牛读书VIP (By yxiaocai and JO2EY)
 wnyd.js = requires-body=1,script-path=https://raw.githubusercontent.com/NobyDa/Script/master/QuantumultX/File/wnyd.js,type=http-response,pattern=^https?:\/\/p\.du\.163\.com\/gain\/readtime\/info\.json
 # > VSCO滤镜VIP
@@ -33,8 +31,6 @@ rrtv.js = requires-body=1,max-size=0,script-path=https://raw.githubusercontent.c
 clarity.js = requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/nzw9314/QuantumultX/master/Script/clarity.js,type=http-response,pattern=^https:\/\/claritywallpaper\.com\/clarity\/api\/(userInfo|special\/queryByCatalogAll)
 # > XMind思维导图
 XMind.js = requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/nzw9314/QuantumultX/master/Script/XMind.js,type=http-response,pattern=https:\/\/www\.xmind\.cn\/\_res\/devices
-# > 奇热小说 解锁收费章节(By @@ios4521)
-qrxs.js = requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/nzw9314/QuantumultX/master/Script/qrxs.js,type=http-response,pattern=^https://api.weiqire.com/api3/(visitor/|user/unlockCharpter)
 # > Langkhach越南老哥
 # > all apps monkey
 monkey.js = requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/langkhach270389/Scripting/master/monkey.js,script-update-interval=0,type=http-response,pattern=^https:\/\/www\.api\.monkeyuni\.net\/api\/.+\/mobile\/account\/load-update
