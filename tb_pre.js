@@ -17,3 +17,25 @@ if (headers["User-Agent"].indexOf("%E6%89%8B%E6%9C%BA%E6%B7%98%E5%AE%9D") != -1)
 $done({
   body
 })
+
+function Qs2Json(url) {
+  var search = url.substring(url.lastIndexOf("?") + 1);
+  var obj = {};
+  var reg = /([^?&=]+)=([^?&=]*)/g;
+  search.replace(reg, function(rs, $1, $2) {
+    var name = decodeURIComponent($1);
+    var val = decodeURIComponent($2);
+    val = String(val);
+    obj[name] = val;
+    return rs;
+  });
+  return obj;
+}
+
+function Json2Qs(json) {
+  var temp = [];
+  for (var k in json) {
+    temp.push(k + "=" + json[k]);
+  }
+  return temp.join("&");
+}
