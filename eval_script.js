@@ -61,6 +61,7 @@ const __log = false
 const __debug = false
 const __developmentMode = false
 const __concurrencyLimit = 20
+const __cacheKey = "ScriptCacheKey"
 
 const __tool = new ____Tool()
 const __base64 = new ____Base64()
@@ -160,7 +161,7 @@ if (__tool.isTask) {
         .then((scriptResults) => {
             console.log("Stop updating script.")
             storeObj["scriptResults"] = scriptResults
-            return __tool.write(JSON.stringify(storeObj.confMap), "ScriptConfObjKey")
+            return __tool.write(JSON.stringify(storeObj.confMap), __cacheKey)
         })
         //update github
         .then(() => {
@@ -237,7 +238,7 @@ if (!__tool.isTask) {
         if (__developmentMode) {
             return ____parseDevelopmentModeConf(__conf)
         } else {
-            return JSON.parse(__tool.read("ScriptConfObjKey"))
+            return JSON.parse(__tool.read(__cacheKey))
         }
     })()
     const __script = (() => {
