@@ -100,7 +100,8 @@ if (
 } else if (url.indexOf(path19) != -1) {
     let obj = JSON.parse(body);
     delete obj.expandable_view;
-    delete obj.expandable_views;
+    if(obj.hasOwnProperty(expandable_views))
+        delete obj.expandable_views;
     body = JSON.stringify(obj);
 }
 
