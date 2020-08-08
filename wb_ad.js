@@ -22,6 +22,7 @@ const path17 = "/statuses/friends_timeline";
 const path18 = "/!/photos/pic_recommend_status";
 const path19 = "/statuses/video_mixtimeline";
 const path20 = "/video/tiny_stream_video_list";
+const path21 = "/photo/info";
 
 const url = $request.url;
 let body = $response.body;
@@ -103,6 +104,10 @@ if (
     if(obj.hasOwnProperty('expandable_views'))
         delete obj.expandable_views;
     body = JSON.stringify(obj);
+} else if (url.indexOf(path21) != -1) {
+    if (body.indexOf("ad_params") != -1) {
+        body = {}
+    }
 }
 
 $done({ body });
