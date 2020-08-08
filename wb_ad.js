@@ -101,7 +101,7 @@ if (
 } else if (url.indexOf(path19) != -1) {
     let obj = JSON.parse(body);
     delete obj.expandable_view;
-    if(obj.hasOwnProperty('expandable_views'))
+    if (obj.hasOwnProperty('expandable_views'))
         delete obj.expandable_views;
     body = JSON.stringify(obj);
 } else if (url.indexOf(path21) != -1) {
@@ -159,6 +159,17 @@ function filter_timeline_cards(cards) {
                             if (card_group_item.desc == '\u53ef\u80fd\u611f\u5174\u8da3\u7684\u4eba') {
                                 cards.splice(j, 1);
                                 break;
+                            }
+                        } else if (card_type == 17) {
+                            let group = card_group_item.group;
+                            if (group && group.length > 0) {
+                                let k = group.length;
+                                while (k--) {
+                                    let group_item = group[i];
+                                    if (group_item.hasOwnProperty("promotion")) {
+                                        group.splice(k, 1);
+                                    }
+                                }
                             }
                         }
                     }
