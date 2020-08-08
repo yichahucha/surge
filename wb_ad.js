@@ -165,7 +165,7 @@ function filter_timeline_cards(cards) {
                             if (group && group.length > 0) {
                                 let k = group.length;
                                 while (k--) {
-                                    let group_item = group[i];
+                                    let group_item = group[k];
                                     if (group_item.hasOwnProperty("promotion")) {
                                         group.splice(k, 1);
                                     }
