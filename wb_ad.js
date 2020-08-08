@@ -143,7 +143,6 @@ function filter_timeline_cards(cards) {
     if (cards && cards.length > 0) {
         let j = cards.length;
         while (j--) {
-            console.log("oooo");
             let item = cards[j];
             let card_group = item.card_group;
             if (card_group && card_group.length > 0) {
@@ -152,7 +151,6 @@ function filter_timeline_cards(cards) {
                 } else {
                     let i = card_group.length;
                     while (i--) {
-                        console.log("sdsds");
                         let card_group_item = card_group[i];
                         let card_type = card_group_item.card_type;
                         if (card_type) {
