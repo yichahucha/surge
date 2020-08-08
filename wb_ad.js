@@ -144,14 +144,19 @@ function filter_timeline_cards(cards) {
         let j = cards.length;
         while (j--) {
             let item = cards[j];
-            let card_type = item.card_type;
             let card_group = item.card_group;
-            if (card_type && card_type == 9) {
-                if (is_timeline_ad(item.mblog)) cards.splice(j, 1);
-            }else if (card_type && card_type == 11) {
+            if (item.itemid && item.itemid == "hotword") {
                 filter_top_search(card_group);
-            }else {
-                filter_card_group(card_group);
+            } else {
+                if (card_group && card_group.length > 0) {
+                    filter_card_group(card_group);
+                } else {
+                    let card_type = item.card_type;
+                    if (card_type && card_type == 9) {
+                        if (is_timeline_ad(item.mblog)) cards.splice(j, 1);
+                    }
+                }
+
             }
         }
     }
@@ -187,7 +192,6 @@ function filter_top_search(group) {
         let k = group.length;
         while (k--) {
             let group_item = group[k];
-            console.log(group_item);
             if (group_item.hasOwnProperty("promotion")) {
                 group.splice(k, 1);
             }
