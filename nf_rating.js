@@ -52,12 +52,13 @@ if (!$tool.isResponse) {
         }
         const requestRatings = async () => {
             const IMDb = await requestIMDbRating(title, year, type);
-            const Douban = await requestDoubanRating(IMDb.id);
+            // const Douban = await requestDoubanRating(IMDb.id);
             const IMDbrating = IMDb.msg.rating;
             const tomatoes = IMDb.msg.tomatoes;
             const country = IMDb.msg.country;
-            const doubanRating = Douban.rating;
-            const message = `${country}\n${IMDbrating}\n${doubanRating}${tomatoes.length > 0 ? "\n" + tomatoes + "\n" : "\n"}`;
+            // const doubanRating = Douban.rating;
+            // const message = `${country}\n${IMDbrating}\n${doubanRating}${tomatoes.length > 0 ? "\n" + tomatoes + "\n" : "\n"}`;
+            const message = `${country}\n${IMDbrating}${tomatoes.length > 0 ? "\n" + tomatoes + "\n" : "\n"}`;
             return message;
         }
         let msg = "";
