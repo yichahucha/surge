@@ -11,12 +11,12 @@ $tool.get('https://dict.youdao.com/infoline/style/cardList?mode=publish&client=m
     let title = 'Clock' + (isAM ? ' in' : ' out') + (isAM ? ' ☀️' : ' 🌙');
     let subtitle = '';
     let scheme = 'dingtalk://dingtalkclient/page/link?url=https://attend.dingtalk.com/attend/index.html';
-    let content = scheme;
+    let content = "";
     let option = {"open-url" : scheme};
     if (!error) {
         if (obj && obj.length > 1) {
             let yi = obj[1];
-            content = yi.title + '\n' + yi.summary + '\n\n' + content;
+            content = yi.title + '\n' + yi.summary;
             option["media-url"] = yi.image[0];
         }
     }
