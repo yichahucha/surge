@@ -11,26 +11,21 @@ const body = $response.body;
 const $tool = tool();
 
 if (url.indexOf(path1) != -1) {
-    try {
-        let obj = JSON.parse(body);
-        delete obj.serverConfig.httpdns;
-        delete obj.serverConfig.dnsvip;
-        delete obj.serverConfig.dnsvip_v6;
-        $done({ body: JSON.stringify(obj) });
-    } catch (error) {
-        $done({ body });
-    }
+    let obj = JSON.parse(body);
+    delete obj.serverConfig.httpdns;
+    delete obj.serverConfig.dnsvip;
+    delete obj.serverConfig.dnsvip_v6;
+    $done({ body: JSON.stringify(obj) });
 }
 
 if (url.indexOf(path3) != -1) {
-    try {
-        let obj = JSON.parse(body);
+    let obj = JSON.parse(body);
+    let JDHttpToolKit = obj.data.JDHttpToolKit;
+    if (JDHttpToolKit) {
         delete obj.data.JDHttpToolKit.httpdns;
         delete obj.data.JDHttpToolKit.dnsvipV6;
-        $done({ body: JSON.stringify(obj) });
-    } catch (error) {
-        $done({ body });
     }
+    $done({ body: JSON.stringify(obj) }); $done({ body });
 }
 
 if (url.indexOf(path2) != -1) {
