@@ -1,5 +1,5 @@
 # Surge
-Remove weibo ads
+Weibo
 ```properties
 [Script]
 http-response ^https?://(sdk|wb)app\.uve\.weibo\.com(/interface/sdk/sdkad.php|/wbapplua/wbpullad.lua) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/wb_launch.js
@@ -8,7 +8,7 @@ http-response ^https?://m?api\.weibo\.c(n|om)/2/(statuses/(unread|extend|positiv
 hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com
 ```
 
-Display netflix ratings（IMDb、douaban）
+Display netflix ratings（IMDb）
 ```properties
 [Script]
 http-request ^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D script-path=https://raw.githubusercontent.com/yichahucha/surge/master/nf_rating.js
@@ -48,7 +48,7 @@ cron "0 9,18 * * 1-5" script-path=https://raw.githubusercontent.com/yichahucha/s
 
 # Quan-X
 
-Remove weibo ads
+Weibo
 ```properties
 [rewrite_local]
 ^https?://(sdk|wb)app\.uve\.weibo\.com(/interface/sdk/sdkad.php|/wbapplua/wbpullad.lua) url script-response-body wb_launch.js
@@ -89,5 +89,3 @@ DingDing clock in
 [task_local]
 0 9,18 * * 1-5 clock_in.js
 ```
-
-[Issue Group](https://t.me/joinchat/GNhmPg1pixfpvKyD0h-8YA)
