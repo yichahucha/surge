@@ -68,7 +68,7 @@ if (headers["User-Agent"].indexOf(userAgent) != -1) {
         });
     }
 } else {
-    $done({ body });
+    $done({});
 }
 
 function lowerMsgs(data) {
