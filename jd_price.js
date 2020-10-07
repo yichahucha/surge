@@ -9,7 +9,7 @@ const userAgent = "JD4iPhone";
 const consolelog = false;
 const url = $request.url;
 const body = $response.body;
-const headers = $request.headers;
+const headers = $response.headers;
 const $tool = tool();
 
 if (headers["User-Agent"].indexOf(userAgent) != -1) {
