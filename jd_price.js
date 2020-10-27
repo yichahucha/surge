@@ -97,7 +97,7 @@ function historySummary(single) {
     const rexMatch = /\[.*?\]/g;
     const rexExec = /\[(.*),(.*),"(.*)"\]/;
     let currentPrice, lowest60, lowest180, lowest360
-    let list = single.jiagequshiyh.match(rexMatch);
+    let list = single.jiagequshi.match(rexMatch);
     list = list.reverse().slice(0, 360);
     list.forEach((item, index) => {
         if (item.length > 0) {
