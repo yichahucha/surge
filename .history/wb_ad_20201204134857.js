@@ -84,7 +84,7 @@ if (
     let obj = JSON.parse(body);
     obj.story_list = [];
     body = JSON.stringify(obj);
-} else if (url.indexOf(path11) != -1 || url.indexOf(path22) != -1) {
+} else if (url.indexOf(path11) != -1 || url.indexOf(path2) != -1) {
     let obj = JSON.parse(body);
     obj.data = [];
     body = JSON.stringify(obj);

@@ -84,7 +84,7 @@ if (
     let obj = JSON.parse(body);
     obj.story_list = [];
     body = JSON.stringify(obj);
-} else if (url.indexOf(path11) != -1 || url.indexOf(path22) != -1) {
+} else if (url.indexOf(path11) != -1 || url.indexOf(path2) != -1) {
     let obj = JSON.parse(body);
     obj.data = [];
     body = JSON.stringify(obj);
@@ -169,7 +169,17 @@ function filter_timeline_cards(cards) {
                                     break;
                                 }
                             } else if (card_type == 17) {
-                                filter_top_search(card_group_item.group);
+                                // filter_top_search(card_group_item.group);
+                                let group = card_group_item.group;
+                                if (group && group.length > 0) {
+                                    let k = group.length;
+                                    while (k--) {
+                                        let group_item = group[k];
+                                        if (group_item.hasOwnProperty("promotion")) {
+                                            group.splice(k, 1);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
