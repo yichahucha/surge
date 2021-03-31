@@ -25,7 +25,7 @@ if (url.indexOf(path3) != -1) {
         delete obj.data.JDHttpToolKit.httpdns;
         delete obj.data.JDHttpToolKit.dnsvipV6;
     }
-    $done({ body: JSON.stringify(obj) }); $done({ body });
+    $done({ body: JSON.stringify(obj) });
 }
 
 if (url.indexOf(path2) != -1) {
