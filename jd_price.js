@@ -75,6 +75,7 @@ function lowerMsgs(data) {
     return lowerMsg
 }
 
+
 function priceSummary(data) {
     let summary = ""
     let listPriceDetail = data.PriceRemark.ListPriceDetail.slice(0,4)
