@@ -67,7 +67,7 @@ function priceSummary(data) {
         } else if (item.Name == "618价格") {
             item.Name = "六一八价格"
         }
-        summary += `\n${item.Name}${getSpace(8)}${item.Price}${getSpace(8)}${item.Date}${getSpace(8)}${item.Difference}`
+        summary += `\n${item.Name}   ${item.Price}   ${item.Date}   ${item.Difference}`
     })
     return summary
 }
