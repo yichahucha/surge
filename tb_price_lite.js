@@ -60,7 +60,7 @@ if (url.indexOf(path2) != -1) {
                 const lower = lowerMsgs(data.single)
                 const detail = priceSummary(data)
                 const tip = data.PriceRemark.Tip + "（仅供参考）"
-                $tool.notify("", "", `${lower} ${tip}\n${detail}\n\n👉查看详情：http://tool.manmanbuy.com/historyLowest.aspx?url=${encodeURI(shareUrl)}`)
+                $tool.notify("", "", `${lower} ${tip}${detail}\n👉查看详情：http://tool.manmanbuy.com/historyLowest.aspx?url=${encodeURI(shareUrl)}`)
             }
             if (data.ok == 0 && data.msg.length > 0) {
                 $tool.notify("", "", `⚠️ ${data.msg}`)
@@ -86,7 +86,7 @@ function priceSummary(data) {
         } else if (item.Name == "618价格") {
             item.Name = "六一八价格"
         }
-        summary += `\n${item.Name}   ${item.Price}   ${item.Date}   ${item.Difference}`
+        summary += `\n${item.Name}  ${item.Price}  ${item.Date}  ${item.Difference}`
     })
     return summary
 }
@@ -102,7 +102,7 @@ function historySummary(single) {
             const result = rexExec.exec(item);
             const dateUTC = new Date(eval(result[1]));
             const date = dateUTC.format("yyyy-MM-dd");
-            let price = parseFloat(result[2]);
+            let price = parseInt(result[2]);
             if (index == 0) {
                 currentPrice = price
                 lowest30 = { Name: "三十天最低", Price: `¥${String(price)}`, Date: date, Difference: difference(currentPrice, price), price }
