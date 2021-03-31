@@ -59,7 +59,7 @@ if (url.indexOf(path2) != -1) {
             if (data.ok == 1 && data.single) {
                 const lower = lowerMsgs(data.single)
                 const detail = priceSummary(data)
-                const tip = data.PriceRemark.Tip + "（仅供参考）"
+                const tip = data.PriceRemark.Tip
                 $tool.notify("", "", `${lower}\n${tip}${detail}`)
             }
             if (data.ok == 0 && data.msg.length > 0) {
