@@ -60,7 +60,7 @@ if (url.indexOf(path2) != -1) {
                 const lower = lowerMsgs(data.single)
                 const detail = priceSummary(data)
                 const tip = data.PriceRemark.Tip + "（仅供参考）"
-                $tool.notify("", "", `${lower}${detail}\n👉查看详情：http://tool.manmanbuy.com/historyLowest.aspx?url=${encodeURI(shareUrl)}`)
+                $tool.notify("", "", `${lower}\n${tip}${detail}`)
             }
             if (data.ok == 0 && data.msg.length > 0) {
                 $tool.notify("", "", `⚠️ ${data.msg}`)
@@ -72,7 +72,7 @@ if (url.indexOf(path2) != -1) {
 function lowerMsgs(data) {
     const lower = data.lowerPriceyh
     const lowerDate = dateFormat(data.lowerDateyh)
-    const lowerMsg = "历史最低到手价：¥" + String(lower) + ` (${lowerDate}) `
+    const lowerMsg = "🍵 历史最低到手价：¥" + String(lower) + ` (${lowerDate}) `
     return lowerMsg
 }
 
