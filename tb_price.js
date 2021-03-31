@@ -110,7 +110,7 @@ function sendNotify(data, shareUrl) {
         const lower = lowerMsgs(data.single)[0]
         const detail = priceSummary(data)[1]
         const tip = data.PriceRemark.Tip + "（仅供参考）"
-        $tool.notify("", "", `🫖 历史${lower} ${tip}\n${detail}\n\n👉查看详情：http://tool.manmanbuy.com/historyLowest.aspx?url=${encodeURI(shareUrl)}`)
+        $tool.notify("", "", `🍵 历史${lower} ${tip}${detail}`)
     }
     if (data.ok == 0 && data.msg.length > 0) {
         $tool.notify("", "", `⚠️ ${data.msg}`)
