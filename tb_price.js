@@ -110,7 +110,7 @@ function sendNotify(data, shareUrl) {
         const lower = lowerMsgs(data.single)[0]
         const detail = priceSummary(data)[1]
         const tip = data.PriceRemark.Tip + "（仅供参考）"
-        $tool.notify("", "", `〽️历史${lower} ${tip}\n${detail}\n\n👉查看详情：http://tool.manmanbuy.com/historyLowest.aspx?url=${encodeURI(shareUrl)}`)
+        $tool.notify("", "", `🫖 历史${lower} ${tip}\n${detail}\n\n👉查看详情：http://tool.manmanbuy.com/historyLowest.aspx?url=${encodeURI(shareUrl)}`)
     }
     if (data.ok == 0 && data.msg.length > 0) {
         $tool.notify("", "", `⚠️ ${data.msg}`)
@@ -158,11 +158,13 @@ function setTradeConsumerProtection(data, tradeConsumerProtection) {
 function lowerMsgs(data) {
     const lower = data.lowerPriceyh
     const lowerDate = dateFormat(data.lowerDateyh)
-    const lowerMsg = "🫖 历史最低到手价：¥" + String(lower) + ` (${lowerDate}) `
-    return lowerMsg
+    const lowerMsg = "最低到手价：¥" + String(lower) + `（${lowerDate}）`
+    const lowerMsg1 = "历史最低¥" + String(lower)
+    return [lowerMsg, lowerMsg1]
 }
 
 function priceSummary(data) {
+    let tbitems = []
     let summary = ""
     let listPriceDetail = data.PriceRemark.ListPriceDetail.slice(0,4)
     let list = listPriceDetail.concat(historySummary(data.single))
@@ -172,9 +174,11 @@ function priceSummary(data) {
         } else if (item.Name == "618价格") {
             item.Name = "六一八价格"
         }
-        summary += `\n${item.Name}${getSpace(8)}${item.Price}${getSpace(8)}${item.Date}${getSpace(8)}${item.Difference}`
+        summary += `\n${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
+        let summaryItem = `${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
+        tbitems.push(customItem(summaryItem))
     })
-    return summary
+    return [tbitems, summary]
 }
 
 function historySummary(single) {
