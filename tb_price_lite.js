@@ -86,7 +86,7 @@ function priceSummary(data) {
         } else if (item.Name == "618价格") {
             item.Name = "六一八价格"
         }
-        summary += `\n${item.Name}  ${item.Price}  ${item.Date}  ${item.Difference}`
+        summary += `\n${item.Name}   ${String(parseInt(item.Price))}   ${item.Date}   ${item.Difference}`
     })
     return summary
 }
@@ -102,7 +102,7 @@ function historySummary(single) {
             const result = rexExec.exec(item);
             const dateUTC = new Date(eval(result[1]));
             const date = dateUTC.format("yyyy-MM-dd");
-            let price = parseInt(result[2]);
+            let price = parseFloat(result[2]);
             if (index == 0) {
                 currentPrice = price
                 lowest30 = { Name: "三十天最低", Price: `¥${String(price)}`, Date: date, Difference: difference(currentPrice, price), price }
