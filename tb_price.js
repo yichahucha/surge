@@ -158,36 +158,29 @@ function setTradeConsumerProtection(data, tradeConsumerProtection) {
 function lowerMsgs(data) {
     const lower = data.lowerPriceyh
     const lowerDate = dateFormat(data.lowerDateyh)
-    const lowerMsg = "最低到手价：¥" + String(lower) + `（${lowerDate}）`
-    const lowerMsg1 = "历史最低¥" + String(lower)
-    return [lowerMsg, lowerMsg1]
+    const lowerMsg = "🫖 历史最低到手价：¥" + String(lower) + ` (${lowerDate}) `
+    return lowerMsg
 }
 
 function priceSummary(data) {
-    let tbitems = []
     let summary = ""
-    let listPriceDetail = data.PriceRemark.ListPriceDetail
-    listPriceDetail.pop()
+    let listPriceDetail = data.PriceRemark.ListPriceDetail.slice(0,4)
     let list = listPriceDetail.concat(historySummary(data.single))
     list.forEach((item, index) => {
         if (item.Name == "双11价格") {
             item.Name = "双十一价格"
         } else if (item.Name == "618价格") {
             item.Name = "六一八价格"
-        } else if (item.Name == "30天最低价") {
-            item.Name = "三十天最低"
         }
-        summary += `\n${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
-        let summaryItem = `${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
-        tbitems.push(customItem(summaryItem))
+        summary += `\n${item.Name}${getSpace(8)}${item.Price}${getSpace(8)}${item.Date}${getSpace(8)}${item.Difference}`
     })
-    return [tbitems, summary]
+    return summary
 }
 
 function historySummary(single) {
     const rexMatch = /\[.*?\]/g;
     const rexExec = /\[(.*),(.*),"(.*)".*\]/;
-    let currentPrice, lowest60, lowest180, lowest360
+    let currentPrice, lowest30, lowest90, lowest180, lowest360
     let list = single.jiagequshiyh.match(rexMatch);
     list = list.reverse().slice(0, 360);
     list.forEach((item, index) => {
@@ -198,23 +191,30 @@ function historySummary(single) {
             let price = parseFloat(result[2]);
             if (index == 0) {
                 currentPrice = price
-                lowest60 = { Name: "六十天最低", Price: `¥${String(price)}`, Date: date, Difference: difference(currentPrice, price), price }
+                lowest30 = { Name: "三十天最低", Price: `¥${String(price)}`, Date: date, Difference: difference(currentPrice, price), price }
+                lowest90 = { Name: "九十天最低", Price: `¥${String(price)}`, Date: date, Difference: difference(currentPrice, price), price }
                 lowest180 = { Name: "一百八最低", Price: `¥${String(price)}`, Date: date, Difference: difference(currentPrice, price), price }
                 lowest360 = { Name: "三百六最低", Price: `¥${String(price)}`, Date: date, Difference: difference(currentPrice, price), price }
             }
-            if (index < 60 && price <= lowest60.price) {
-                lowest60.price = price
-                lowest60.Price = `¥${String(price)}`
-                lowest60.Date = date
-                lowest60.Difference = difference(currentPrice, price)
+            if (index < 30 && price < lowest30.price) {
+                lowest30.price = price
+                lowest30.Price = `¥${String(price)}`
+                lowest30.Date = date
+                lowest30.Difference = difference(currentPrice, price)
             }
-            if (index < 180 && price <= lowest180.price) {
+            if (index < 90 && price < lowest90.price) {
+                lowest90.price = price
+                lowest90.Price = `¥${String(price)}`
+                lowest90.Date = date
+                lowest90.Difference = difference(currentPrice, price)
+            }
+            if (index < 180 && price < lowest180.price) {
                 lowest180.price = price
                 lowest180.Price = `¥${String(price)}`
                 lowest180.Date = date
                 lowest180.Difference = difference(currentPrice, price)
             }
-            if (index < 360 && price <= lowest360.price) {
+            if (index < 360 && price < lowest360.price) {
                 lowest360.price = price
                 lowest360.Price = `¥${String(price)}`
                 lowest360.Date = date
@@ -222,7 +222,7 @@ function historySummary(single) {
             }
         }
     });
-    return [lowest60, lowest180, lowest360];
+    return [lowest30, lowest90, lowest180, lowest360];
 }
 
 function difference(currentPrice, price) {
