@@ -1,10 +1,13 @@
 /*
 README：https://github.com/yichahucha/surge/tree/master
+^https?://api\.m\.jd\.com/(client\.action|api)\?functionId=(wareBusiness|serverConfig|basicConfig|lite_wareBusiness|pingou_item)
  */
 
 const path1 = "serverConfig";
 const path2 = "wareBusiness";
+const path2h = "wareBusiness.style";
 const path3 = "basicConfig";
+const path4 = "pingou_item";
 const consolelog = false;
 const url = $request.url;
 const body = $response.body;
@@ -21,19 +24,32 @@ if (url.indexOf(path1) != -1) {
 if (url.indexOf(path3) != -1) {
     let obj = JSON.parse(body);
     let JDHttpToolKit = obj.data.JDHttpToolKit;
+    let jCommandConfig = obj.data.jCommandConfig;
     if (JDHttpToolKit) {
         delete obj.data.JDHttpToolKit.httpdns;
         delete obj.data.JDHttpToolKit.dnsvipV6;
     }
+    if (jCommandConfig) {
+		delete obj.data.jCommandConfig.httpdnsConfig;
+	}
     $done({ body: JSON.stringify(obj) });
 }
 
-if (url.indexOf(path2) != -1) {
-    $done({ body });
+if (url.indexOf(path2) != -1 || url.indexOf(path4) != -1) {
+    if (!$tool.isQuanX) {
+        $done({ body });
+    }
     let obj = JSON.parse(body);
     const floors = obj.floors;
     const commodity_info = floors[floors.length - 1];
-    const shareUrl = commodity_info.data.property.shareUrl;
+    const others = obj.others;
+	const domain = obj.domain;
+	const shareUrl =
+		url.indexOf(path4) != -1
+			? domain.h5Url
+			: url.indexOf(path2h) != -1
+			? others.property.shareUrl
+			: commodity_info.data.property.shareUrl;
     request_history_price(shareUrl, function (data) {
         if (data) {
             if (data.ok == 1 && data.single) {
@@ -46,6 +62,7 @@ if (url.indexOf(path2) != -1) {
                 $tool.notify("", "", `⚠️ ${data.msg}`)
             }
         }
+        $done({ body });
     })
 }
 
