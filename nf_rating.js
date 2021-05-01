@@ -52,13 +52,12 @@ if (!$tool.isResponse) {
         }
         const requestRatings = async () => {
             const IMDb = await requestIMDbRating(title, year, type);
-            // const Douban = await requestDoubanRating(IMDb.id);
+            const Douban = await requestDoubanRating(IMDb.id);
             const IMDbrating = IMDb.msg.rating;
             const tomatoes = IMDb.msg.tomatoes;
             const country = IMDb.msg.country;
-            // const doubanRating = Douban.rating;
-            // const message = `${country}\n${IMDbrating}\n${doubanRating}${tomatoes.length > 0 ? "\n" + tomatoes + "\n" : "\n"}`;
-            const message = `${country}\n${IMDbrating}${tomatoes.length > 0 ? "\n" + tomatoes + "\n" : "\n"}`;
+            const doubanRating = Douban.rating;
+            const message = `${country}\n${IMDbrating}\n${doubanRating}${tomatoes.length > 0 ? "\n" + tomatoes + "\n" : "\n"}`;
             return message;
         }
         let msg = "";
@@ -88,14 +87,13 @@ function setTitleMap(id, title, map) {
 
 function requestDoubanRating(imdbId) {
     return new Promise(function (resolve, reject) {
-        const url = "https://api.douban.com/v2/movie/imdb/" + imdbId + "?apikey=0df993c66c0c636e29ecbb5344252a4a";
+        const url = `https://www.douban.com/search?cat=1002&q=${imdbId}`;
         if (consoleLog) console.log("Netflix Douban Rating URL:\n" + url);
         $tool.get(url, function (error, response, data) {
             if (!error) {
                 if (consoleLog) console.log("Netflix Douban Rating Data:\n" + data);
                 if (response.status == 200) {
-                    const obj = JSON.parse(data);
-                    const rating = get_douban_rating_message(obj);
+                    const rating = get_douban_rating_message(data);
                     resolve({ rating });
                 } else {
                     resolve({ rating: "Douban:  " + errorTip().noData });
@@ -178,9 +176,11 @@ function get_IMDb_message(data) {
 }
 
 function get_douban_rating_message(data) {
-    const average = data.rating.average;
-    const numRaters = data.rating.numRaters;
-    const rating_message = `Douban:  ⭐️ ${average.length > 0 ? average + "/10" : "N/A"}   ${numRaters == 0 ? "" : parseFloat(numRaters).toLocaleString()}`;
+    const s = data.replace(/\n| |&#\d{2}/g, '')
+    .match(/\[\u7535\u5f71\].+?subject-cast\">.+?<\/span>/g);
+    const average = s ? s[0].split(/">(\d\.\d)</)[1] || '' : '';
+    const numRaters = s ? s[0].split(/(\d+)\u4eba\u8bc4\u4ef7/)[1] || '' : '';
+    const rating_message = `Douban:  ⭐️ ${average ? average + "/10" : "N/A"}   ${!numRaters ? "" : parseFloat(numRaters).toLocaleString()}`;
     return rating_message;
 }
 
