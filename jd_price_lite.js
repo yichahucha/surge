@@ -15,6 +15,7 @@ const $tool = tool();
 
 let cookie = $tool.getCache("jfCookie") || "";
 let cscheme = $tool.getCache("jfChooseScheme") || "jd"; // "jx","js","jk" 京东、京喜、京东极速版、京东健康
+let jsapp = [true, "true"].includes($tool.getCache("jfusejsapp")) || false; // 对极速版是否也跳转 app，注意即使跳转 app，也需要先加入购物车返回再结账，否则无法使用极速版优惠券
 let browser = $tool.getCache("chooseBrowser") || "Safari";
 let jfAutoScheme = $tool.getCache("jfAutoScheme"); // 本地不使用 BoxJs 可自行更改 let jfAutoScheme = true / false
 let jfConvert = $tool.getCache("jfUseConvert");
@@ -32,7 +33,10 @@ switch (cscheme) {
         chooseScheme = "openApp.jdHealth";
         break;
     case "js":
-    //chooseScheme = "openjdlite"; // 有问题，极速版暂时跳转浏览器
+        if (jsapp) {
+            chooseScheme = "openjdlite";
+            break;
+        }
     case "browser":
         chooseScheme = "browser";
         break;
@@ -311,7 +315,6 @@ function convert(url, isOriginJXURL) {
             ) {
                 id = url.match(/(\d+)\.html/)[1];
                 url = `https:\/\/item.m.jd.com\/product\/${id}.html`;
-                //url = url.replace(/\//g, "\\/");
             } else if (url.includes("m.jingxi") || url.includes("wq.jd.com")) {
                 id = url.match(/sku=(\d+)/)[1];
                 url = `https:\/\/wq.jd.com\/item\/view?sku=${id}`;
@@ -321,10 +324,10 @@ function convert(url, isOriginJXURL) {
             } else if (url.includes("kpl.m.jd")) {
                 id = url.match(/wareId=(\d+)/)[1];
                 url = `https:\/\/kpl.m.jd.com\/product?wareId=${id}`;
-                //autoScheme = "openjdlite";
-                autoScheme = "browser";
+                autoScheme = jsapp ? "openjdlite" : "browser";
             } else {
                 url = url;
+                //url = url.replace(/\//g, "\\/");
             }
             let body = {
                 funName: "getSuperClickUrl",
@@ -361,25 +364,13 @@ function convert(url, isOriginJXURL) {
                             r.convertURL =
                                 scheme == "browser"
                                     ? chooseBrowser + data.data.promotionUrl
-                                    : `${scheme}://virtual?params=%7B%22category%22:%22jump%22,%22des%22:%22m%22,%22url%22:%22${data.data.promotionUrl}%22%7D`;
-                            /*
-							r.convertURL =
-								autoScheme == "openjdlite"
-									? `${scheme}://virtual?params=%7B%22category%22:%22jump%22,%22des%22:%22productDetail%22,%22skuId%22:%22${id}%22,%22m_param%22:%7B%22ref%22:%22${data.data.promotionUrl}%22%7D%7D`
-									: `${scheme}://virtual?params=%7B%22category%22:%22jump%22,%22des%22:%22m%22,%22url%22:%22${data.data.promotionUrl}%22%7D`;
-							*/
+                                    : `${scheme}://virtual?params=%7B%22category%22:%22jump%22,%22des%22:%22m%22,%22sourceValue%22:%22babel-act%22,%22sourceType%22:%22babel%22,%22url%22:%22${data.data.promotionUrl}%22%7D`;
                         } else {
                             r.msg = `该商品暂无详细返利信息，${data.data.formatContext.trim()}`;
                             r.convertURL =
                                 scheme == "browser"
                                     ? chooseBrowser + data.data.originalContext
-                                    : `${scheme}://virtual?params=%7B%22category%22:%22jump%22,%22des%22:%22m%22,%22url%22:%22${data.data.originalContext}%22%7D`;
-                            /*
-							r.convertURL =
-								autoScheme == "openjdlite"
-									? `${scheme}://virtual?params=%7B%22category%22:%22jump%22,%22des%22:%22productDetail%22,%22skuId%22:%22${id}%22,%22m_param%22:%7B%22ref%22:%22${data.data.originalContext}%22%7D%7D`
-									: `${scheme}://virtual?params=%7B%22category%22:%22jump%22,%22des%22:%22m%22,%22url%22:%22${data.data.originalContext}%22%7D`;
-							*/
+                                    : `${scheme}://virtual?params=%7B%22category%22:%22jump%22,%22des%22:%22m%22,%22sourceValue%22:%22babel-act%22,%22sourceType%22:%22babel%22,%22url%22:%22${data.data.originalContext}%22%7D`;
                         }
                         resolve(r);
                     } else if (data.code === 105) {

@@ -9,7 +9,7 @@
         "id": "jf",
         "name": "京粉转链",
         "desc": "在京东比价中增加京粉转链，如显示有转链信息（即使显示无详细返利信息）则可点击跳转跟单，如未显示返利信息则为未参加推广的商品，不会跳转。",
-        "keys": ["jfCookie", "jfUseConvert", "jfAutoScheme", "jfChooseScheme", "chooseBrowser", "jfDIYScheme"],
+        "keys": ["jfCookie", "jfUseConvert", "jfAutoScheme", "jfusejsapp", "jfChooseScheme", "chooseBrowser", "jfDIYScheme"],
         "settings": [
           {
             "id": "jfUseConvert",
@@ -35,9 +35,16 @@
                 { "key": "jd", "label": "京东" },
                 { "key": "jx", "label": "京喜" },
                 { "key": "jk", "label": "京东健康" }, 
-                { "key": "js", "label": "京东极速版（暂不可用，极速版默认同浏览器设置）" },
+                { "key": "js", "label": "京东极速版" },
                 { "key": "browser", "label": "浏览器" }
             ]
+          },
+          {
+            "id": "jfusejsapp",
+            "name": "京东极速版使用 app",
+            "val": false,
+            "type": "boolean",
+            "desc": "开启时对目标为京东极速版则跳转京东极速版，关闭则跳转浏览器，默认关闭。注意：即使开启，由于极速版 URL Scheme 问题，跳转后只能先加入购物车，返回原购物车界面进行结账，否则无法使用极速版优惠券。"
           },
           {
             "id": "chooseBrowser",
