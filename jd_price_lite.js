@@ -303,7 +303,7 @@ function request_history_price(share_url) {
 
 function convert(url, isOriginJXURL) {
     return new Promise((resolve) => {
-        if (!cookiesArr[0]) {
+        if (!cookie) {
             $tool.setCache("false", "jfUseConvert");
             resolve("");
         } else {
