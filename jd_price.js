@@ -58,7 +58,7 @@ if (url.indexOf(path2) != -1) {
                 floors.insert(bestIndex, lowerword);
             }
             if (data.ok == 0 && data.msg.length > 0) {
-                lowerword.data.ad.adword = "⚠️ " + data.msg;
+                lowerword.data.ad.adword = "⚠️ " + "脚本使用的比价接口加了 token 验证，不能用了，没有找到合适的比价接口之前，先禁用脚本吧";
                 floors.insert(bestIndex, lowerword);
             }
             $done({ body: JSON.stringify(obj) });
