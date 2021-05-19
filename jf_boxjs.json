@@ -1,0 +1,88 @@
+{
+    "id": "jfConvert",
+    "name": "京粉转链",
+    "author": "@jfConvert",
+    "icon": "https://is5-ssl.mzstatic.com/image/thumb/Purple125/v4/eb/a8/f6/eba8f63a-b550-4586-b5d3-f22c0718ef81/source/100x100bb.jpg",
+    "repo": "https://jingfen.jd.com/html/index.html",
+    "apps": [
+      {
+        "id": "jf",
+        "name": "京粉转链",
+        "desc": "在京东比价中增加京粉转链，如显示有转链信息（即使显示无详细返利信息）则可点击跳转跟单，如未显示返利信息则为未参加推广的商品，不会跳转。",
+        "keys": ["jfCookie", "jfUseConvert", "jfAutoScheme", "jfusejsapp", "jfChooseScheme", "chooseBrowser", "jfDIYScheme"],
+        "settings": [
+          {
+            "id": "jfUseConvert",
+            "name": "开启转链",
+            "val": true,
+            "type": "boolean",
+            "desc": "是否开启京粉转链？"
+          },
+          {
+            "id": "jfAutoScheme",
+            "name": "自动目标",
+            "val": true,
+            "type": "boolean",
+            "desc": "开启后如转链成功有返利，点击通知跳转正在使用的 app，关闭则跳转自选的 app。"
+          },
+          {
+            "id": "jfChooseScheme",
+            "name": "自选目标",
+            "val": "jd",
+            "type": "radios",
+            "desc": "自选跳转的 app，仅在自动目标关闭时有效。",
+            "items": [
+                { "key": "jd", "label": "京东" },
+                { "key": "jx", "label": "京喜" },
+                { "key": "jk", "label": "京东健康" }, 
+                { "key": "js", "label": "京东极速版" },
+                { "key": "browser", "label": "浏览器" }
+            ]
+          },
+          {
+            "id": "jfusejsapp",
+            "name": "京东极速版使用 app",
+            "val": false,
+            "type": "boolean",
+            "desc": "开启时对目标为京东极速版则跳转京东极速版，关闭则跳转浏览器，默认关闭。注意：即使开启，由于极速版 URL Scheme 问题，跳转后只能先加入购物车，返回原购物车界面进行结账，否则无法使用极速版优惠券。"
+          },
+          {
+            "id": "chooseBrowser",
+            "name": "浏览器目标",
+            "val": "Safari",
+            "type": "radios",
+            "desc": "自选跳转的浏览器。",
+            "items": [
+                { "key": "Safari", "label": "Safari" },
+                { "key": "Alook", "label": "Alook" },
+                { "key": "DIY", "label": "自定义" }
+            ]
+          },
+          {
+            "id": "jfDIYScheme",
+            "name": "自定义浏览器",
+            "val": "",
+            "type": "textarea",
+            "placeholder": "Foxok://url?", 
+            "autoGrow": true,
+            "rows": 2,
+            "desc": "自定义跳转浏览器 URL Scheme，拼接后会是 diy+convertURL，如 Foxok://url?convertURL"
+          },
+          {
+            "id": "jfCookie",
+            "name": "Cookie",
+            "type": "textarea",
+            "autoGrow": true,
+            "rows": 2,
+            "desc": "使用京粉的京东账号 Cookie，如不填则为京东系脚本中的第一个 Cookie。"
+          }
+        ],
+        "author": "@jfConvert",
+        "repo": "https://jingfen.jd.com/html/index.html",
+        "icons": [
+          "https://is5-ssl.mzstatic.com/image/thumb/Purple125/v4/eb/a8/f6/eba8f63a-b550-4586-b5d3-f22c0718ef81/source/100x100bb.jpg",
+          "https://is5-ssl.mzstatic.com/image/thumb/Purple125/v4/eb/a8/f6/eba8f63a-b550-4586-b5d3-f22c0718ef81/source/100x100bb.jpg"
+        ]
+      }
+    ]
+  }
