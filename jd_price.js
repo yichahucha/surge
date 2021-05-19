@@ -34,10 +34,12 @@ if (url.indexOf(path2) != -1) {
     const shareUrl = commodity_info.data.property.shareUrl;
     let msg = ""
     request_history_price(shareUrl)
-        .then(data => msg = priceSummary(data.priceTrend))
-        .catch(error => msg = "获取比价结果失败")
+        .then(data => {
+            if (data.priceTrend.series.length == 0) throw new Error('Whoops!')
+            msg = priceSummary(data.priceTrend)
+        })
+        .catch(error => msg = "暂无价格信息")
         .finally(() => {
-            // console.log(msg)
             const lowerword = adword_obj()
             lowerword.data.ad.textColor = "#fe0000"
             let bestIndex = 0
@@ -61,7 +63,7 @@ if (url.indexOf(path2) != -1) {
 
 function priceSummary(data) {
 	data = data.series[0]
-	let summary = `当前价: ${parseFloat(data.current / 100.0)}${getSpace(8)}最低: ${parseFloat(data.min / 100.0)}${getSpace(8)}最高: ${parseFloat(data.max / 100.0)}`;
+	let summary = `🍵 当前: ${parseFloat(data.current / 100.0)}${getSpace(8)}最低: ${parseFloat(data.min / 100.0)}${getSpace(8)}最高: ${parseFloat(data.max / 100.0)}`;
 	const list = historySummary(data.data);
 	list.forEach((item, index) => {
 		summary += `\n${item.Name}${getSpace(8)}${item.Price}${getSpace(8)}${item.Date
