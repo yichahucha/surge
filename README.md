@@ -8,7 +8,7 @@ http-response ^https?://m?api\.weibo\.c(n|om)/2/(statuses/(unread|extend|positiv
 hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com
 ```
 
-Display netflix ratings（IMDb、~~douban~~）
+Display netflix ratings（IMDb、douban）
 ```properties
 [Script]
 nf_rating.js = type=http-request,pattern=^https?:\/\/ios(-.*)?\.prod\.ftl\.netflix\.com\/iosui\/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/nf_rating.js
@@ -57,7 +57,7 @@ Weibo
 hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com
 ```
 
-Display netflix ratings（IMDb、~~douban~~）
+Display netflix ratings（IMDb、douban）
 ```properties
 [rewrite_local]
 ^https?://ios(-.*)?\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D url script-request-header https://raw.githubusercontent.com/yichahucha/surge/master/nf_rating.js
