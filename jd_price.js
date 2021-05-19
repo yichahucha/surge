@@ -217,7 +217,7 @@ function difference(currentPrice, price) {
     if (difference == 0) {
         return "-"
     } else {
-        return `${difference > 0 ? "↑" : "↓"}${String(difference)}`
+        return `${difference > 0 ? "↑" : "↓"}${String(Math.abs(difference))}`
     }
 }
 
