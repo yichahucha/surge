@@ -8,7 +8,6 @@ const path2 = "wareBusiness";
 const path2h = "wareBusiness.style";
 const path3 = "basicConfig";
 const path4 = "pingou_item";
-const consolelog = false;
 const url = $request.url;
 const body = $response.body;
 const $tool = tool();
@@ -279,7 +278,7 @@ function request_history_price(share_url) {
         $tool.post(options, function (error, response, data) {
             if (!error) {
                 data = JSON.parse(data);
-                if (consolelog) console.log("Data:\n" + data);
+                console.log("Data:\n" + data);
                 if (data.ok == 1 && data.single) {
                     const lower = lowerMsgs(data.single);
                     const detail = priceSummary(data);
@@ -294,7 +293,7 @@ function request_history_price(share_url) {
                     resolve(e);
                 }
             } else {
-                if (consolelog) console.log("JD History Error:\n" + error);
+                console.log("JD History Error:\n" + error);
                 resolve();
             }
         });
@@ -399,7 +398,8 @@ function dateFormat(cellval) {
 }
 
 function tool() {
-    const isSurge = typeof $httpClient != "undefined";
+    const isSurge = typeof $utils != "undefined";
+    const isLoon = typeof $loon != "undefined";
     const isQuanX = typeof $task != "undefined";
     const node = (() => {
         if (typeof require == "function") {

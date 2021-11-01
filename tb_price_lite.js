@@ -2,100 +2,102 @@
 README：https://github.com/yichahucha/surge/tree/master
  */
 
-const $tool = new Tool()
-const consoleLog = false
-const url = $request.url
-const path1 = "/amdc/mobileDispatch"
-const path2 = "/gw/mtop.taobao.detail.getdetail"
+const $tool = new Tool();
+const consoleLog = false;
+const url = $request.url;
+const path1 = "/amdc/mobileDispatch";
+const path2 = "/gw/mtop.taobao.detail.getdetail";
 
 if (url.indexOf(path1) != -1) {
     if ($tool.isResponse) {
-        const $base64 = new Base64()
-        let body = $response.body
-        let obj = JSON.parse($base64.decode(body))
-        let dns = obj.dns
+        const $base64 = new Base64();
+        let body = $response.body;
+        let obj = JSON.parse($base64.decode(body));
+        let dns = obj.dns;
         if (dns && dns.length > 0) {
             let i = dns.length;
             while (i--) {
                 const element = dns[i];
-                let host = "trade-acs.m.taobao.com"
+                let host = "trade-acs.m.taobao.com";
                 if (element.host == host) {
-                    element.ips = []
-                    if (consoleLog) console.log(JSON.stringify(element))
+                    element.ips = [];
+                    if (consoleLog) console.log(JSON.stringify(element));
                 }
             }
         }
-        body = $base64.encode(JSON.stringify(obj))
-        $done({ body })
+        body = $base64.encode(JSON.stringify(obj));
+        $done({ body });
     } else {
-        let headers = $request.headers
-        let body = $request.body
+        let headers = $request.headers;
+        let body = $request.body;
         if (headers["User-Agent"].indexOf("%E6%89%8B%E6%9C%BA%E6%B7%98%E5%AE%9D") != -1) {
-            let json = Qs2Json(body)
-            let domain = json.domain.split(" ")
+            let json = Qs2Json(body);
+            let domain = json.domain.split(" ");
             let i = domain.length;
             while (i--) {
-                const block = "trade-acs.m.taobao.com"
+                const block = "trade-acs.m.taobao.com";
                 const element = domain[i];
                 if (element == block) {
                     domain.splice(i, 1);
                 }
             }
-            json.domain = domain.join(" ")
-            body = Json2Qs(json)
+            json.domain = domain.join(" ");
+            body = Json2Qs(json);
         }
-        $done({ body })
+        $done({ body });
     }
 }
 
 if (url.indexOf(path2) != -1) {
-    const body = $response.body
-    $done({ body })
-    const obj = JSON.parse(body)
-    let item = obj.data.item
-    let shareUrl = `https://item.taobao.com/item.htm?id=${item.itemId}`
+    const body = $response.body;
+    $done({ body });
+    const obj = JSON.parse(body);
+    let item = obj.data.item;
+    let shareUrl = `https://item.taobao.com/item.htm?id=${item.itemId}`;
     requestPrice(shareUrl, function (data) {
         if (data) {
             if (data.ok == 1 && data.single) {
-                const lower = lowerMsgs(data.single)
-                const detail = priceSummary(data)
-                const tip = data.PriceRemark.Tip
-                $tool.notify("", "", `${lower}\n${tip}${detail}`)
+                const lower = lowerMsgs(data.single);
+                const detail = priceSummary(data);
+                const tip = data.PriceRemark.Tip;
+                $tool.notify("", "", `${lower}\n${tip}${detail}`);
             }
             if (data.ok == 0 && data.msg.length > 0) {
-                $tool.notify("", "", `⚠️ ${data.msg}`)
+                $tool.notify("", "", `⚠️ ${data.msg}`);
             }
         }
-    })
+    });
 }
 
 function lowerMsgs(data) {
-    const lower = data.lowerPriceyh
-    const lowerDate = dateFormat(data.lowerDateyh)
-    const lowerMsg = "🍵 历史最低到手价：¥" + String(lower) + ` (${lowerDate}) `
-    return lowerMsg
+    const lower = data.lowerPriceyh;
+    const lowerDate = dateFormat(data.lowerDateyh);
+    const lowerMsg = "🍵 历史最低到手价：¥" + String(lower) + ` (${lowerDate}) `;
+    return lowerMsg;
 }
 
 function priceSummary(data) {
-    let summary = ""
-    let listPriceDetail = data.PriceRemark.ListPriceDetail.slice(0,4)
-    let list = listPriceDetail.concat(historySummary(data.single))
+    let summary = "";
+    let listPriceDetail = data.PriceRemark.ListPriceDetail.slice(0, 4);
+    let list = listPriceDetail.concat(historySummary(data.single));
     list.forEach((item, index) => {
         if (item.Name == "双11价格") {
-            item.Name = "双十一价格"
+            item.Name = "双十一价格";
         } else if (item.Name == "618价格") {
-            item.Name = "六一八价格"
+            item.Name = "六一八价格";
         }
         let price = String(parseInt(item.Price.substr(1)));
-        summary += `\n${item.Name}   ${isNaN(price) ? "-" : "¥" + price}   ${item.Date}   ${item.Difference}`
-    })
-    return summary
+        summary += `\n${item.Name}   ${isNaN(price) ? "-" : "¥" + price}   ${item.Date}   ${
+            item.Difference
+        }`;
+    });
+    return summary;
 }
 
 function historySummary(single) {
     const rexMatch = /\[.*?\]/g;
     const rexExec = /\[(.*),(.*),"(.*)".*\]/;
-    let currentPrice, lowest30, lowest90, lowest180, lowest360
+    let currentPrice, lowest30, lowest90, lowest180, lowest360;
     let list = single.jiagequshiyh.match(rexMatch);
     list = list.reverse().slice(0, 360);
     list.forEach((item, index) => {
@@ -105,35 +107,59 @@ function historySummary(single) {
             const date = dateUTC.format("yyyy-MM-dd");
             let price = parseFloat(result[2]);
             if (index == 0) {
-                currentPrice = price
-                lowest30 = { Name: "三十天最低", Price: `¥${String(price)}`, Date: date, Difference: difference(currentPrice, price), price }
-                lowest90 = { Name: "九十天最低", Price: `¥${String(price)}`, Date: date, Difference: difference(currentPrice, price), price }
-                lowest180 = { Name: "一百八最低", Price: `¥${String(price)}`, Date: date, Difference: difference(currentPrice, price), price }
-                lowest360 = { Name: "三百六最低", Price: `¥${String(price)}`, Date: date, Difference: difference(currentPrice, price), price }
+                currentPrice = price;
+                lowest30 = {
+                    Name: "三十天最低",
+                    Price: `¥${String(price)}`,
+                    Date: date,
+                    Difference: difference(currentPrice, price),
+                    price,
+                };
+                lowest90 = {
+                    Name: "九十天最低",
+                    Price: `¥${String(price)}`,
+                    Date: date,
+                    Difference: difference(currentPrice, price),
+                    price,
+                };
+                lowest180 = {
+                    Name: "一百八最低",
+                    Price: `¥${String(price)}`,
+                    Date: date,
+                    Difference: difference(currentPrice, price),
+                    price,
+                };
+                lowest360 = {
+                    Name: "三百六最低",
+                    Price: `¥${String(price)}`,
+                    Date: date,
+                    Difference: difference(currentPrice, price),
+                    price,
+                };
             }
             if (index < 30 && price < lowest30.price) {
-                lowest30.price = price
-                lowest30.Price = `¥${String(price)}`
-                lowest30.Date = date
-                lowest30.Difference = difference(currentPrice, price)
+                lowest30.price = price;
+                lowest30.Price = `¥${String(price)}`;
+                lowest30.Date = date;
+                lowest30.Difference = difference(currentPrice, price);
             }
             if (index < 90 && price < lowest90.price) {
-                lowest90.price = price
-                lowest90.Price = `¥${String(price)}`
-                lowest90.Date = date
-                lowest90.Difference = difference(currentPrice, price)
+                lowest90.price = price;
+                lowest90.Price = `¥${String(price)}`;
+                lowest90.Date = date;
+                lowest90.Difference = difference(currentPrice, price);
             }
             if (index < 180 && price < lowest180.price) {
-                lowest180.price = price
-                lowest180.Price = `¥${String(price)}`
-                lowest180.Date = date
-                lowest180.Difference = difference(currentPrice, price)
+                lowest180.price = price;
+                lowest180.Price = `¥${String(price)}`;
+                lowest180.Date = date;
+                lowest180.Difference = difference(currentPrice, price);
             }
             if (index < 360 && price < lowest360.price) {
-                lowest360.price = price
-                lowest360.Price = `¥${String(price)}`
-                lowest360.Date = date
-                lowest360.Difference = difference(currentPrice, price)
+                lowest360.price = price;
+                lowest360.Price = `¥${String(price)}`;
+                lowest360.Date = date;
+                lowest360.Difference = difference(currentPrice, price);
             }
         }
     });
@@ -141,11 +167,11 @@ function historySummary(single) {
 }
 
 function difference(currentPrice, price) {
-    let difference = sub(currentPrice, price)
+    let difference = sub(currentPrice, price);
     if (difference == 0) {
-        return "-"
+        return "-";
     } else {
-        return `${difference > 0 ? "↑" : "↓"}${String(difference)}`
+        return `${difference > 0 ? "↑" : "↓"}${String(difference)}`;
     }
 }
 
@@ -154,33 +180,55 @@ function sub(arg1, arg2) {
 }
 
 function add(arg1, arg2) {
-    arg1 = arg1.toString(), arg2 = arg2.toString();
-    var arg1Arr = arg1.split("."), arg2Arr = arg2.split("."), d1 = arg1Arr.length == 2 ? arg1Arr[1] : "", d2 = arg2Arr.length == 2 ? arg2Arr[1] : "";
+    (arg1 = arg1.toString()), (arg2 = arg2.toString());
+    var arg1Arr = arg1.split("."),
+        arg2Arr = arg2.split("."),
+        d1 = arg1Arr.length == 2 ? arg1Arr[1] : "",
+        d2 = arg2Arr.length == 2 ? arg2Arr[1] : "";
     var maxLen = Math.max(d1.length, d2.length);
     var m = Math.pow(10, maxLen);
     var result = Number(((arg1 * m + arg2 * m) / m).toFixed(maxLen));
     var d = arguments[2];
-    return typeof d === "number" ? Number((result).toFixed(d)) : result;
+    return typeof d === "number" ? Number(result.toFixed(d)) : result;
 }
 
-function requestPrice(share_url, callback) {
+async function request_history_price(share_url) {
     const options = {
-        url: "https://apapia-history.manmanbuy.com/ChromeWidgetServices/WidgetServices.ashx",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_1_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 - mmbWebBrowse - ios"
+            "User-Agent": "bijiago/1.4.2 (com.bijiago.app; build:65; iOS 14.5.1) Alamofire/4.9.1",
+            "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: "methodName=getHistoryTrend&p_url=" + encodeURIComponent(share_url)
-    }
-    $tool.post(options, function (error, response, data) {
-        if (!error) {
-            callback(JSON.parse(data));
-            if (consoleLog) console.log("Data:\n" + data);
-        } else {
-            callback(null, null);
-            if (consoleLog) console.log("Error:\n" + error);
-        }
-    })
+    };
+
+    const rid = new Promise(function (resolve, reject) {
+        options.url =
+            "https://app.bijiago.com/service/product?app_platform=ios&app_version=65&device=750%2A1334&opt=product&posi=default&url=" +
+            encodeURIComponent(share_url);
+        $tool.get(options, function (error, response, data) {
+            if (!error) {
+                resolve(JSON.parse(data));
+            } else {
+                reject(error);
+            }
+        });
+    });
+
+    const priceTrend = (rid, dq_id) => {
+        return new Promise(function (resolve, reject) {
+            options.url = "https://app.bijiago.com/service/product";
+            options.body = `app_platform=ios&app_version=10000&append_promo=1&dp_id=${dq_id}&from=url&opt=priceTrend&rid=${rid}`;
+            $tool.post(options, function (error, response, data) {
+                if (!error) {
+                    resolve(JSON.parse(data));
+                } else {
+                    reject(error);
+                }
+            });
+        });
+    };
+    const ridData = await rid;
+    const priceTrendData = await priceTrend(ridData.rid, ridData.product.dp_id);
+    return priceTrendData;
 }
 
 function dateFormat(cellval) {
@@ -225,81 +273,104 @@ Date.prototype.format = function (fmt) {
         "m+": this.getMinutes(),
         "s+": this.getSeconds(),
         "q+": Math.floor((this.getMonth() + 3) / 3),
-        "S+": this.getMilliseconds()
+        "S+": this.getMilliseconds(),
     };
     for (var k in o) {
         if (new RegExp("(" + k + ")").test(fmt)) {
             if (k == "y+") {
                 fmt = fmt.replace(RegExp.$1, ("" + o[k]).substr(4 - RegExp.$1.length));
-            }
-            else if (k == "S+") {
+            } else if (k == "S+") {
                 var lens = RegExp.$1.length;
                 lens = lens == 1 ? 3 : lens;
                 fmt = fmt.replace(RegExp.$1, ("00" + o[k]).substr(("" + o[k]).length - 1, lens));
-            }
-            else {
-                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            } else {
+                fmt = fmt.replace(
+                    RegExp.$1,
+                    RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
+                );
             }
         }
     }
     return fmt;
-}
+};
 
 function Tool() {
     _node = (() => {
         if (typeof require == "function") {
-            const request = require('request')
-            return ({ request })
+            const request = require("request");
+            return { request };
         } else {
-            return (null)
+            return null;
         }
-    })()
-    _isSurge = typeof $httpClient != "undefined"
-    _isQuanX = typeof $task != "undefined"
-    this.isSurge = _isSurge
-    this.isQuanX = _isQuanX
-    this.isResponse = typeof $response != "undefined"
+    })();
+    _isSurge = typeof $httpClient != "undefined";
+    _isQuanX = typeof $task != "undefined";
+    this.isSurge = _isSurge;
+    this.isQuanX = _isQuanX;
+    this.isResponse = typeof $response != "undefined";
     this.notify = (title, subtitle, message) => {
-        if (_isQuanX) $notify(title, subtitle, message)
-        if (_isSurge) $notification.post(title, subtitle, message)
+        if (_isQuanX) $notify(title, subtitle, message);
+        if (_isSurge) $notification.post(title, subtitle, message);
         if (_node) console.log(JSON.stringify({ title, subtitle, message }));
-    }
+    };
     this.write = (value, key) => {
-        if (_isQuanX) return $prefs.setValueForKey(value, key)
-        if (_isSurge) return $persistentStore.write(value, key)
-    }
+        if (_isQuanX) return $prefs.setValueForKey(value, key);
+        if (_isSurge) return $persistentStore.write(value, key);
+    };
     this.read = (key) => {
-        if (_isQuanX) return $prefs.valueForKey(key)
-        if (_isSurge) return $persistentStore.read(key)
-    }
+        if (_isQuanX) return $prefs.valueForKey(key);
+        if (_isSurge) return $persistentStore.read(key);
+    };
     this.get = (options, callback) => {
         if (_isQuanX) {
-            if (typeof options == "string") options = { url: options }
-            options["method"] = "GET"
-            $task.fetch(options).then(response => { callback(null, _status(response), response.body) }, reason => callback(reason.error, null, null))
+            if (typeof options == "string") options = { url: options };
+            options["method"] = "GET";
+            $task.fetch(options).then(
+                (response) => {
+                    callback(null, _status(response), response.body);
+                },
+                (reason) => callback(reason.error, null, null)
+            );
         }
-        if (_isSurge) $httpClient.get(options, (error, response, body) => { callback(error, _status(response), body) })
-        if (_node) _node.request(options, (error, response, body) => { callback(error, _status(response), body) })
-    }
+        if (_isSurge)
+            $httpClient.get(options, (error, response, body) => {
+                callback(error, _status(response), body);
+            });
+        if (_node)
+            _node.request(options, (error, response, body) => {
+                callback(error, _status(response), body);
+            });
+    };
     this.post = (options, callback) => {
         if (_isQuanX) {
-            if (typeof options == "string") options = { url: options }
-            options["method"] = "POST"
-            $task.fetch(options).then(response => { callback(null, _status(response), response.body) }, reason => callback(reason.error, null, null))
+            if (typeof options == "string") options = { url: options };
+            options["method"] = "POST";
+            $task.fetch(options).then(
+                (response) => {
+                    callback(null, _status(response), response.body);
+                },
+                (reason) => callback(reason.error, null, null)
+            );
         }
-        if (_isSurge) $httpClient.post(options, (error, response, body) => { callback(error, _status(response), body) })
-        if (_node) _node.request.post(options, (error, response, body) => { callback(error, _status(response), body) })
-    }
+        if (_isSurge)
+            $httpClient.post(options, (error, response, body) => {
+                callback(error, _status(response), body);
+            });
+        if (_node)
+            _node.request.post(options, (error, response, body) => {
+                callback(error, _status(response), body);
+            });
+    };
     _status = (response) => {
         if (response) {
             if (response.status) {
-                response["statusCode"] = response.status
+                response["statusCode"] = response.status;
             } else if (response.statusCode) {
-                response["status"] = response.statusCode
+                response["status"] = response.statusCode;
             }
         }
-        return response
-    }
+        return response;
+    };
 }
 
 function Base64() {
@@ -324,12 +395,15 @@ function Base64() {
             } else if (isNaN(chr3)) {
                 enc4 = 64;
             }
-            output = output +
-                _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
-                _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+            output =
+                output +
+                _keyStr.charAt(enc1) +
+                _keyStr.charAt(enc2) +
+                _keyStr.charAt(enc3) +
+                _keyStr.charAt(enc4);
         }
         return output;
-    }
+    };
     // public method for decoding
     this.decode = function (input) {
         var output = "";
@@ -355,7 +429,7 @@ function Base64() {
         }
         output = _utf8_decode(output);
         return output;
-    }
+    };
     // private method for UTF-8 encoding
     _utf8_encode = function (string) {
         string = string.replace(/\r\n/g, "\n");
@@ -364,7 +438,7 @@ function Base64() {
             var c = string.charCodeAt(n);
             if (c < 128) {
                 utftext += String.fromCharCode(c);
-            } else if ((c > 127) && (c < 2048)) {
+            } else if (c > 127 && c < 2048) {
                 utftext += String.fromCharCode((c >> 6) | 192);
                 utftext += String.fromCharCode((c & 63) | 128);
             } else {
@@ -372,21 +446,20 @@ function Base64() {
                 utftext += String.fromCharCode(((c >> 6) & 63) | 128);
                 utftext += String.fromCharCode((c & 63) | 128);
             }
-
         }
         return utftext;
-    }
+    };
     // private method for UTF-8 decoding
     _utf8_decode = function (utftext) {
         var string = "";
         var i = 0;
-        var c = c1 = c2 = 0;
+        var c = (c1 = c2 = 0);
         while (i < utftext.length) {
             c = utftext.charCodeAt(i);
             if (c < 128) {
                 string += String.fromCharCode(c);
                 i++;
-            } else if ((c > 191) && (c < 224)) {
+            } else if (c > 191 && c < 224) {
                 c2 = utftext.charCodeAt(i + 1);
                 string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
                 i += 2;
@@ -398,5 +471,5 @@ function Base64() {
             }
         }
         return string;
-    }
+    };
 }
