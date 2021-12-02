@@ -77,7 +77,7 @@ function historySummary(list) {
 	list = list.reverse().slice(0, 360);
 	list.forEach((item, index) => {
 		const date = item.Date;
-		let price = item.Price;
+		let price = item.Price
 		if (index == 0) {
 			currentPrice = price;
 			price618 = {
@@ -109,14 +109,14 @@ function historySummary(list) {
 				price,
 			};
 			lowest180 = {
-				Name: "一百八最低",
+				Name: "一百八天最低",
 				Price: `¥${String(price)}`,
 				Date: date,
 				Difference: difference(currentPrice, price),
 				price,
 			};
 			lowest360 = {
-				Name: "三百六最低",
+				Name: "三百六天最低",
 				Price: `¥${String(price)}`,
 				Date: date,
 				Difference: difference(currentPrice, price),
