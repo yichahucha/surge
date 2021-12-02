@@ -76,8 +76,8 @@ function historySummary(list) {
 	let currentPrice, lowest30, lowest90, lowest180, lowest360, price11, price618;
 	list = list.reverse().slice(0, 360);
 	list.forEach((item, index) => {
-		const date = getExactTime(item.x);
-		let price = parseFloat(item.y / 100.0);
+		const date = item.Date;
+		let price = item.Price;
 		if (index == 0) {
 			currentPrice = price;
 			price618 = {
