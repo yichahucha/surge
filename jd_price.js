@@ -171,7 +171,7 @@ async function request_history_price(share_url) {
 	};
 
 	const priceTrend = new Promise(function (resolve, reject) {
-		options.url = "https://price.icharle.xyz/?product_id=" + share_url;
+		options.url = "https://price.icharle.com/?product_id=" + share_url;
 		$tool.get(options, function (error, response, data) {
 			if (!error) {
 				resolve(JSON.parse(data))
