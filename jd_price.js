@@ -35,8 +35,8 @@ if (url.indexOf(path2) != -1) {
     let msg = ""
     request_history_price(shareUrl)
         .then(data => {
-            if (data.priceTrend.series.length == 0) throw new Error('Whoops!')
-            msg = priceSummary(data.priceTrend)
+            if (data.errno == -1) throw new Error('Whoops!')
+            msg = priceSummary(data.data)
         })
         .catch(error => msg = "暂无价格信息")
         .finally(() => {
@@ -62,9 +62,9 @@ if (url.indexOf(path2) != -1) {
 }
 
 function priceSummary(data) {
-	data = data.series[0]
-	let summary = `🍵 当前: ${parseFloat(data.current / 100.0)}${getSpace(8)}最低: ${parseFloat(data.min / 100.0)}${getSpace(8)}最高: ${parseFloat(data.max / 100.0)}`;
-	const list = historySummary(data.data);
+// 	let summary = `🍵 当前: ${parseFloat(data.current / 100.0)}${getSpace(8)}最低: ${parseFloat(data.min / 100.0)}${getSpace(8)}最高: ${parseFloat(data.max / 100.0)}`;
+	let summary = `🍵 当前: ${data.CurrentPrice}${getSpace(8)}最低: ${data.LowestPrice}`;
+	const list = historySummary(data.PricesHistory);
 	list.forEach((item, index) => {
 		summary += `\n${item.Name}${getSpace(8)}${item.Price}${getSpace(8)}${item.Date
 			}${getSpace(8)}${item.Difference}`;
@@ -166,14 +166,12 @@ function historySummary(list) {
 async function request_history_price(share_url) {
 	const options = {
 		headers: {
-			"User-Agent":
-				"bijiago/1.4.2 (com.bijiago.app; build:65; iOS 14.5.1) Alamofire/4.9.1",
-			"Content-Type": "application/x-www-form-urlencoded",
+			"Content-Type": "application/json; charset=utf-8",
 		},
 	};
 
-	const rid = new Promise(function (resolve, reject) {
-		options.url = "https://app.bijiago.com/service/product?app_platform=ios&app_version=65&device=750%2A1334&opt=product&posi=default&url=" + encodeURIComponent(share_url);
+	const priceTrend = new Promise(function (resolve, reject) {
+		options.url = "https://price.icharle.xyz/?product_id=" + share_url;
 		$tool.get(options, function (error, response, data) {
 			if (!error) {
 				resolve(JSON.parse(data))
@@ -182,22 +180,7 @@ async function request_history_price(share_url) {
 			}
 		})
 	})
-
-	const priceTrend = (rid, dq_id) => {
-		return new Promise(function (resolve, reject) {
-			options.url = "https://app.bijiago.com/service/product"
-			options.body = `app_platform=ios&app_version=10000&append_promo=1&dp_id=${dq_id}&from=url&opt=priceTrend&rid=${rid}`
-			$tool.post(options, function (error, response, data) {
-				if (!error) {
-					resolve(JSON.parse(data));
-				} else {
-					reject(error)
-				}
-			})
-		})
-	}
-	const ridData = await (rid)
-	const priceTrendData = await (priceTrend(ridData.rid, ridData.product.dp_id))
+    	const priceTrendData = await (priceTrend)
 	return priceTrendData
 }
 
