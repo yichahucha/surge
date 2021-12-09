@@ -99,7 +99,7 @@ if (url.indexOf(path2) != -1) {
 }
 
 function sendNotify(data) {
-    if (data.data.PricesHistory.length == 0) {
+    if (data.data.PricesHistory == null) {
         $tool.notify("", "", `暂无历史价格`)
     } else {
         const detail = priceSummary(data.data)
@@ -110,7 +110,7 @@ function sendNotify(data) {
 function setConsumerProtection(data, consumerProtection) {
     let basicService = consumerProtection.serviceProtection.basicService
     let items = consumerProtection.items
-    if (data.data.PricesHistory.length == 0) {
+    if (data.data.PricesHistory == null) {
         let item = customItem("暂无历史价格", [])
         basicService.services.unshift(item)
         items.unshift(item)
@@ -125,7 +125,7 @@ function setConsumerProtection(data, consumerProtection) {
 
 function setTradeConsumerProtection(data, tradeConsumerProtection) {
     let service = tradeConsumerProtection.tradeConsumerService.service
-    if (data.data.PricesHistory.length == 0) {
+    if (data.data.PricesHistory == null) {
         service.items.unshift(customItem("暂无历史价格", ""))
     } else {
         const tbitems = priceSummary(data.data)[0]
