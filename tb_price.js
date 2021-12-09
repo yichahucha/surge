@@ -166,8 +166,8 @@ function priceSummary(data) {
         } else if (item.Name.indexOf("历史") != -1) {
             item.Name += getSpace(3)
         }
-        summary += `${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
-        let summaryItem = `${item.Name}${getSpace(3)}${item.Price}${getSpace(3)}${item.Date}${getSpace(3)}${item.Difference}`
+        summary += `${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}\n`
+        let summaryItem = `${item.Name}${getSpace(2)}${item.Price}${getSpace(2)}${item.Date}${getSpace(2)}${item.Difference}`
         tbitems.push(customItem(summaryItem))
     })
     return [tbitems, summary]
