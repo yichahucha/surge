@@ -320,7 +320,7 @@ eval_script.js = type=http-response,requires-body=1,pattern=^https:\/\/bea\.spor
 
 eval_script.js = type=http-response,requires-body=1,pattern=^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig),script-path=eval_script.js
 
-eval_script.js = type=http-request,requires-body=1,pattern=^http://.+/amdc/mobileDispatch,script-path=eval_script.js
+eval_script.js = type=http-response,requires-body=1,pattern=^http://.+/amdc/mobileDispatch,script-path=eval_script.js
 
 eval_script.js = type=http-response,requires-body=1,pattern=^https?://trade-acs\.m\.taobao\.com/gw/mtop\.taobao\.detail\.getdetail,script-path=eval_script.js
 
