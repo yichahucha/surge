@@ -114,7 +114,7 @@ function setConsumerProtection(data, consumerProtection) {
     if (data.ok == 1 && data.single) {
         const lower = lowerMsgs(data.single)
         const summary = priceSummary(data)[1]
-        const item = customItem(lower, summary)
+        const item = customItem(lower, [summary])
         basicService.services.unshift(item)
         items.unshift(item)
     }
