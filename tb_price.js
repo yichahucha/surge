@@ -116,7 +116,7 @@ function setConsumerProtection(data, consumerProtection) {
         items.unshift(item)
     } else {
         const summary = priceSummary(data.data)[1]
-        const item = customItem("历史价格详情", [`${summary}`])
+        const item = customItem("🌨 历史价格详情", [`${summary}`])
         basicService.services.unshift(item)
         items.unshift(item)
     }
@@ -131,14 +131,14 @@ function setTradeConsumerProtection(data, tradeConsumerProtection) {
         const tbitems = priceSummary(data.data)[0]
         let nonService = tradeConsumerProtection.tradeConsumerService.nonService
         service.items = service.items.concat(nonService.items)
-        nonService.title = "历史价格详情"
+        nonService.title = "🌨 历史价格详情"
         nonService.items = tbitems
     }
     return tradeConsumerProtection
 }
 
 function priceSummary(data) {
-    let summary = `🌨 当前: ${data.CurrentPrice}${getSpace(8)}最低: ${data.LowestPrice} (${data.LowestDate})`
+    let summary = `当前: ${data.CurrentPrice}${getSpace(8)}最低: ${data.LowestPrice} (${data.LowestDate})`
     let tbitems = [customItem(summary)]
     const list = historySummary(data.PricesHistory)
     list.forEach((item, index) => {
