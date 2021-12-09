@@ -79,6 +79,17 @@ function priceSummary(data) {
     let summary = ""
     let listPriceDetail = data.PriceRemark.ListPriceDetail
     listPriceDetail.forEach((item, index) => {
+        if (item.Name.indexOf("11") != -1) {
+            item.Name += getSpace(6)
+        } else if (item.Name.indexOf("618") != -1) {
+            item.Name += getSpace(5)
+        } else if (item.Name.indexOf("30") != -1) {
+            item.Name = getSpace(2)
+        } else if (item.Name.indexOf("当前") != -1) {
+            item.Name = getSpace(3)
+        } else if (item.Name.indexOf("历史") != -1) {
+            item.Name = getSpace(3)
+        }
         summary += `\n${item.Name}${getSpace(8)}${item.Price}${getSpace(8)}${item.Date}${getSpace(8)}${item.Difference}`
     })
     return summary
