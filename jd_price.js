@@ -90,7 +90,7 @@ function priceSummary(data) {
         } else if (item.Name.indexOf("历史") != -1) {
             item.Name += getSpace(2)
         }
-        summary += `\n${item.Name}${getSpace(8)}${item.Price}${getSpace(8)}${item.Date}${getSpace(8)}${item.Difference}`
+        summary += `\n${item.Name}${getSpace(6)}${item.Price}${getSpace(6)}${item.Date}${getSpace(6)}${item.Difference}`
     })
     return summary
 }
