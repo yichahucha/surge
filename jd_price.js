@@ -80,9 +80,9 @@ function priceSummary(data) {
     let listPriceDetail = data.PriceRemark.ListPriceDetail
     listPriceDetail.forEach((item, index) => {
         if (item.Name.indexOf("11") != -1) {
-            item.Name += getSpace(6)
+            item.Name += getSpace(5)
         } else if (item.Name.indexOf("618") != -1) {
-            item.Name += getSpace(8)
+            item.Name += getSpace(6)
         } else if (item.Name.indexOf("30") != -1) {
             item.Name += getSpace(1)
         } else if (item.Name.indexOf("当前") != -1) {
