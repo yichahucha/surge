@@ -130,14 +130,12 @@ function setTradeConsumerProtection(data, tradeConsumerProtection) {
     let service = tradeConsumerProtection.tradeConsumerService.service
     if (data.ok == 1 && data.single) {
         const lower = lowerMsgs(data.single)
-        // const tbitems = priceSummary(data)[0]
-        // const item = customItem(lower, "")
-        // let nonService = tradeConsumerProtection.tradeConsumerService.nonService
-        // service.items = service.items.concat(nonService.items)
-        // nonService.title = "历史价格详情"
-        // nonService.items = tbitems
-        const summary = priceSummary(data)[1]
-        const item = customItem(lower, summary)
+        const tbitems = priceSummary(data)[0]
+        const item = customItem(lower, "")
+        let nonService = tradeConsumerProtection.tradeConsumerService.nonService
+        service.items = service.items.concat(nonService.items)
+        nonService.title = "历史价格详情"
+        nonService.items = tbitems
         service.items.unshift(item)
     }
     if (data.ok == 0 && data.msg.length > 0) {
@@ -168,8 +166,8 @@ function priceSummary(data) {
         } else if (item.Name.indexOf("历史") != -1) {
             item.Name += getSpace(3)
         }
-        summary += `\n${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
-        let summaryItem = `${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
+        summary += `${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
+        let summaryItem = `${item.Name}${getSpace(3)}${item.Price}${getSpace(3)}${item.Date}${getSpace(3)}${item.Difference}`
         tbitems.push(customItem(summaryItem))
     })
     return [tbitems, summary]
