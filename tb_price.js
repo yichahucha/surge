@@ -130,12 +130,14 @@ function setTradeConsumerProtection(data, tradeConsumerProtection) {
     let service = tradeConsumerProtection.tradeConsumerService.service
     if (data.ok == 1 && data.single) {
         const lower = lowerMsgs(data.single)
-        const tbitems = priceSummary(data)[0]
-        const item = customItem(lower, "")
-        let nonService = tradeConsumerProtection.tradeConsumerService.nonService
-        service.items = service.items.concat(nonService.items)
-        nonService.title = "历史价格详情"
-        nonService.items = tbitems
+        // const tbitems = priceSummary(data)[0]
+        // const item = customItem(lower, "")
+        // let nonService = tradeConsumerProtection.tradeConsumerService.nonService
+        // service.items = service.items.concat(nonService.items)
+        // nonService.title = "历史价格详情"
+        // nonService.items = tbitems
+        const summary = priceSummary(data)[1]
+        const item = customItem(lower, [summary])
         service.items.unshift(item)
     }
     if (data.ok == 0 && data.msg.length > 0) {
@@ -146,7 +148,7 @@ function setTradeConsumerProtection(data, tradeConsumerProtection) {
 
 function lowerMsgs(data) {
     const lower = data.lowerPriceyh
-    const lowerMsg1 = "历史最低¥" + String(lower)
+    const lowerMsg1 = "历史最低 ¥" + String(lower)
     return lowerMsg1
 }
 
