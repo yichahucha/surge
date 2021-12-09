@@ -15,9 +15,9 @@ if (url.indexOf(path1) != -1) {
         let obj = JSON.parse($base64.decode(body))
         let dns = obj.dns
         if (dns && dns.length > 0) {
-            let i = dns.length;
+            let i = dns.length
             while (i--) {
-                const element = dns[i];
+                const element = dns[i]
                 let host = "trade-acs.m.taobao.com"
                 if (element.host == host) {
                     element.ips = []
@@ -33,7 +33,7 @@ if (url.indexOf(path1) != -1) {
         if (headers["User-Agent"].indexOf("%E6%89%8B%E6%9C%BA%E6%B7%98%E5%AE%9D") != -1) {
             let json = Qs2Json(body)
             let domain = json.domain.split(" ")
-            let i = domain.length;
+            let i = domain.length
             while (i--) {
                 const block = "trade-acs.m.taobao.com"
                 const element = domain[i];
