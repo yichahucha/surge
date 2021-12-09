@@ -82,13 +82,13 @@ function priceSummary(data) {
         if (item.Name.indexOf("11") != -1) {
             item.Name += getSpace(6)
         } else if (item.Name.indexOf("618") != -1) {
-            item.Name += getSpace(10)
+            item.Name += getSpace(8)
         } else if (item.Name.indexOf("30") != -1) {
-            item.Name += getSpace(2)
+            item.Name += getSpace(1)
         } else if (item.Name.indexOf("当前") != -1) {
-            item.Name += getSpace(3)
+            item.Name += getSpace(2)
         } else if (item.Name.indexOf("历史") != -1) {
-            item.Name += getSpace(3)
+            item.Name += getSpace(2)
         }
         summary += `\n${item.Name}${getSpace(8)}${item.Price}${getSpace(8)}${item.Date}${getSpace(8)}${item.Difference}`
     })
