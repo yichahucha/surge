@@ -15,16 +15,15 @@ if (url.indexOf(path1) != -1) {
         let obj = JSON.parse($base64.decode(body))
         let dns = obj.dns
         if (dns && dns.length > 0) {
-            dns.length = 0
-            // let i = dns.length;
-            // while (i--) {
-            //     const element = dns[i];
-            //     let host = "trade-acs.m.taobao.com"
-            //     if (element.host == host) {
-            //         element.ips = []
-            //         if (consoleLog) console.log(JSON.stringify(element))
-            //     }
-            // }
+            let i = dns.length;
+            while (i--) {
+                const element = dns[i];
+                let host = "trade-acs.m.taobao.com"
+                if (element.host == host) {
+                    element.ips = []
+                    if (consoleLog) console.log(JSON.stringify(element))
+                }
+            }
         }
         body = $base64.encode(JSON.stringify(obj))
         $done({ body })
@@ -101,10 +100,8 @@ if (url.indexOf(path2) != -1) {
 
 function sendNotify(data, shareUrl) {
     if (data.ok == 1 && data.single) {
-        const lower = lowerMsgs(data.single)[0]
         const detail = priceSummary(data)[1]
-        const tip = data.PriceRemark.Tip + "（仅供参考）"
-        $tool.notify("", "", `🍵 历史${lower} ${tip}${detail}`)
+        $tool.notify("", "", detail)
     }
     if (data.ok == 0 && data.msg.length > 0) {
         $tool.notify("", "", `暂无历史价格`)
@@ -116,14 +113,13 @@ function setConsumerProtection(data, consumerProtection) {
     let items = consumerProtection.items
     if (data.ok == 1 && data.single) {
         const lower = lowerMsgs(data.single)
-        const tip = data.PriceRemark.Tip
         const summary = priceSummary(data)[1]
-        const item = customItem(lower[1], [`${lower[0]} ${tip}（仅供参考）\n${summary}`])
+        const item = customItem(lower, summary)
         basicService.services.unshift(item)
         items.unshift(item)
     }
     if (data.ok == 0 && data.msg.length > 0) {
-        let item = customItem("暂无历史价格", [data.msg])
+        let item = customItem("暂无历史价格", "")
         basicService.services.unshift(item)
         items.unshift(item)
     }
@@ -134,27 +130,24 @@ function setTradeConsumerProtection(data, tradeConsumerProtection) {
     let service = tradeConsumerProtection.tradeConsumerService.service
     if (data.ok == 1 && data.single) {
         const lower = lowerMsgs(data.single)
-        const tip = data.PriceRemark.Tip
         const tbitems = priceSummary(data)[0]
-        const item = customItem(lower[1], `${lower[0]} ${tip}（仅供参考）`)
+        const item = customItem(lower, "")
         let nonService = tradeConsumerProtection.tradeConsumerService.nonService
         service.items = service.items.concat(nonService.items)
-        nonService.title = "价格详情"
+        nonService.title = "历史价格详情"
         nonService.items = tbitems
         service.items.unshift(item)
     }
     if (data.ok == 0 && data.msg.length > 0) {
-        service.items.unshift(customItem("暂无历史价格", data.msg))
+        service.items.unshift(customItem("暂无历史价格", ""))
     }
     return tradeConsumerProtection
 }
 
 function lowerMsgs(data) {
     const lower = data.lowerPriceyh
-    const lowerDate = dateFormat(data.lowerDateyh)
-    const lowerMsg = "最低到手价：¥" + String(lower) + `（${lowerDate}）`
     const lowerMsg1 = "历史最低¥" + String(lower)
-    return [lowerMsg, lowerMsg1]
+    return lowerMsg1
 }
 
 function priceSummary(data) {
@@ -200,13 +193,6 @@ function requestPrice(share_url, callback) {
     })
 }
 
-function dateFormat(cellval) {
-    const date = new Date(parseInt(cellval.replace("/Date(", "").replace(")/", ""), 10));
-    const month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-    const currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-    return date.getFullYear() + "-" + month + "-" + currentDate;
-}
-
 function getSpace(length) {
     let blank = "";
     for (let index = 0; index < length; index++) {
@@ -221,27 +207,6 @@ function customItem(title, desc) {
         title: title,
         name: title,
         desc: desc
-    }
-}
-
-function customTradeConsumerProtection() {
-    return {
-        "tradeConsumerService": {
-            "service": {
-                "items": [
-                ],
-                "icon": "",
-                "title": "基础服务"
-            },
-            "nonService": {
-                "items": [
-                ],
-                "title": "其他"
-            }
-        },
-        "passValue": "all",
-        "url": "https://h5.m.taobao.com/app/detailsubpage/consumer/index.js",
-        "type": "0"
     }
 }
 
