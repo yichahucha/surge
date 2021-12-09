@@ -15,15 +15,16 @@ if (url.indexOf(path1) != -1) {
         let obj = JSON.parse($base64.decode(body))
         let dns = obj.dns
         if (dns && dns.length > 0) {
-            let i = dns.length;
-            while (i--) {
-                const element = dns[i];
-                let host = "trade-acs.m.taobao.com"
-                if (element.host == host) {
-                    element.ips = []
-                    if (consoleLog) console.log(JSON.stringify(element))
-                }
-            }
+            dns.length = 0
+            // let i = dns.length;
+            // while (i--) {
+            //     const element = dns[i];
+            //     let host = "trade-acs.m.taobao.com"
+            //     if (element.host == host) {
+            //         element.ips = []
+            //         if (consoleLog) console.log(JSON.stringify(element))
+            //     }
+            // }
         }
         body = $base64.encode(JSON.stringify(obj))
         $done({ body })
@@ -53,14 +54,8 @@ if (url.indexOf(path2) != -1) {
     let obj = JSON.parse(body)
     let item = obj.data.item
     let shareUrl = `https://item.taobao.com/item.htm?id=${item.itemId}`
-    let msg
-    request_history_price(shareUrl)
-        .then(data => {
-            msg = data
-            if (data.errno == -1) throw new Error('Whoops!')
-        })
-        .catch(error => msg = "暂无价格信息")
-        .finally(() => {
+    requestPrice(shareUrl, function (data) {
+        if (data) {
             if (obj.data.apiStack) {
                 let apiStack = obj.data.apiStack[0]
                 let value = JSON.parse(apiStack.value)
@@ -80,43 +75,55 @@ if (url.indexOf(path2) != -1) {
                     vertical = value.vertical
                 }
                 if (trade && trade.useWap == "true") {
-                    sendNotify(msg)
+                    $done({ body })
+                    sendNotify(data, shareUrl)
                 } else {
                     if (vertical && vertical.hasOwnProperty("tmallhkDirectSale")) {
-                        sendNotify(msg)
+                        $done({ body })
+                        sendNotify(data, shareUrl)
                     } else if (tradeConsumerProtection) {
-                        tradeConsumerProtection = setTradeConsumerProtection(msg, tradeConsumerProtection)
+                        tradeConsumerProtection = setTradeConsumerProtection(data, tradeConsumerProtection)
                     } else {
-                        consumerProtection = setConsumerProtection(msg, consumerProtection)
+                        consumerProtection = setConsumerProtection(data, consumerProtection)
                     }
                     apiStack.value = JSON.stringify(value)
+                    $done({ body: JSON.stringify(obj) })
                 }
             } else {
-                sendNotify(msg)
+                $done({ body })
+                sendNotify(data, shareUrl)
             }
-            $done({ body: JSON.stringify(obj) })
-        })
+        } else {
+            $done({ body })
+        }
+    })
 }
 
-function sendNotify(data) {
-    if (typeof data == "string") {
-        $tool.notify("", "", `${data}`)
-    } else {
-        const detail = priceSummary(data.data)
-        $tool.notify("", "", `🍵 ${detail}`)
+function sendNotify(data, shareUrl) {
+    if (data.ok == 1 && data.single) {
+        const lower = lowerMsgs(data.single)[0]
+        const detail = priceSummary(data)[1]
+        const tip = data.PriceRemark.Tip + "（仅供参考）"
+        $tool.notify("", "", `🍵 历史${lower} ${tip}${detail}`)
+    }
+    if (data.ok == 0 && data.msg.length > 0) {
+        $tool.notify("", "", `暂无历史价格`)
     }
 }
 
 function setConsumerProtection(data, consumerProtection) {
     let basicService = consumerProtection.serviceProtection.basicService
     let items = consumerProtection.items
-    if (typeof data == "string") {
-        let item = customItem(data, [])
+    if (data.ok == 1 && data.single) {
+        const lower = lowerMsgs(data.single)
+        const tip = data.PriceRemark.Tip
+        const summary = priceSummary(data)[1]
+        const item = customItem(lower[1], [`${lower[0]} ${tip}（仅供参考）\n${summary}`])
         basicService.services.unshift(item)
         items.unshift(item)
-    } else {
-        const summary = priceSummary(data.data)
-        const item = customItem("价格详情", [`${summary}`])
+    }
+    if (data.ok == 0 && data.msg.length > 0) {
+        let item = customItem("暂无历史价格", [data.msg])
         basicService.services.unshift(item)
         items.unshift(item)
     }
@@ -125,174 +132,79 @@ function setConsumerProtection(data, consumerProtection) {
 
 function setTradeConsumerProtection(data, tradeConsumerProtection) {
     let service = tradeConsumerProtection.tradeConsumerService.service
-    if (typeof data == "string") {
-        service.items.unshift(customItem(data, ""))
-    } else {
-        const tbitems = priceSummary(data.data)
+    if (data.ok == 1 && data.single) {
+        const lower = lowerMsgs(data.single)
+        const tip = data.PriceRemark.Tip
+        const tbitems = priceSummary(data)[0]
+        const item = customItem(lower[1], `${lower[0]} ${tip}（仅供参考）`)
         let nonService = tradeConsumerProtection.tradeConsumerService.nonService
         service.items = service.items.concat(nonService.items)
         nonService.title = "价格详情"
         nonService.items = tbitems
+        service.items.unshift(item)
+    }
+    if (data.ok == 0 && data.msg.length > 0) {
+        service.items.unshift(customItem("暂无历史价格", data.msg))
     }
     return tradeConsumerProtection
 }
 
+function lowerMsgs(data) {
+    const lower = data.lowerPriceyh
+    const lowerDate = dateFormat(data.lowerDateyh)
+    const lowerMsg = "最低到手价：¥" + String(lower) + `（${lowerDate}）`
+    const lowerMsg1 = "历史最低¥" + String(lower)
+    return [lowerMsg, lowerMsg1]
+}
+
 function priceSummary(data) {
-    let summary = `🌨 当前: ¥${data.CurrentPrice}${getSpace(8)}历史最低: ¥${data.LowestPrice} (${data.LowestDate})`;
-    let tbitems = [customItem(summary)]
-    const list = historySummary(data.PricesHistory)
-    list.forEach((item, index) => {
+    let tbitems = []
+    let summary = ""
+    let listPriceDetail = data.PriceRemark.ListPriceDetail
+    listPriceDetail.forEach((item, index) => {
+        if (item.Name.indexOf("11") != -1) {
+            item.Name += getSpace(6)
+        } else if (item.Name.indexOf("618") != -1) {
+            item.Name += getSpace(7)
+        } else if (item.Name.indexOf("30") != -1) {
+            item.Name += getSpace(2)
+        } else if (item.Name.indexOf("当前") != -1) {
+            item.Name += getSpace(3)
+        } else if (item.Name.indexOf("历史") != -1) {
+            item.Name += getSpace(3)
+        }
         summary += `\n${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
         let summaryItem = `${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
         tbitems.push(customItem(summaryItem))
-    });
+    })
     return [tbitems, summary]
 }
 
-function historySummary(list) {
-    let currentPrice, lowest30, lowest90, lowest180, lowest360, price11, price618;
-    list = list.reverse().slice(0, 360);
-    list.forEach((item, index) => {
-        const date = item.Date;
-        let price = item.Price;
-        if (index == 0) {
-            currentPrice = price;
-            price618 = {
-                Name: "六一八价格",
-                Price: "-",
-                Date: "-",
-                Difference: "-",
-                price: "-",
-            };
-            price11 = {
-                Name: "双十一价格",
-                Price: "-",
-                Date: "-",
-                Difference: "-",
-                price: "-",
-            };
-            lowest30 = {
-                Name: "三十天最低",
-                Price: `¥${String(price)}`,
-                Date: date,
-                Difference: difference(currentPrice, price),
-                price,
-            };
-            lowest90 = {
-                Name: "九十天最低",
-                Price: `¥${String(price)}`,
-                Date: date,
-                Difference: difference(currentPrice, price),
-                price,
-            };
-            lowest180 = {
-                Name: "一百八最低",
-                Price: `¥${String(price)}`,
-                Date: date,
-                Difference: difference(currentPrice, price),
-                price,
-            };
-            lowest360 = {
-                Name: "三百六最低",
-                Price: `¥${String(price)}`,
-                Date: date,
-                Difference: difference(currentPrice, price),
-                price,
-            };
-        }
-        if (date.indexOf("06-18") != -1) {
-            price618.price = price;
-            price618.Price = `¥${String(price)}`;
-            price618.Date = date;
-            price618.Difference = difference(currentPrice, price);
-        }
-        if (date.indexOf("11-11") != -1) {
-            price11.price = price;
-            price11.Price = `¥${String(price)}`;
-            price11.Date = date;
-            price11.Difference = difference(currentPrice, price);
-        }
-        if (index < 30 && price < lowest30.price) {
-            lowest30.price = price;
-            lowest30.Price = `¥${String(price)}`;
-            lowest30.Date = date;
-            lowest30.Difference = difference(currentPrice, price);
-        }
-        if (index < 90 && price < lowest90.price) {
-            lowest90.price = price;
-            lowest90.Price = `¥${String(price)}`;
-            lowest90.Date = date;
-            lowest90.Difference = difference(currentPrice, price);
-        }
-        if (index < 180 && price < lowest180.price) {
-            lowest180.price = price;
-            lowest180.Price = `¥${String(price)}`;
-            lowest180.Date = date;
-            lowest180.Difference = difference(currentPrice, price);
-        }
-        if (index < 360 && price < lowest360.price) {
-            lowest360.price = price;
-            lowest360.Price = `¥${String(price)}`;
-            lowest360.Date = date;
-            lowest360.Difference = difference(currentPrice, price);
-        }
-    });
-    return [lowest30, lowest90, lowest180, lowest360, price618, price11];
-}
-
-async function request_history_price(share_url) {
+function requestPrice(share_url, callback) {
     const options = {
+        url: "https://apapia-history.manmanbuy.com/ChromeWidgetServices/WidgetServices.ashx",
         headers: {
-            "Content-Type": "application/json; charset=utf-8",
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_1_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 - mmbWebBrowse - ios"
         },
-    };
-
-    const priceTrend = new Promise(function (resolve, reject) {
-        options.url = "https://price.icharle.com/?product_id=" + share_url;
-        $tool.get(options, function (error, response, data) {
-            if (!error) {
-                resolve(JSON.parse(data));
-            } else {
-                reject(error);
-            }
-        });
-    });
-    const priceTrendData = await priceTrend;
-    return priceTrendData;
-}
-
-function getExactTime(time) {
-    var date = new Date(time * 1000);
-    var year = date.getFullYear() + "-";
-    var month =
-        (date.getMonth() + 1 < 10
-            ? "0" + (date.getMonth() + 1)
-            : date.getMonth() + 1) + "-";
-    var dates = date.getDate();
-    return year + month + dates;
-}
-
-function difference(currentPrice, price) {
-    let difference = sub(currentPrice, price)
-    if (difference == 0) {
-        return "-"
-    } else {
-        return `${difference > 0 ? "↑" : "↓"}${String(Math.abs(difference))}`
+        body: "methodName=getHistoryTrend&p_url=" + encodeURIComponent(share_url)
     }
+    $tool.post(options, function (error, response, data) {
+        if (!error) {
+            callback(JSON.parse(data));
+            if (consoleLog) console.log("Data:\n" + data);
+        } else {
+            callback(null, null);
+            if (consoleLog) console.log("Error:\n" + error);
+        }
+    })
 }
 
-function sub(arg1, arg2) {
-    return add(arg1, -Number(arg2), arguments[2]);
-}
-
-function add(arg1, arg2) {
-    arg1 = arg1.toString(), arg2 = arg2.toString();
-    var arg1Arr = arg1.split("."), arg2Arr = arg2.split("."), d1 = arg1Arr.length == 2 ? arg1Arr[1] : "", d2 = arg2Arr.length == 2 ? arg2Arr[1] : "";
-    var maxLen = Math.max(d1.length, d2.length);
-    var m = Math.pow(10, maxLen);
-    var result = Number(((arg1 * m + arg2 * m) / m).toFixed(maxLen));
-    var d = arguments[2];
-    return typeof d === "number" ? Number((result).toFixed(d)) : result;
+function dateFormat(cellval) {
+    const date = new Date(parseInt(cellval.replace("/Date(", "").replace(")/", ""), 10));
+    const month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+    const currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+    return date.getFullYear() + "-" + month + "-" + currentDate;
 }
 
 function getSpace(length) {
@@ -309,6 +221,27 @@ function customItem(title, desc) {
         title: title,
         name: title,
         desc: desc
+    }
+}
+
+function customTradeConsumerProtection() {
+    return {
+        "tradeConsumerService": {
+            "service": {
+                "items": [
+                ],
+                "icon": "",
+                "title": "基础服务"
+            },
+            "nonService": {
+                "items": [
+                ],
+                "title": "其他"
+            }
+        },
+        "passValue": "all",
+        "url": "https://h5.m.taobao.com/app/detailsubpage/consumer/index.js",
+        "type": "0"
     }
 }
 
