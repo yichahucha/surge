@@ -138,7 +138,7 @@ function setTradeConsumerProtection(data, tradeConsumerProtection) {
 }
 
 function priceSummary(data) {
-    let summary = `🌨 当前: ${data.CurrentPrice}${getSpace(8)}最低: ${data.LowestPrice}(${data.LowestDate})`
+    let summary = `🌨 当前: ${data.CurrentPrice}${getSpace(8)}最低: ${data.LowestPrice} (${data.LowestDate})`
     let tbitems = [customItem(summary)]
     const list = historySummary(data.PricesHistory)
     list.forEach((item, index) => {
