@@ -143,7 +143,7 @@ function priceSummary(data) {
     const list = historySummary(data.PricesHistory)
     list.forEach((item, index) => {
         summary += `\n${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
-        let summaryItem = `${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
+        let summaryItem = `${item.Name}${getSpace(2)}${item.Price}${getSpace(2)}${item.Date}${getSpace(2)}${item.Difference}`
         tbitems.push(customItem(summaryItem))
     });
     return [tbitems, summary]
