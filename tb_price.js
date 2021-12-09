@@ -137,7 +137,7 @@ function setTradeConsumerProtection(data, tradeConsumerProtection) {
         // nonService.title = "历史价格详情"
         // nonService.items = tbitems
         const summary = priceSummary(data)[1]
-        const item = customItem(lower, [summary])
+        const item = customItem(lower, summary)
         service.items.unshift(item)
     }
     if (data.ok == 0 && data.msg.length > 0) {
