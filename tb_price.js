@@ -103,7 +103,7 @@ function sendNotify(data) {
         $tool.notify("", "", `${data}`)
     } else {
         const detail = priceSummary(data.data)
-        $tool.notify("", "", `🍵 ${detail}`)
+        $tool.notify("", "", `${detail}`)
     }
 }
 
@@ -115,8 +115,8 @@ function setConsumerProtection(data, consumerProtection) {
         basicService.services.unshift(item)
         items.unshift(item)
     } else {
-        const summary = priceSummary(data.data)
-        const item = customItem("价格详情", [`${summary}`])
+        const summary = priceSummary(data.data)[1]
+        const item = customItem("历史价格详情", [`${summary}`])
         basicService.services.unshift(item)
         items.unshift(item)
     }
@@ -128,10 +128,10 @@ function setTradeConsumerProtection(data, tradeConsumerProtection) {
     if (typeof data == "string") {
         service.items.unshift(customItem(data, ""))
     } else {
-        const tbitems = priceSummary(data.data)
+        const tbitems = priceSummary(data.data)[0]
         let nonService = tradeConsumerProtection.tradeConsumerService.nonService
         service.items = service.items.concat(nonService.items)
-        nonService.title = "价格详情"
+        nonService.title = "历史价格详情"
         nonService.items = tbitems
     }
     return tradeConsumerProtection
@@ -142,7 +142,7 @@ function priceSummary(data) {
     let tbitems = [customItem(summary)]
     const list = historySummary(data.PricesHistory)
     list.forEach((item, index) => {
-        summary += `\n${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
+        summary += `${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}\n`
         let summaryItem = `${item.Name}${getSpace(4)}${item.Price}${getSpace(4)}${item.Date}${getSpace(4)}${item.Difference}`
         tbitems.push(customItem(summaryItem))
     });
