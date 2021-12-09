@@ -62,12 +62,10 @@ if (url.indexOf(path2) != -1) {
 }
 
 function priceSummary(data) {
-    let summary = `🌨 当前: ${data.CurrentPrice}${getSpace(8)}最低: ${data.LowestPrice
-        }`;
+    let summary = `🌨 当前: ${data.CurrentPrice}${getSpace(8)}历史最低: ${data.LowestPrice}(${data.LowestDate})`;
     const list = historySummary(data.PricesHistory);
     list.forEach((item, index) => {
-        summary += `\n${item.Name}${getSpace(8)}${item.Price}${getSpace(8)}${item.Date
-            }${getSpace(8)}${item.Difference}`;
+        summary += `\n${item.Name}${getSpace(8)}${item.Price}${getSpace(8)}${item.Date}${getSpace(8)}${item.Difference}`;
     });
     return summary;
 }
