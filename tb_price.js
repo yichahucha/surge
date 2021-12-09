@@ -99,8 +99,8 @@ if (url.indexOf(path2) != -1) {
 }
 
 function sendNotify(data) {
-    if (typeof data == "string") {
-        $tool.notify("", "", `${data}`)
+    if (data.data.PricesHistory.length == 0) {
+        $tool.notify("", "", `暂无历史价格`)
     } else {
         const detail = priceSummary(data.data)
         $tool.notify("", "", `${detail}`)
@@ -110,8 +110,8 @@ function sendNotify(data) {
 function setConsumerProtection(data, consumerProtection) {
     let basicService = consumerProtection.serviceProtection.basicService
     let items = consumerProtection.items
-    if (typeof data == "string") {
-        let item = customItem(data, [])
+    if (data.data.PricesHistory.length == 0) {
+        let item = customItem("暂无历史价格", [])
         basicService.services.unshift(item)
         items.unshift(item)
     } else {
@@ -125,8 +125,8 @@ function setConsumerProtection(data, consumerProtection) {
 
 function setTradeConsumerProtection(data, tradeConsumerProtection) {
     let service = tradeConsumerProtection.tradeConsumerService.service
-    if (typeof data == "string") {
-        service.items.unshift(customItem(data, ""))
+    if (data.data.PricesHistory.length == 0) {
+        service.items.unshift(customItem("暂无历史价格", ""))
     } else {
         const tbitems = priceSummary(data.data)[0]
         let nonService = tradeConsumerProtection.tradeConsumerService.nonService
