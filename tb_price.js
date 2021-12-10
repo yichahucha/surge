@@ -56,8 +56,8 @@ if (url.indexOf(path2) != -1) {
     let msg
     request_history_price(shareUrl)
         .then(data => {
-            msg = data
             if (data.errno == -1) throw new Error('Whoops!')
+            msg = data
         })
         .catch(error => msg = "暂无价格信息")
         .finally(() => {
