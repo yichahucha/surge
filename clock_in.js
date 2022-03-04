@@ -60,6 +60,10 @@ function Tool() {
             $task.fetch(options).then(response => { callback(null, _status(response), response.body) }, reason => callback(reason.error, null, null))
         }
         if (_isSurge) $httpClient.get(options, (error, response, body) => { callback(error, _status(response), body) })
+        if (_isLoon) {
+            if (typeof options == "string") options = { url: options }
+            $httpClient.get(options, (error, response, body) => { callback(error, _status(response), body) })
+        }
         if (_node) _node.request(options, (error, response, body) => { callback(error, _status(response), body) })
     }
     this.post = (options, callback) => {
@@ -69,6 +73,10 @@ function Tool() {
             $task.fetch(options).then(response => { callback(null, _status(response), response.body) }, reason => callback(reason.error, null, null))
         }
         if (_isSurge) $httpClient.post(options, (error, response, body) => { callback(error, _status(response), body) })
+        if (_isLoon) {
+            if (typeof options == "string") options = { url: options }
+            $httpClient.post(options, (error, response, body) => { callback(error, _status(response), body) })
+        }
         if (_node) _node.request.post(options, (error, response, body) => { callback(error, _status(response), body) })
     }
     _status = (response) => {
