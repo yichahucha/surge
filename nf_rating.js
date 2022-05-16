@@ -177,7 +177,7 @@ function get_IMDb_message(data) {
 
 function get_douban_rating_message(data) {
     const s = data.replace(/\n| |&#\d{2}/g, '')
-    .match(/\[\u7535\u5f71\].+?subject-cast\">.+?<\/span>/g);
+    .match(/\[(\u7535\u5f71|\u7535\u89c6\u5267)\].+?subject-cast\">.+?<\/span>/g);
     const average = s ? s[0].split(/">(\d\.\d)</)[1] || '' : '';
     const numRaters = s ? s[0].split(/(\d+)\u4eba\u8bc4\u4ef7/)[1] || '' : '';
     const rating_message = `Douban:  ⭐️ ${average ? average + "/10" : "N/A"}   ${!numRaters ? "" : parseFloat(numRaters).toLocaleString()}`;
