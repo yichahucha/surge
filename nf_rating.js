@@ -67,6 +67,12 @@ if (!$tool.isResponse) {
             .finally(() => {
                 let summary = obj.value.videos[videoID].summary;
                 summary["supplementalMessage"] = `${msg}${summary && summary.supplementalMessage ? "\n" + summary.supplementalMessage : ""}`;
+                msg_obj = {"tagline":summary.supplementalMessage, "classification":"REGULAR"}
+                if (summary["supplementalMessages"]) {
+                    summary["supplementalMessages"].push(msg_obj)
+                }else {
+                    summary["supplementalMessages"] = [msg_obj]
+                }
                 if (consoleLog) console.log("Netflix Modified Body:\n" + JSON.stringify(obj));
                 $done({ body: JSON.stringify(obj) });
             });
