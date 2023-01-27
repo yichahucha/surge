@@ -9,7 +9,7 @@ nf_rating.js = type=http-response,requires-body=1,pattern=^https?:\/\/ios(-.*)?\
 hostname = ios-*.prod.ftl.netflix.com,ios.prod.ftl.netflix.com
 ```
 
-Weibo
+Wb
 ```properties
 [Script]
 http-response ^https?://(sdk|wb)app\.uve\.weibo\.com(/interface/sdk/sdkad.php|/wbapplua/wbpullad.lua) requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/wb_launch.js
@@ -46,7 +46,7 @@ Netflix ratings（IMDb、douban）
 hostname = ios-*.prod.ftl.netflix.com,ios.prod.ftl.netflix.com
 ```
 
-Weibo
+Wb
 ```properties
 [rewrite_local]
 ^https?://(sdk|wb)app\.uve\.weibo\.com(/interface/sdk/sdkad.php|/wbapplua/wbpullad.lua) url script-response-body https://raw.githubusercontent.com/yichahucha/surge/master/wb_launch.js
