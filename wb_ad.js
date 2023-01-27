@@ -31,6 +31,7 @@ const path26 = "/statuses/container_timeline_hot"
 const path27 = "/search/finder"
 const path28 = "/statuses/container_timeline_unread"
 const path29 = "/statuses/container_timeline"
+const path30 = "/profile/container_timeline"
 
 const url = $request.url;
 let body = $response.body;
@@ -126,7 +127,7 @@ if (
     let obj = JSON.parse(body);
     filter_messageflow_notice(obj)
     body = JSON.stringify(obj);
-} else if (url.indexOf(path26) != -1 || url.indexOf(path28) != -1 || url.indexOf(path29) != -1) {
+} else if ( url.indexOf(path30) != -1 || url.indexOf(path26) != -1 || url.indexOf(path28) != -1 || url.indexOf(path29) != -1) {
     let obj = JSON.parse(body);
     filter_items_feed(obj)
     body = JSON.stringify(obj);
