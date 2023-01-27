@@ -58,13 +58,13 @@ if (!$tool.isResponse) {
             const country = IMDb.msg.country;
             const awards = IMDb.msg.awards;
             const doubanRating = Douban.rating;
-            const message = `\n${awards.length > 0 ? awards + "\n": ""}${country}\n${IMDbrating}\n${doubanRating}${tomatoes.length > 0 ? "\n" + tomatoes + "\n" : "\n"}`;
+            const message = `\n${country}\n${IMDbrating}\n${doubanRating}\n${tomatoes.length > 0 ? tomatoes + "\n" : ""}${awards.length > 0 ? "\n" + awards + "\n": "\n"}`;
             return message;
         }
         let msg = "";
         requestRatings()
             .then(message => msg = message)
-            .catch(error => msg = error + "\n")
+            .catch(error => msg = "\n" + error + "\n")
             .finally(() => {
                 let summary = obj.value.videos[videoID].summary;
                 summary["supplementalMessage"] = `${msg}${summary && summary.supplementalMessage ? "\n" + summary.supplementalMessage : ""}`;
