@@ -25,6 +25,12 @@ const path20 = "/video/tiny_stream_video_list";
 const path21 = "/photo/info";
 const path22 = "/live/media_homelist";
 const path23 = "/remind/unread_count";
+const path24 = "/search/container_timeline"
+const path25 = "/messageflow/notice"
+const path26 = "/statuses/container_timeline_hot"
+const path27 = "/search/finder"
+const path28 = "/statuses/container_timeline_unread"
+const path29 = "/statuses/container_timeline"
 
 const url = $request.url;
 let body = $response.body;
@@ -112,8 +118,76 @@ if (
     let obj = JSON.parse(body);
     obj.video = {};
     body = JSON.stringify(obj);
+} else if (url.indexOf(path24) != -1) {
+    let obj = JSON.parse(body);
+    filter_items_feed(obj)
+    body = JSON.stringify(obj);
+} else if (url.indexOf(path25) != -1) {
+    let obj = JSON.parse(body);
+    filter_messageflow_notice(obj)
+    body = JSON.stringify(obj);
+} else if (url.indexOf(path26) != -1 || url.indexOf(path28) != -1 || url.indexOf(path29) != -1) {
+    let obj = JSON.parse(body);
+    filter_items_feed(obj)
+    body = JSON.stringify(obj);
+} else if (url.indexOf(path27) != -1) {
+    let obj = JSON.parse(body);
+    filter_search_finder(obj)
+    body = JSON.stringify(obj);
 }
+
 $done({ body });
+
+function filter_search_finder(data) {
+    channels = data["channelInfo"]["channels"]
+    for (let index = 0; index < channels.length; index++) {
+        const element = channels[index];
+        if (element["en_name"] == "Discover") {
+            filter_finder_items(element["payload"])
+        }
+    }
+}
+
+function filter_finder_items(data) {
+    items = data["items"]
+    for (let index = items.length-1; index >= 0; index--) {
+        const item = items[index];
+        if (item["category"] == "card") {
+            type = item["data"]["card_type"]
+            if (type == 118) {
+                items.splice(index,1)
+            }
+        }else if (item["category"] == "feed") {
+            type = item["data"]["mblogtype"]
+            if (type == 1) {
+                items.splice(index,1)
+            }
+        }
+    }
+}
+
+function filter_messageflow_notice(data) {
+    items = data["messages"]
+    for (let index = items.length-1; index >= 0; index--) {
+        const item = items[index];
+        if (item["isrecommend"] == true) {
+            items.splice(index,1)
+        }
+    }
+}
+
+function filter_items_feed(data) {
+    items = data["items"]
+    for (let index = items.length-1; index >= 0; index--) {
+        const item = items[index];
+        if (item["category"] == "feed") {
+            type = item["data"]["mblogtype"]
+            if (type == 1) {
+                items.splice(index,1)
+            }
+        }
+    }
+}
 
 function filter_timeline_statuses(statuses) {
     if (statuses && statuses.length > 0) {
